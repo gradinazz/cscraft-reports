@@ -1,0 +1,787 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSCraft — трейд-ап контракты CS2</title>
+<meta name="description" content="Расчёты прибыльных трейд-ап контрактов CS2 на реальных ценах: 14 наборов по жёсткости окна входа и типу предметов.">
+<style>
+:root{
+  color-scheme:light;
+  --plane:#f9f9f7; --surface:#fcfcfb;
+  --ink:#0b0b0b; --ink-2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,.10);
+  --accent:#2a78d6; --good:#006300;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --r1:#86b6ef; --r2:#6da7ec; --r3:#5598e7; --r4:#3987e5;
+  --r5:#2a78d6; --r6:#1c5cab; --r7:#104281;
+  --shadow:0 1px 2px rgba(11,11,11,.04), 0 8px 24px -12px rgba(11,11,11,.16);
+}
+@media (prefers-color-scheme:dark){
+  :root:where(:not([data-theme="light"])){
+    color-scheme:dark;
+    --plane:#0d0d0d; --surface:#1a1a19;
+    --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+    --accent:#3987e5; --good:#0ca30c;
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --r1:#184f95; --r2:#256abf; --r3:#2a78d6; --r4:#3987e5;
+    --r5:#5598e7; --r6:#86b6ef; --r7:#b7d3f6;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --plane:#0d0d0d; --surface:#1a1a19;
+  --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,.10);
+  --accent:#3987e5; --good:#0ca30c;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --r1:#184f95; --r2:#256abf; --r3:#2a78d6; --r4:#3987e5;
+  --r5:#5598e7; --r6:#86b6ef; --r7:#b7d3f6;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--plane); color:var(--ink);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-synthesis-weight:none;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+h1,h2,h3{margin:0;font-weight:640;letter-spacing:-.01em}
+.n{font-variant-numeric:tabular-nums}
+
+/* ---------- шапка ---------- */
+header.top{border-bottom:1px solid var(--grid);background:var(--surface)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:14px 0;max-width:1120px;margin:0 auto;padding-left:20px;padding-right:20px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:640;letter-spacing:-.01em}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--s1)}
+.brand small{font-weight:400;color:var(--muted);letter-spacing:0}
+.theme{background:transparent;border:1px solid var(--ring);border-radius:8px;
+  color:var(--ink-2);padding:6px 10px;font:inherit;font-size:13px;cursor:pointer;line-height:1}
+.theme:hover{border-color:var(--axis);color:var(--ink)}
+
+.hero{padding:56px 0 40px}
+.eyebrow{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  margin:0 0 12px;font-weight:600}
+.hero h1{font-size:clamp(30px,4.6vw,46px);line-height:1.1;max-width:17ch}
+.hero p.lede{margin:16px 0 0;max-width:62ch;color:var(--ink-2);font-size:17px}
+
+.tiles{display:grid;gap:1px;background:var(--grid);border:1px solid var(--grid);
+  border-radius:14px;overflow:hidden;margin-top:34px;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.tile{background:var(--surface);padding:18px 20px}
+.tile .v{font-size:29px;line-height:1.1;font-weight:640;letter-spacing:-.02em}
+.tile .k{margin-top:5px;font-size:13px;color:var(--muted)}
+.tile .h{margin-top:3px;font-size:12.5px;color:var(--ink-2)}
+
+/* ---------- секции ---------- */
+section{padding:44px 0}
+.shead{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-bottom:6px}
+.shead h2{font-size:23px}
+.shead .cnt{font-size:13.5px;color:var(--muted)}
+.sdesc{margin:0 0 22px;color:var(--ink-2);max-width:70ch;font-size:15px}
+
+/* ---------- фильтры ---------- */
+.filters{display:flex;flex-direction:column;gap:10px;margin:0 0 24px;
+  background:var(--surface);border:1px solid var(--grid);border-radius:14px;padding:14px 16px}
+.frow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.flabel{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;min-width:104px}
+.chip{display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+  border:1px solid var(--ring);background:transparent;color:var(--ink-2);
+  border-radius:999px;padding:6px 13px;font:inherit;font-size:13.5px;line-height:1.2;
+  transition:border-color .12s,color .12s,background .12s}
+.chip:hover{border-color:var(--axis);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.chip .sw{width:8px;height:8px;border-radius:50%;flex:none}
+.chip[aria-pressed="true"] .sw{box-shadow:0 0 0 1.5px var(--surface)}
+
+/* ---------- карточки ---------- */
+.grid{display:grid;gap:16px;align-items:start;
+  grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+.card{background:var(--surface);border:1px solid var(--grid);border-radius:14px;
+  padding:18px 20px 16px;display:flex;flex-direction:column;box-shadow:var(--shadow);
+  transition:border-color .14s, transform .14s}
+.card:hover{border-color:var(--axis)}
+.card.empty{opacity:.68;box-shadow:none}
+.chead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;
+  letter-spacing:.02em;border:1px solid var(--ring);border-radius:6px;padding:3px 8px;color:var(--ink-2)}
+.badge .sw{width:7px;height:7px;border-radius:50%;flex:none}
+.badge.win{color:var(--ink-2)}
+.chero{display:flex;align-items:flex-end;gap:10px}
+.chero .v{font-size:34px;line-height:1;font-weight:640;letter-spacing:-.02em}
+.chero .k{font-size:13px;color:var(--muted);padding-bottom:3px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin:16px 0 0}
+.stats div{min-width:0}
+.stats .k{font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+.stats .v{font-size:16px;font-weight:600;margin-top:2px}
+.stats .v.good{color:var(--good)}
+
+.dist{margin:16px 0 0}
+.dist .lbl{font-size:11.5px;color:var(--muted);margin-bottom:6px}
+.bar{display:flex;height:9px;border-radius:5px;overflow:hidden;background:var(--grid)}
+.bar i{display:block;height:100%;flex:none;border-right:2px solid var(--surface)}
+.bar i:last-child{border-right:0}
+.bar i:first-child{border-radius:5px 0 0 5px}
+.bar i:last-child{border-radius:0 5px 5px 0}
+
+.cfoot{display:flex;align-items:center;gap:8px;margin-top:auto;padding-top:18px}
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;
+  border:1px solid transparent;border-radius:9px;padding:9px 15px;font:inherit;font-size:14px;
+  font-weight:560;cursor:pointer;text-decoration:none;line-height:1.2}
+.btn:hover{filter:brightness(1.08);text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink-2);border-color:var(--ring)}
+.btn.ghost:hover{border-color:var(--axis);color:var(--ink);filter:none}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+
+details.more{margin-top:14px;border-top:1px solid var(--grid);padding-top:12px}
+details.more summary{cursor:pointer;font-size:13px;color:var(--ink-2);list-style:none;
+  display:flex;align-items:center;gap:6px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"›";display:inline-block;transition:transform .15s;
+  color:var(--muted);font-size:15px}
+details.more[open] summary::before{transform:rotate(90deg)}
+details.more summary:hover{color:var(--ink)}
+.mini{width:100%;border-collapse:collapse;margin-top:10px;font-size:12.5px}
+.mini th,.mini td{padding:5px 6px;border-bottom:1px solid var(--grid);text-align:left;
+  vertical-align:top}
+.mini th{font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+  font-weight:600}
+.mini td.r,.mini th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini tr:last-child td{border-bottom:0}
+.mini .sub{color:var(--muted);font-size:11.5px}
+.card .sdesc{font-size:13px;margin:12px 0 0;color:var(--ink-2)}
+.h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+  font-weight:600;margin:14px 0 0}
+
+/* ---------- легенда / графики ---------- */
+.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:0 0 18px;
+  font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:3px;display:block;flex:none}
+.legend.line i{width:16px;height:3px;border-radius:2px}
+
+.charts{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(400px,1fr))}
+.chart{background:var(--surface);border:1px solid var(--grid);border-radius:14px;padding:18px 18px 12px}
+.chart h3{font-size:15px;margin-bottom:2px}
+.chart .cap{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart .gl{stroke:var(--grid);stroke-width:1}
+.chart .ax{stroke:var(--axis);stroke-width:1}
+.chart text{fill:var(--muted);font-size:11px;font-family:inherit}
+.chart text.val{fill:var(--ink-2);font-size:11px;font-weight:600}
+.chart .hit{fill:transparent;cursor:crosshair}
+.chart .cross{stroke:var(--axis);stroke-width:1;stroke-dasharray:3 3;opacity:0}
+
+#tip{position:fixed;z-index:50;pointer-events:none;opacity:0;transition:opacity .1s;
+  background:var(--surface);border:1px solid var(--axis);border-radius:9px;
+  padding:9px 11px;font-size:12.5px;box-shadow:var(--shadow);max-width:260px;color:var(--ink)}
+#tip .t{font-weight:640;margin-bottom:5px}
+#tip .row{display:flex;align-items:center;gap:7px;justify-content:space-between}
+#tip .row i{width:9px;height:9px;border-radius:2px;flex:none}
+#tip .row b{font-variant-numeric:tabular-nums;font-weight:600}
+#tip .nm{display:flex;align-items:center;gap:6px;color:var(--ink-2)}
+
+/* ---------- таблица ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--grid);border-radius:14px;background:var(--surface)}
+table.data{border-collapse:collapse;width:100%;font-size:13.5px;min-width:720px}
+table.data th,table.data td{padding:9px 14px;border-bottom:1px solid var(--grid);text-align:left;
+  white-space:nowrap}
+table.data th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);
+  font-weight:600;background:var(--plane);position:sticky;top:0}
+table.data td.r,table.data th.r{text-align:right;font-variant-numeric:tabular-nums}
+table.data tbody tr:hover{background:var(--plane)}
+table.data tr:last-child td{border-bottom:0}
+.sw-inline{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;
+  vertical-align:1px}
+
+/* ---------- методика ---------- */
+.prose{max-width:74ch}
+.prose h3{font-size:15px;margin:26px 0 6px}
+.prose p{margin:0 0 12px;color:var(--ink-2);font-size:15px}
+.prose ul{margin:0 0 12px;padding-left:20px;color:var(--ink-2);font-size:15px}
+.prose li{margin:0 0 6px}
+.prose strong{color:var(--ink);font-weight:600}
+.warn{border:1px solid var(--grid);border-left:3px solid var(--s2);border-radius:0 10px 10px 0;
+  background:var(--surface);padding:14px 18px;margin:20px 0 0}
+.warn p{margin:0;font-size:14px;color:var(--ink-2)}
+
+footer{border-top:1px solid var(--grid);margin-top:24px;padding:28px 0 44px;
+  color:var(--muted);font-size:13.5px}
+footer .fl{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+.empty-note{grid-column:1/-1;padding:34px;text-align:center;color:var(--muted);
+  border:1px dashed var(--grid);border-radius:14px;font-size:14.5px}
+
+@media (max-width:560px){
+  .hero{padding:38px 0 30px}
+  .flabel{min-width:100%}
+  .charts{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="topbar">
+    <div class="brand"><span class="dot" aria-hidden="true"></span>CSCraft <small>· трейд-ап CS2</small></div>
+    <button class="theme" id="theme" type="button">Тема: авто</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <p class="eyebrow">Расчёт от <span id="date">—</span></p>
+    <h1>Прибыльные трейд-ап контракты CS2</h1>
+    <p class="lede">Полный перебор десяток по коллекциям на реальных ценах BetterFloat: покупка по средней за 30 дней,
+      продажа по лучшему бид-ордеру. Прибыль считается по <strong>худшему</strong> сочетанию флоатов внутри окон —
+      это нижняя граница, а не удачный случай. Ниже — <span id="setcount">14</span> расчётов: выберите пул предметов и
+      требуемую ширину окна покупки.</p>
+    <div class="tiles" id="tiles"></div>
+  </div>
+
+  <section id="sets">
+    <div class="shead">
+      <h2>Наборы расчётов</h2>
+      <span class="cnt" id="shown"></span>
+    </div>
+    <p class="sdesc">Каждый набор — отдельный прогон с своими настройками. Чем шире требуемое окно покупки, тем проще
+      найти предметы на рынке, но тем меньше контрактов остаются прибыльными.</p>
+
+    <div class="filters">
+      <div class="frow" role="group" aria-label="Пул предметов">
+        <span class="flabel">Пул</span>
+        <span id="f-pool"></span>
+      </div>
+      <div class="frow" role="group" aria-label="Минимальное окно входа">
+        <span class="flabel">Окно входа</span>
+        <span id="f-win"></span>
+      </div>
+      <div class="frow" role="group" aria-label="Сортировка">
+        <span class="flabel">Сортировка</span>
+        <span id="f-sort"></span>
+      </div>
+    </div>
+
+    <div class="legend" aria-label="Шкала распределения ROI">
+      <span style="color:var(--muted)">Распределение ROI:</span>
+      <span><i style="background:var(--r1)"></i>&lt;25%</span>
+      <span><i style="background:var(--r2)"></i>25–50%</span>
+      <span><i style="background:var(--r3)"></i>50–75%</span>
+      <span><i style="background:var(--r4)"></i>75–100%</span>
+      <span><i style="background:var(--r5)"></i>100–150%</span>
+      <span><i style="background:var(--r6)"></i>150–200%</span>
+      <span><i style="background:var(--r7)"></i>200%+</span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="compare">
+    <div class="shead"><h2>Как окно входа съедает прибыль</h2></div>
+    <p class="sdesc">Требование «окно покупки не уже X% полосы износа» — единственный параметр, который меняли между
+      прогонами. Оно решает, насколько легко найти предмет на рынке: узкое окно даёт много бумажной прибыли,
+      но по такому заданию придётся долго охотиться за конкретным флоатом.</p>
+    <div class="legend line" aria-label="Легенда графиков">
+      <span><i style="background:var(--s1)"></i>Обычные</span>
+      <span><i style="background:var(--s2)"></i>Сувенирные</span>
+      <span><i style="background:var(--s3)"></i>StatTrak™</span>
+    </div>
+    <div class="charts">
+      <div class="chart">
+        <h3>Прибыльных контрактов</h3>
+        <p class="cap">Сколько десяток остаётся в плюсе, шт.</p>
+        <div id="chart-count"></div>
+      </div>
+      <div class="chart">
+        <h3>Лучший ROI в наборе</h3>
+        <p class="cap">Максимальная доходность одного контракта, %</p>
+        <div id="chart-roi"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="table">
+    <div class="shead"><h2>Сводная таблица</h2></div>
+    <p class="sdesc">Те же данные числами — сортируется кликом по заголовку.</p>
+    <div class="tablewrap">
+      <table class="data" id="dtable">
+        <thead><tr>
+          <th data-k="pool">Пул</th>
+          <th class="r" data-k="win">Окно</th>
+          <th class="r" data-k="total">Контрактов</th>
+          <th class="r" data-k="roi50">ROI ≥50%</th>
+          <th class="r" data-k="roi100">ROI ≥100%</th>
+          <th class="r" data-k="bestRoi">Лучший ROI</th>
+          <th class="r" data-k="bestProfit">Макс. прибыль</th>
+          <th class="r" data-k="medRoi">Медиана ROI</th>
+          <th class="r" data-k="minCost">Вход от</th>
+          <th>Отчёт</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="shead"><h2>Как это читать</h2></div>
+    <div class="prose">
+      <h3>Окно входа</h3>
+      <p>Каждый вход контракта — это <strong>задание на покупку</strong>: скин в указанном износе с флоатом внутри
+        окна. Ширина окна указана долей полосы износа — фактически «какая часть лотов этого износа подойдёт».
+        Заданный процент — минимум: где окно можно расширить, не потеряв в прибыли, оно расширено, поэтому
+        в отчётах проценты обычно выше минимума.</p>
+
+      <h3>Пул предметов</h3>
+      <ul>
+        <li><strong>Обычные</strong> — только обычные предметы во входах и на выходе.</li>
+        <li><strong>Сувенирные</strong> — во входах разрешены и сувенирные предметы (правила игры изменились
+          в мае 2026); выход всегда обычный.</li>
+        <li><strong>StatTrak™</strong> — отдельный пул: все 10 входов StatTrak, выход тоже StatTrak.</li>
+      </ul>
+
+      <h3>Прибыль и ROI</h3>
+      <p>Прибыль — это «вернётся в среднем минус вложено», то есть математическое ожидание по исходам контракта,
+        посчитанное по худшему сочетанию флоатов внутри окон. ROI — та же прибыль в процентах от вложенного.
+        Одна конкретная прокрутка может дать заметно больше или меньше: контракт — это лотерея с положительным
+        ожиданием, а не гарантированный доход.</p>
+
+      <h3>Окупаемость одним предметом</h3>
+      <p>Отдельная метрика в отчётах: вероятность, что выпавший предмет один окупит всю десятку. Это не то же самое,
+        что прибыльность — контракт с хорошим ожиданием может окупаться одним предметом редко, и наоборот.
+        В каждом отчёте по ней есть фильтр.</p>
+
+      <h3>Цены</h3>
+      <p>Вход — средняя цена за 30 дней (avg30), выход — лучший бид (реальный стакан, не только Steam).
+        Комиссия при продаже принята нулевой. Данные зафиксированы на дату расчёта — рынок с тех пор ушёл,
+        считайте цифры ориентиром, а не котировкой.</p>
+
+      <div class="warn">
+        <p><strong>Это не финансовый совет.</strong> Расчёт не учитывает время на выкуп нужных флоатов,
+          проскальзывание цены, лимиты и комиссии конкретной площадки. Проверяйте цены перед покупкой.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap fl">
+    <span>CSCraft · данные на <span id="date2">—</span></span>
+    <span><a href="https://github.com/gradinazz/cscraft-reports">Исходники и отчёты на GitHub</a></span>
+  </div>
+</footer>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+const DATA = [{"file":"contracts_w100_normal_2026-08-10","generatedAt":"2026-08-10T19:54:56.847Z","settings":{"souvenir":false,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":1},"total":0,"minCost":null,"bestRoi":null,"medRoi":null,"bestProfit":null,"roi50":0,"roi100":0,"pb50":0,"maxPayback":null,"buckets":[0,0,0,0,0,0,0],"byRarity":[],"topProfit":[],"topRoi":[],"topCheap":[]},{"file":"contracts_w10_normal_2026-08-10","generatedAt":"2026-08-10T19:48:04.696Z","settings":{"souvenir":false,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.1},"total":5483,"minCost":0.1,"bestRoi":3.2759,"medRoi":0.5399,"bestProfit":166.93,"roi50":3027,"roi100":801,"pb50":3572,"maxPayback":1.0002,"buckets":[0,2456,1488,738,587,132,82],"byRarity":[{"from":"consumer","to":"industrial","count":268,"bestRoi":2.962,"bestProfit":3.45,"minCost":0.1},{"from":"industrial","to":"milspec","count":507,"bestRoi":3.2759,"bestProfit":8.9,"minCost":0.4},{"from":"milspec","to":"restricted","count":2243,"bestRoi":2.3504,"bestProfit":62.81,"minCost":1.09},{"from":"restricted","to":"classified","count":1720,"bestRoi":1.752,"bestProfit":61.34,"minCost":6.64},{"from":"classified","to":"covert","count":745,"bestRoi":1.7756,"bestProfit":166.93,"minCost":52.83}],"topProfit":[{"profit":166.93,"roi":0.8907,"cost":187.42,"from":"classified","to":"covert","comp":"7x Prisma + 3x Anubis","payback":0.65},{"profit":165.98,"roi":0.5865,"cost":283,"from":"classified","to":"covert","comp":"5x Phoenix + 5x Anubis","payback":0.5},{"profit":164.78,"roi":0.6287,"cost":262.1,"from":"classified","to":"covert","comp":"5x Anubis + 5x Fracture","payback":0.5},{"profit":155.69,"roi":0.5784,"cost":269.19,"from":"classified","to":"covert","comp":"5x Anubis + 5x Kilowatt","payback":0.5},{"profit":154.52,"roi":0.5502,"cost":280.87,"from":"classified","to":"covert","comp":"5x Recoil + 5x Anubis","payback":0.5}],"topRoi":[{"profit":3.73,"roi":3.2759,"cost":1.14,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Overpass 2024","payback":0.9},{"profit":1.18,"roi":2.962,"cost":0.4,"from":"consumer","to":"industrial","comp":"2x Lake + 8x Harlequin","payback":0.32},{"profit":3.6,"roi":2.9529,"cost":1.22,"from":"industrial","to":"milspec","comp":"2x Sport & Field + 8x Train 2025","payback":0.9},{"profit":3.71,"roi":2.8979,"cost":1.28,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Bank","payback":1.0001},{"profit":3.56,"roi":2.7841,"cost":1.28,"from":"industrial","to":"milspec","comp":"2x Boreal + 8x Train 2025","payback":0.88}],"topCheap":[{"profit":0.08,"roi":0.848,"cost":0.1,"from":"consumer","to":"industrial","comp":"1x Harlequin + 9x Ascent","payback":0.78},{"profit":0.08,"roi":0.796,"cost":0.1,"from":"consumer","to":"industrial","comp":"2x Harlequin + 8x Ascent","payback":0.7823},{"profit":0.05,"roi":0.492,"cost":0.1,"from":"consumer","to":"industrial","comp":"6x Achroma + 4x Ascent","payback":0.702},{"profit":0.04,"roi":0.404,"cost":0.1,"from":"consumer","to":"industrial","comp":"6x Achroma + 4x Harlequin","payback":0.8},{"profit":0.08,"roi":0.6034,"cost":0.13,"from":"consumer","to":"industrial","comp":"2x Radiant + 8x Ascent","payback":0.8777}]},{"file":"contracts_w10_souvenir_2026-08-10","generatedAt":"2026-08-10T19:39:03.805Z","settings":{"souvenir":true,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.1},"total":5741,"minCost":0.1,"bestRoi":3.2759,"medRoi":0.5668,"bestProfit":402.04,"roi50":3385,"roi100":976,"pb50":3705,"maxPayback":1.0002,"buckets":[0,2356,1568,841,732,157,87],"byRarity":[{"from":"consumer","to":"industrial","count":352,"bestRoi":2.962,"bestProfit":9.43,"minCost":0.1},{"from":"industrial","to":"milspec","count":551,"bestRoi":3.2759,"bestProfit":15.83,"minCost":0.4},{"from":"milspec","to":"restricted","count":2317,"bestRoi":2.3504,"bestProfit":62.81,"minCost":1.09},{"from":"restricted","to":"classified","count":1741,"bestRoi":1.752,"bestProfit":63.94,"minCost":6.64},{"from":"classified","to":"covert","count":780,"bestRoi":1.7756,"bestProfit":402.04,"minCost":52.83}],"topProfit":[{"profit":402.04,"roi":0.2581,"cost":1558,"from":"classified","to":"covert","comp":"1x Anubis + 9x 2021 Dust 2","payback":0.9},{"profit":347.35,"roi":0.2562,"cost":1355.72,"from":"classified","to":"covert","comp":"2x Prisma + 8x 2021 Dust 2","payback":0.8},{"profit":342.34,"roi":0.2517,"cost":1359.98,"from":"classified","to":"covert","comp":"2x Gallery + 8x 2021 Dust 2","payback":0.8},{"profit":264.96,"roi":0.2536,"cost":1044.9,"from":"classified","to":"covert","comp":"4x Revolver Case + 6x 2021 Dust 2","payback":0.6},{"profit":251.54,"roi":0.2526,"cost":995.61,"from":"classified","to":"covert","comp":"5x Overpass 2024 + 5x 2021 Dust 2","payback":0.5}],"topRoi":[{"profit":3.73,"roi":3.2759,"cost":1.14,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Overpass 2024","payback":0.9},{"profit":1.18,"roi":2.962,"cost":0.4,"from":"consumer","to":"industrial","comp":"2x Lake + 8x Harlequin","payback":0.32},{"profit":3.6,"roi":2.9529,"cost":1.22,"from":"industrial","to":"milspec","comp":"2x Sport & Field + 8x Train 2025","payback":0.9},{"profit":4.35,"roi":2.9191,"cost":1.49,"from":"industrial","to":"milspec","comp":"3x 2021 Mirage + 7x Overpass 2024","payback":0.3},{"profit":3.71,"roi":2.8979,"cost":1.28,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Bank","payback":1.0001}],"topCheap":[{"profit":0.08,"roi":0.848,"cost":0.1,"from":"consumer","to":"industrial","comp":"1x Harlequin + 9x Ascent","payback":0.78},{"profit":0.08,"roi":0.796,"cost":0.1,"from":"consumer","to":"industrial","comp":"2x Harlequin + 8x Ascent","payback":0.7823},{"profit":0.05,"roi":0.492,"cost":0.1,"from":"consumer","to":"industrial","comp":"6x Achroma + 4x Ascent","payback":0.702},{"profit":0.04,"roi":0.404,"cost":0.1,"from":"consumer","to":"industrial","comp":"6x Achroma + 4x Harlequin","payback":0.8},{"profit":0.08,"roi":0.6034,"cost":0.13,"from":"consumer","to":"industrial","comp":"2x Radiant + 8x Ascent","payback":0.8777}]},{"file":"contracts_w10_stattrak_2026-08-10","generatedAt":"2026-08-10T19:36:59.321Z","settings":{"souvenir":false,"stattrak":true,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.1},"total":1847,"minCost":1.62,"bestRoi":2.1251,"medRoi":0.5044,"bestProfit":160.5,"roi50":943,"roi100":100,"pb50":1366,"maxPayback":1.0002,"buckets":[0,904,581,262,77,18,5],"byRarity":[{"from":"milspec","to":"restricted","count":667,"bestRoi":1.2051,"bestProfit":7.17,"minCost":1.62},{"from":"restricted","to":"classified","count":729,"bestRoi":1.1302,"bestProfit":55.72,"minCost":6.24},{"from":"classified","to":"covert","count":451,"bestRoi":2.1251,"bestProfit":160.5,"minCost":60.64}],"topProfit":[{"profit":160.5,"roi":1.4324,"cost":112.05,"from":"classified","to":"covert","comp":"7x Prisma + 2x Operation Broken Fang + 1x Revolver Case","payback":0.5},{"profit":156.28,"roi":1.8486,"cost":84.54,"from":"classified","to":"covert","comp":"1x Operation Broken Fang + 9x Prisma","payback":0.55},{"profit":152.23,"roi":1.035,"cost":147.08,"from":"classified","to":"covert","comp":"7x Revolver Case + 3x Operation Broken Fang","payback":0.5},{"profit":149.61,"roi":1.0136,"cost":147.6,"from":"classified","to":"covert","comp":"8x Revolver Case + 2x Huntsman","payback":0.5},{"profit":148.11,"roi":0.9431,"cost":157.04,"from":"classified","to":"covert","comp":"8x Prisma + 2x Huntsman","payback":0.5}],"topRoi":[{"profit":131.35,"roi":2.1251,"cost":61.81,"from":"classified","to":"covert","comp":"2x Recoil + 8x Prisma","payback":0.9},{"profit":139.6,"roi":2.0986,"cost":66.52,"from":"classified","to":"covert","comp":"2x Revolver Case + 8x Prisma","payback":1},{"profit":125.11,"roi":2.0632,"cost":60.64,"from":"classified","to":"covert","comp":"8x Prisma + 2x Clutch","payback":0.9},{"profit":126.81,"roi":2.0585,"cost":61.6,"from":"classified","to":"covert","comp":"8x Prisma + 2x Fracture","payback":1},{"profit":130.48,"roi":2.0419,"cost":63.9,"from":"classified","to":"covert","comp":"8x Prisma + 2x Revolution","payback":1}],"topCheap":[{"profit":0.91,"roi":0.5637,"cost":1.62,"from":"milspec","to":"restricted","comp":"2x Spectrum 2 + 8x Dreams & Nightmares","payback":0.52},{"profit":1.19,"roi":0.6855,"cost":1.73,"from":"milspec","to":"restricted","comp":"9x Dreams & Nightmares + 1x Falchion","payback":0.44},{"profit":1.14,"roi":0.6259,"cost":1.82,"from":"milspec","to":"restricted","comp":"6x Clutch + 4x Revolution","payback":0.64},{"profit":0.81,"roi":0.4402,"cost":1.84,"from":"milspec","to":"restricted","comp":"2x Spectrum 2 + 8x Revolution","payback":0.52},{"profit":1.01,"roi":0.5346,"cost":1.89,"from":"milspec","to":"restricted","comp":"2x Spectrum + 8x Dreams & Nightmares","payback":0.52}]},{"file":"contracts_w20_normal_2026-08-10","generatedAt":"2026-08-10T19:49:28.024Z","settings":{"souvenir":false,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.2},"total":4285,"minCost":0.1,"bestRoi":2.4597,"medRoi":0.4545,"bestProfit":129.36,"roi50":1848,"roi100":278,"pb50":2598,"maxPayback":1.0002,"buckets":[0,2437,1070,500,233,28,17],"byRarity":[{"from":"consumer","to":"industrial","count":184,"bestRoi":1.6875,"bestProfit":2.56,"minCost":0.1},{"from":"industrial","to":"milspec","count":414,"bestRoi":2.4597,"bestProfit":7.32,"minCost":0.28},{"from":"milspec","to":"restricted","count":1798,"bestRoi":2.0563,"bestProfit":25.03,"minCost":1.04},{"from":"restricted","to":"classified","count":1323,"bestRoi":1.4253,"bestProfit":46.86,"minCost":6.26},{"from":"classified","to":"covert","count":566,"bestRoi":1.1918,"bestProfit":129.36,"minCost":55.45}],"topProfit":[{"profit":129.36,"roi":0.5603,"cost":230.88,"from":"classified","to":"covert","comp":"4x Anubis + 2x Phoenix + 4x Fracture","payback":0.4},{"profit":128.88,"roi":0.5792,"cost":222.52,"from":"classified","to":"covert","comp":"4x Anubis + 6x Fracture","payback":0.4},{"profit":126.91,"roi":0.5631,"cost":225.39,"from":"classified","to":"covert","comp":"1x Recoil + 3x Fracture + 2x Kilowatt + 4x Anubis","payback":0.4},{"profit":120.91,"roi":0.5479,"cost":220.67,"from":"classified","to":"covert","comp":"3x Anubis + 1x Overpass 2024 + 2x Prisma + 2x Fracture + 2x Kilowatt","payback":0.5},{"profit":120.66,"roi":0.561,"cost":215.09,"from":"classified","to":"covert","comp":"3x Anubis + 5x Prisma + 1x Fracture + 1x Kilowatt","payback":0.55}],"topRoi":[{"profit":3.44,"roi":2.4597,"cost":1.4,"from":"industrial","to":"milspec","comp":"2x Boreal + 8x Train 2025","payback":0.84},{"profit":3.45,"roi":2.4327,"cost":1.42,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Overpass 2024","payback":0.9},{"profit":3.42,"roi":2.406,"cost":1.42,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Harlequin","payback":0.85},{"profit":3.36,"roi":2.3969,"cost":1.4,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Radiant","payback":0.8333},{"profit":3.31,"roi":2.3618,"cost":1.4,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Achroma","payback":0.8}],"topCheap":[{"profit":0.05,"roi":0.488,"cost":0.1,"from":"consumer","to":"industrial","comp":"2x Harlequin + 8x Ascent","payback":0.5645},{"profit":0.05,"roi":0.476,"cost":0.1,"from":"consumer","to":"industrial","comp":"2x Achroma + 8x Ascent","payback":0.5645},{"profit":0.06,"roi":0.3931,"cost":0.16,"from":"consumer","to":"industrial","comp":"3x Dust 2 + 7x Ascent","payback":0.5868},{"profit":0.07,"roi":0.3778,"cost":0.18,"from":"consumer","to":"industrial","comp":"2x Dust 2 + 8x Ascent","payback":0.6134},{"profit":0.06,"roi":0.3593,"cost":0.18,"from":"consumer","to":"industrial","comp":"6x Boreal + 4x Dust 2","payback":0.2934}]},{"file":"contracts_w25_souvenir_2026-08-10","generatedAt":"2026-08-10T19:40:33.003Z","settings":{"souvenir":true,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.25},"total":3795,"minCost":0.1,"bestRoi":2.1249,"medRoi":0.4428,"bestProfit":113.94,"roi50":1560,"roi100":206,"pb50":2186,"maxPayback":1.0002,"buckets":[0,2235,973,381,180,21,5],"byRarity":[{"from":"consumer","to":"industrial","count":240,"bestRoi":1.6008,"bestProfit":2.93,"minCost":0.1},{"from":"industrial","to":"milspec","count":395,"bestRoi":2.1249,"bestProfit":8.46,"minCost":0.2},{"from":"milspec","to":"restricted","count":1610,"bestRoi":1.8264,"bestProfit":29.91,"minCost":0.92},{"from":"restricted","to":"classified","count":1126,"bestRoi":1.2931,"bestProfit":37.37,"minCost":5.44},{"from":"classified","to":"covert","count":424,"bestRoi":0.8902,"bestProfit":113.94,"minCost":54.04}],"topProfit":[{"profit":113.94,"roi":0.257,"cost":443.39,"from":"classified","to":"covert","comp":"2x 2021 Dust 2 + 1x Anubis + 1x Fracture + 1x Prisma + 5x Kilowatt","payback":0.3},{"profit":109.76,"roi":0.4358,"cost":251.86,"from":"classified","to":"covert","comp":"6x Recoil + 4x Anubis","payback":0.4},{"profit":109.41,"roi":0.2512,"cost":435.49,"from":"classified","to":"covert","comp":"1x Anubis + 4x Fracture + 2x Kilowatt + 2x 2021 Dust 2 + 1x Recoil","payback":0.3},{"profit":109.13,"roi":0.4549,"cost":239.87,"from":"classified","to":"covert","comp":"4x Anubis + 6x Kilowatt","payback":0.4},{"profit":97.89,"roi":0.4657,"cost":210.22,"from":"classified","to":"covert","comp":"4x Prisma + 6x Overpass 2024","payback":0.8}],"topRoi":[{"profit":3.29,"roi":2.1249,"cost":1.55,"from":"industrial","to":"milspec","comp":"2x Boreal + 8x Train 2025","payback":0.84},{"profit":3.22,"roi":2.0881,"cost":1.54,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Radiant","payback":0.8333},{"profit":3.21,"roi":2.0556,"cost":1.56,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Ascent","payback":0.84},{"profit":3.27,"roi":2.0466,"cost":1.6,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Overpass 2024","payback":0.9},{"profit":3.24,"roi":2.0228,"cost":1.6,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Harlequin","payback":0.85}],"topCheap":[{"profit":0.05,"roi":0.488,"cost":0.1,"from":"consumer","to":"industrial","comp":"2x Harlequin + 8x Ascent","payback":0.5645},{"profit":0.04,"roi":0.3495,"cost":0.11,"from":"consumer","to":"industrial","comp":"2x Boreal + 8x Ascent","payback":0.5555},{"profit":0.07,"roi":0.3667,"cost":0.18,"from":"consumer","to":"industrial","comp":"4x Dust 2 + 6x Ascent","payback":0.5602},{"profit":0.15,"roi":0.7921,"cost":0.19,"from":"consumer","to":"industrial","comp":"9x Radiant + 1x 2021 Dust 2","payback":0.1},{"profit":0.1,"roi":0.478,"cost":0.2,"from":"industrial","to":"milspec","comp":"3x Dust 2 + 7x Ascent","payback":0.52}]},{"file":"contracts_w25_stattrak_2026-08-10","generatedAt":"2026-08-10T19:37:35.261Z","settings":{"souvenir":false,"stattrak":true,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.25},"total":1155,"minCost":1.52,"bestRoi":1.1132,"medRoi":0.4021,"bestProfit":99.77,"roi50":281,"roi100":4,"pb50":807,"maxPayback":1.0002,"buckets":[0,874,240,37,4,0,0],"byRarity":[{"from":"milspec","to":"restricted","count":432,"bestRoi":0.7571,"bestProfit":5.74,"minCost":1.52},{"from":"restricted","to":"classified","count":478,"bestRoi":0.9853,"bestProfit":38.17,"minCost":10.46},{"from":"classified","to":"covert","count":245,"bestRoi":1.1132,"bestProfit":99.77,"minCost":62.76}],"topProfit":[{"profit":99.77,"roi":0.4295,"cost":232.3,"from":"classified","to":"covert","comp":"7x Genesis + 1x Kilowatt + 2x Revolution","payback":0.75},{"profit":96.92,"roi":0.4302,"cost":225.32,"from":"classified","to":"covert","comp":"6x Genesis + 4x Kilowatt","payback":0.8},{"profit":95.07,"roi":1.1132,"cost":85.4,"from":"classified","to":"covert","comp":"8x Revolver Case + 2x Fracture","payback":0.9},{"profit":94.63,"roi":0.4899,"cost":193.16,"from":"classified","to":"covert","comp":"6x Genesis + 4x Fracture","payback":0.6},{"profit":94.59,"roi":1.0335,"cost":91.53,"from":"classified","to":"covert","comp":"1x Prisma + 7x Revolver Case + 1x Fracture + 1x Kilowatt","payback":0.85}],"topRoi":[{"profit":95.07,"roi":1.1132,"cost":85.4,"from":"classified","to":"covert","comp":"8x Revolver Case + 2x Fracture","payback":0.9},{"profit":85.66,"roi":1.0567,"cost":81.06,"from":"classified","to":"covert","comp":"4x Fracture + 2x Revolver Case + 4x Prisma","payback":0.6},{"profit":94.59,"roi":1.0335,"cost":91.53,"from":"classified","to":"covert","comp":"1x Prisma + 7x Revolver Case + 1x Fracture + 1x Kilowatt","payback":0.85},{"profit":92.98,"roi":1.008,"cost":92.24,"from":"classified","to":"covert","comp":"2x Recoil + 8x Revolver Case","payback":0.9},{"profit":19.55,"roi":0.9853,"cost":19.84,"from":"restricted","to":"classified","comp":"4x Dreams & Nightmares + 6x Dead Hand","payback":0.6}],"topCheap":[{"profit":0.75,"roi":0.4918,"cost":1.52,"from":"milspec","to":"restricted","comp":"8x Dreams & Nightmares + 2x Revolution","payback":0.44},{"profit":0.7,"roi":0.4482,"cost":1.56,"from":"milspec","to":"restricted","comp":"2x Recoil + 8x Dreams & Nightmares","payback":0.48},{"profit":0.82,"roi":0.5105,"cost":1.6,"from":"milspec","to":"restricted","comp":"2x Clutch + 8x Dreams & Nightmares","payback":0.44},{"profit":0.74,"roi":0.4568,"cost":1.62,"from":"milspec","to":"restricted","comp":"2x Kilowatt + 8x Dreams & Nightmares","payback":0.48},{"profit":0.7,"roi":0.4057,"cost":1.72,"from":"milspec","to":"restricted","comp":"7x Dreams & Nightmares + 3x Revolution","payback":0.4}]},{"file":"contracts_w30_normal_2026-08-10","generatedAt":"2026-08-10T19:51:02.151Z","settings":{"souvenir":false,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.3},"total":2904,"minCost":0.14,"bestRoi":1.7998,"medRoi":0.4042,"bestProfit":94.74,"roi50":946,"roi100":73,"pb50":1613,"maxPayback":1.0002,"buckets":[0,1958,651,222,53,20,0],"byRarity":[{"from":"consumer","to":"industrial","count":109,"bestRoi":1.3758,"bestProfit":2.24,"minCost":0.14},{"from":"industrial","to":"milspec","count":298,"bestRoi":1.7998,"bestProfit":6.05,"minCost":0.57},{"from":"milspec","to":"restricted","count":1357,"bestRoi":1.765,"bestProfit":23.28,"minCost":0.96},{"from":"restricted","to":"classified","count":851,"bestRoi":1.1216,"bestProfit":33.62,"minCost":6.93},{"from":"classified","to":"covert","count":289,"bestRoi":0.8902,"bestProfit":94.74,"minCost":58.3}],"topProfit":[{"profit":94.74,"roi":0.471,"cost":201.16,"from":"classified","to":"covert","comp":"2x Anubis + 5x Prisma + 1x Fracture + 1x Kilowatt + 1x Overpass 2024","payback":0.55},{"profit":93.24,"roi":0.5068,"cost":183.98,"from":"classified","to":"covert","comp":"3x Anubis + 1x Recoil + 1x Kilowatt + 5x Fracture","payback":0.3},{"profit":93.1,"roi":0.452,"cost":205.99,"from":"classified","to":"covert","comp":"3x Overpass 2024 + 1x Anubis + 6x Prisma","payback":0.7},{"profit":89.18,"roi":0.4387,"cost":203.28,"from":"classified","to":"covert","comp":"3x Anubis + 6x Kilowatt + 1x Snakebite","payback":0.3},{"profit":84.52,"roi":0.4488,"cost":188.34,"from":"classified","to":"covert","comp":"6x Overpass 2024 + 4x Kilowatt","payback":0.6}],"topRoi":[{"profit":3.11,"roi":1.7998,"cost":1.73,"from":"industrial","to":"milspec","comp":"2x Boreal + 8x Train 2025","payback":0.84},{"profit":3.19,"roi":1.7707,"cost":1.8,"from":"industrial","to":"milspec","comp":"2x Dust 2 + 8x Train 2025","payback":0.9334},{"profit":7.38,"roi":1.765,"cost":4.18,"from":"milspec","to":"restricted","comp":"6x Prisma + 4x Fracture","payback":0.44},{"profit":3.04,"roi":1.7649,"cost":1.72,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Radiant","payback":0.8333},{"profit":3.03,"roi":1.7395,"cost":1.74,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Ascent","payback":0.8}],"topCheap":[{"profit":0.1,"roi":0.3769,"cost":0.26,"from":"consumer","to":"industrial","comp":"2x 2018 Inferno + 8x Harlequin","payback":0.21},{"profit":0.08,"roi":0.3231,"cost":0.26,"from":"consumer","to":"industrial","comp":"8x Harlequin + 2x Dust 2","payback":0.2},{"profit":0.2,"roi":0.7244,"cost":0.27,"from":"consumer","to":"industrial","comp":"4x 2018 Inferno + 4x Anubis + 2x Harlequin","payback":0.4},{"profit":0.43,"roi":1.3758,"cost":0.31,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x 2018 Inferno","payback":0.325},{"profit":0.24,"roi":0.7121,"cost":0.33,"from":"consumer","to":"industrial","comp":"5x Anubis + 5x 2018 Inferno","payback":0.5}]},{"file":"contracts_w40_normal_2026-08-10","generatedAt":"2026-08-10T19:52:28.744Z","settings":{"souvenir":false,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.4},"total":1716,"minCost":0.19,"bestRoi":1.4823,"medRoi":0.3732,"bestProfit":74.16,"roi50":429,"roi100":27,"pb50":778,"maxPayback":1.0002,"buckets":[0,1287,345,57,27,0,0],"byRarity":[{"from":"consumer","to":"industrial","count":47,"bestRoi":1.1506,"bestProfit":1.88,"minCost":0.19},{"from":"industrial","to":"milspec","count":229,"bestRoi":1.3902,"bestProfit":5.48,"minCost":0.87},{"from":"milspec","to":"restricted","count":874,"bestRoi":1.4823,"bestProfit":21.58,"minCost":1.7},{"from":"restricted","to":"classified","count":464,"bestRoi":0.7763,"bestProfit":22.66,"minCost":7.04},{"from":"classified","to":"covert","count":102,"bestRoi":0.5584,"bestProfit":74.16,"minCost":63.15}],"topProfit":[{"profit":74.16,"roi":0.4055,"cost":182.88,"from":"classified","to":"covert","comp":"1x Anubis + 2x Overpass 2024 + 5x Prisma + 2x Kilowatt","payback":0.55},{"profit":73.37,"roi":0.3947,"cost":185.88,"from":"classified","to":"covert","comp":"6x Prisma + 4x Overpass 2024","payback":0.7},{"profit":70.92,"roi":0.3999,"cost":177.35,"from":"classified","to":"covert","comp":"1x Anubis + 1x Revolver Case + 7x Prisma + 1x Overpass 2024","payback":0.6},{"profit":68.92,"roi":0.4037,"cost":170.7,"from":"classified","to":"covert","comp":"5x Overpass 2024 + 5x Kilowatt","payback":0.5},{"profit":67.58,"roi":0.3128,"cost":216.05,"from":"classified","to":"covert","comp":"2x Kilowatt + 5x Recoil + 3x Anubis","payback":0.3}],"topRoi":[{"profit":6.21,"roi":1.4823,"cost":4.19,"from":"milspec","to":"restricted","comp":"5x Prisma + 5x Fracture","payback":0.4},{"profit":4.03,"roi":1.3902,"cost":2.9,"from":"industrial","to":"milspec","comp":"9x Train 2025 + 1x Anubis","payback":0.55},{"profit":2.78,"roi":1.3513,"cost":2.06,"from":"industrial","to":"milspec","comp":"2x Boreal + 8x Train 2025","payback":0.64},{"profit":2.73,"roi":1.3427,"cost":2.03,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Radiant","payback":0.6},{"profit":2.73,"roi":1.3367,"cost":2.04,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Ascent","payback":0.6}],"topCheap":[{"profit":0.08,"roi":0.4042,"cost":0.19,"from":"consumer","to":"industrial","comp":"6x Harlequin + 2x Anubis + 2x 2018 Inferno","payback":0.2},{"profit":0.16,"roi":0.4922,"cost":0.32,"from":"consumer","to":"industrial","comp":"6x 2018 Inferno + 4x Anubis","payback":0.4},{"profit":0.46,"roi":1.1506,"cost":0.4,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x Harlequin","payback":0.28},{"profit":0.35,"roi":0.8756,"cost":0.4,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x Boreal","payback":0.3},{"profit":0.29,"roi":0.7141,"cost":0.4,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x Achroma","payback":0.1}]},{"file":"contracts_w40_souvenir_2026-08-10","generatedAt":"2026-08-10T19:42:07.260Z","settings":{"souvenir":true,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.4},"total":1912,"minCost":0.4,"bestRoi":1.4823,"medRoi":0.3939,"bestProfit":74.16,"roi50":576,"roi100":29,"pb50":861,"maxPayback":1.0002,"buckets":[0,1336,455,92,29,0,0],"byRarity":[{"from":"consumer","to":"industrial","count":174,"bestRoi":1.1506,"bestProfit":2.53,"minCost":0.4},{"from":"industrial","to":"milspec","count":253,"bestRoi":1.3902,"bestProfit":6.45,"minCost":0.59},{"from":"milspec","to":"restricted","count":918,"bestRoi":1.4823,"bestProfit":23.46,"minCost":1.7},{"from":"restricted","to":"classified","count":465,"bestRoi":0.7763,"bestProfit":23.02,"minCost":7.04},{"from":"classified","to":"covert","count":102,"bestRoi":0.4904,"bestProfit":74.16,"minCost":63.15}],"topProfit":[{"profit":74.16,"roi":0.4055,"cost":182.88,"from":"classified","to":"covert","comp":"1x Anubis + 2x Overpass 2024 + 5x Prisma + 2x Kilowatt","payback":0.55},{"profit":73.37,"roi":0.3947,"cost":185.88,"from":"classified","to":"covert","comp":"6x Prisma + 4x Overpass 2024","payback":0.7},{"profit":70.92,"roi":0.3999,"cost":177.35,"from":"classified","to":"covert","comp":"1x Anubis + 1x Revolver Case + 7x Prisma + 1x Overpass 2024","payback":0.6},{"profit":68.92,"roi":0.4037,"cost":170.7,"from":"classified","to":"covert","comp":"5x Overpass 2024 + 5x Kilowatt","payback":0.5},{"profit":67.58,"roi":0.3128,"cost":216.05,"from":"classified","to":"covert","comp":"2x Kilowatt + 5x Recoil + 3x Anubis","payback":0.3}],"topRoi":[{"profit":6.21,"roi":1.4823,"cost":4.19,"from":"milspec","to":"restricted","comp":"5x Prisma + 5x Fracture","payback":0.4},{"profit":4.03,"roi":1.3902,"cost":2.9,"from":"industrial","to":"milspec","comp":"9x Train 2025 + 1x Anubis","payback":0.55},{"profit":2.78,"roi":1.3513,"cost":2.06,"from":"industrial","to":"milspec","comp":"2x Boreal + 8x Train 2025","payback":0.64},{"profit":2.73,"roi":1.3427,"cost":2.03,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Radiant","payback":0.6},{"profit":2.73,"roi":1.3367,"cost":2.04,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x Ascent","payback":0.6}],"topCheap":[{"profit":0.46,"roi":1.1506,"cost":0.4,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x Harlequin","payback":0.28},{"profit":0.35,"roi":0.8756,"cost":0.4,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x Boreal","payback":0.3},{"profit":0.29,"roi":0.7141,"cost":0.4,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x Achroma","payback":0.1},{"profit":0.3,"roi":0.6667,"cost":0.45,"from":"consumer","to":"industrial","comp":"2x 2021 Mirage + 8x Radiant","payback":0.2},{"profit":0.28,"roi":0.6087,"cost":0.46,"from":"consumer","to":"industrial","comp":"8x Ascent + 2x 2021 Dust 2","payback":0.2}]},{"file":"contracts_w40_stattrak_2026-08-10","generatedAt":"2026-08-10T19:31:39.680Z","settings":{"souvenir":false,"stattrak":true,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.4},"total":428,"minCost":2.15,"bestRoi":0.6988,"medRoi":0.3255,"bestProfit":73.04,"roi50":47,"roi100":0,"pb50":265,"maxPayback":1.0002,"buckets":[0,381,47,0,0,0,0],"byRarity":[{"from":"milspec","to":"restricted","count":145,"bestRoi":0.6007,"bestProfit":4.81,"minCost":2.15},{"from":"restricted","to":"classified","count":233,"bestRoi":0.6988,"bestProfit":29.21,"minCost":11.69},{"from":"classified","to":"covert","count":50,"bestRoi":0.467,"bestProfit":73.04,"minCost":64.38}],"topProfit":[{"profit":73.04,"roi":0.3368,"cost":216.86,"from":"classified","to":"covert","comp":"5x Genesis + 3x Kilowatt + 2x Revolution","payback":0.65},{"profit":70.19,"roi":0.3345,"cost":209.88,"from":"classified","to":"covert","comp":"4x Genesis + 6x Kilowatt","payback":0.7},{"profit":64.07,"roi":0.3112,"cost":205.91,"from":"classified","to":"covert","comp":"5x Recoil + 5x Genesis","payback":0.75},{"profit":60.25,"roi":0.3903,"cost":154.36,"from":"classified","to":"covert","comp":"4x Dead Hand + 6x Kilowatt","payback":0.7},{"profit":57.27,"roi":0.2654,"cost":215.75,"from":"classified","to":"covert","comp":"5x Genesis + 5x Revolution","payback":0.5}],"topRoi":[{"profit":16.14,"roi":0.6988,"cost":23.1,"from":"restricted","to":"classified","comp":"4x Dead Hand + 6x Kilowatt","payback":0.7999},{"profit":16.66,"roi":0.6019,"cost":27.68,"from":"restricted","to":"classified","comp":"2x Phoenix + 1x Gamma 2 + 1x Recoil + 6x Kilowatt","payback":0.5666},{"profit":4.66,"roi":0.6007,"cost":7.76,"from":"milspec","to":"restricted","comp":"2x Genesis + 8x Snakebite","payback":0.36},{"profit":4.81,"roi":0.5988,"cost":8.04,"from":"milspec","to":"restricted","comp":"10x Snakebite","payback":0.4},{"profit":4.37,"roi":0.5982,"cost":7.3,"from":"milspec","to":"restricted","comp":"2x Prisma 2 + 8x Snakebite","payback":0.4}],"topCheap":[{"profit":1.4,"roi":0.4052,"cost":3.46,"from":"milspec","to":"restricted","comp":"5x Prisma 2 + 5x Dreams & Nightmares","payback":0.7},{"profit":1.6,"roi":0.4324,"cost":3.7,"from":"milspec","to":"restricted","comp":"4x Prisma 2 + 6x Kilowatt","payback":0.88},{"profit":1.49,"roi":0.3908,"cost":3.81,"from":"milspec","to":"restricted","comp":"5x Prisma 2 + 5x Fracture","payback":0.7},{"profit":1.16,"roi":0.3021,"cost":3.85,"from":"milspec","to":"restricted","comp":"5x Prisma 2 + 5x Revolution","payback":0.6},{"profit":1.7,"roi":0.4317,"cost":3.94,"from":"milspec","to":"restricted","comp":"4x Dead Hand + 6x Kilowatt","payback":0.68}]},{"file":"contracts_w50_souvenir_2026-08-10","generatedAt":"2026-08-10T19:56:32.870Z","settings":{"souvenir":true,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.5},"total":1040,"minCost":0.16,"bestRoi":0.9448,"medRoi":0.3555,"bestProfit":61.11,"roi50":193,"roi100":0,"pb50":361,"maxPayback":1.0002,"buckets":[0,847,152,41,0,0,0],"byRarity":[{"from":"consumer","to":"industrial","count":154,"bestRoi":0.9026,"bestProfit":2.14,"minCost":0.16},{"from":"industrial","to":"milspec","count":204,"bestRoi":0.9331,"bestProfit":5.96,"minCost":0.67},{"from":"milspec","to":"restricted","count":510,"bestRoi":0.9448,"bestProfit":22.62,"minCost":2.69},{"from":"restricted","to":"classified","count":154,"bestRoi":0.6829,"bestProfit":16.26,"minCost":12.22},{"from":"classified","to":"covert","count":18,"bestRoi":0.3634,"bestProfit":61.11,"minCost":80.64}],"topProfit":[{"profit":61.11,"roi":0.3518,"cost":173.71,"from":"classified","to":"covert","comp":"7x Prisma + 3x Overpass 2024","payback":0.65},{"profit":56.32,"roi":0.3323,"cost":169.48,"from":"classified","to":"covert","comp":"9x Prisma + 1x Anubis","payback":0.55},{"profit":51.98,"roi":0.337,"cost":154.24,"from":"classified","to":"covert","comp":"1x Revolver Case + 6x Prisma + 1x Anubis + 2x Kilowatt","payback":0.45},{"profit":46.94,"roi":0.2944,"cost":159.43,"from":"classified","to":"covert","comp":"4x Overpass 2024 + 6x Kilowatt","payback":0.4},{"profit":43.7,"roi":0.2831,"cost":154.34,"from":"classified","to":"covert","comp":"2x Fracture + 2x Anubis + 6x Kilowatt","payback":0.2}],"topRoi":[{"profit":6.46,"roi":0.9448,"cost":6.84,"from":"milspec","to":"restricted","comp":"9x Fracture + 1x Overpass","payback":0.28},{"profit":2.41,"roi":0.9331,"cost":2.58,"from":"industrial","to":"milspec","comp":"2x Dust 2 + 8x Train 2025","payback":0.6667},{"profit":3.33,"roi":0.9254,"cost":3.6,"from":"industrial","to":"milspec","comp":"9x Train 2025 + 1x Anubis","payback":0.55},{"profit":4.58,"roi":0.9089,"cost":5.04,"from":"milspec","to":"restricted","comp":"8x Boreal + 2x 2018 Nuke","payback":0.5334},{"profit":2.71,"roi":0.9087,"cost":2.98,"from":"industrial","to":"milspec","comp":"8x Train 2025 + 2x 2018 Nuke","payback":0.45}],"topCheap":[{"profit":0.2,"roi":0.4703,"cost":0.43,"from":"consumer","to":"industrial","comp":"5x 2021 Dust 2 + 1x Harlequin + 2x 2018 Inferno + 2x Boreal","payback":0.5},{"profit":0.27,"roi":0.5913,"cost":0.46,"from":"consumer","to":"industrial","comp":"8x 2018 Inferno + 2x 2021 Dust 2","payback":0.2},{"profit":0.27,"roi":0.5625,"cost":0.48,"from":"consumer","to":"industrial","comp":"2x 2021 Mirage + 8x Radiant","payback":0.2},{"profit":0.31,"roi":0.6413,"cost":0.49,"from":"consumer","to":"industrial","comp":"8x Boreal + 2x 2021 Mirage","payback":0.2889},{"profit":0.35,"roi":0.6868,"cost":0.51,"from":"consumer","to":"industrial","comp":"1x Anubis + 9x Harlequin","payback":0.28}]},{"file":"contracts_w50_stattrak_2026-08-10","generatedAt":"2026-08-10T19:57:10.801Z","settings":{"souvenir":false,"stattrak":true,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.5},"total":143,"minCost":3.71,"bestRoi":0.5312,"medRoi":0.312,"bestProfit":51.98,"roi50":2,"roi100":0,"pb50":74,"maxPayback":0.7666,"buckets":[0,141,2,0,0,0,0],"byRarity":[{"from":"milspec","to":"restricted","count":53,"bestRoi":0.4547,"bestProfit":3.89,"minCost":3.71},{"from":"restricted","to":"classified","count":82,"bestRoi":0.5312,"bestProfit":23.47,"minCost":16.58},{"from":"classified","to":"covert","count":8,"bestRoi":0.3019,"bestProfit":51.98,"minCost":86.16}],"topProfit":[{"profit":51.98,"roi":0.2761,"cost":188.3,"from":"classified","to":"covert","comp":"3x Genesis + 4x Kilowatt + 3x Recoil","payback":0.65},{"profit":45.52,"roi":0.2681,"cost":169.82,"from":"classified","to":"covert","comp":"7x Recoil + 3x Genesis","payback":0.65},{"profit":38.06,"roi":0.2969,"cost":128.18,"from":"classified","to":"covert","comp":"3x Dead Hand + 7x Recoil","payback":0.65},{"profit":35.12,"roi":0.2738,"cost":128.28,"from":"classified","to":"covert","comp":"5x Revolver Case + 1x Fracture + 4x Recoil","payback":0.5},{"profit":33.63,"roi":0.3019,"cost":111.4,"from":"classified","to":"covert","comp":"4x Revolver Case + 6x Fracture","payback":0.5}],"topRoi":[{"profit":11.13,"roi":0.5312,"cost":20.95,"from":"restricted","to":"classified","comp":"3x Dead Hand + 7x Recoil","payback":0.7666},{"profit":11.57,"roi":0.5088,"cost":22.74,"from":"restricted","to":"classified","comp":"1x Gamma 2 + 6x Kilowatt + 1x Recoil + 2x Dead Hand","payback":0.7},{"profit":2.36,"roi":0.4547,"cost":5.19,"from":"milspec","to":"restricted","comp":"5x Dreams & Nightmares + 5x Gallery","payback":0.4},{"profit":3.89,"roi":0.4473,"cost":8.69,"from":"milspec","to":"restricted","comp":"9x Snakebite + 1x Chroma 3","payback":0.42},{"profit":9.72,"roi":0.4473,"cost":21.72,"from":"restricted","to":"classified","comp":"1x Dead Hand + 9x Kilowatt","payback":0.6999}],"topCheap":[{"profit":1.18,"roi":0.3065,"cost":3.85,"from":"milspec","to":"restricted","comp":"3x Prisma 2 + 7x Kilowatt","payback":0.72},{"profit":1.2,"roi":0.3024,"cost":3.97,"from":"milspec","to":"restricted","comp":"3x Genesis + 7x Dreams & Nightmares","payback":0.44},{"profit":1.26,"roi":0.3116,"cost":4.03,"from":"milspec","to":"restricted","comp":"3x Dead Hand + 7x Kilowatt","payback":0.66},{"profit":1.38,"roi":0.3141,"cost":4.4,"from":"milspec","to":"restricted","comp":"3x Genesis + 7x Fracture","payback":0.44},{"profit":1.62,"roi":0.3572,"cost":4.54,"from":"milspec","to":"restricted","comp":"3x Genesis + 7x Kilowatt","payback":0.72}]},{"file":"contracts_w75_normal_2026-08-10","generatedAt":"2026-08-10T19:53:50.936Z","settings":{"souvenir":false,"stattrak":false,"minOffers":10,"outputPricing":"buyorder","minOutputSold30d":0,"fee":0,"inputs":10,"minWindow":0.75},"total":40,"minCost":3.34,"bestRoi":0.3488,"medRoi":0.2752,"bestProfit":8.62,"roi50":0,"roi100":0,"pb50":2,"maxPayback":0.5,"buckets":[0,40,0,0,0,0,0],"byRarity":[{"from":"industrial","to":"milspec","count":32,"bestRoi":0.3488,"bestProfit":3.39,"minCost":3.34},{"from":"milspec","to":"restricted","count":8,"bestRoi":0.2937,"bestProfit":8.62,"minCost":4.98}],"topProfit":[{"profit":8.62,"roi":0.2563,"cost":33.64,"from":"milspec","to":"restricted","comp":"5x Dreams & Nightmares + 5x 2021 Dust 2","payback":0.3334},{"profit":8.51,"roi":0.2525,"cost":33.69,"from":"milspec","to":"restricted","comp":"5x Kilowatt + 5x 2021 Dust 2","payback":0.3334},{"profit":7.16,"roi":0.2679,"cost":26.71,"from":"milspec","to":"restricted","comp":"4x 2021 Dust 2 + 6x Revolution","payback":0.2666},{"profit":7.13,"roi":0.2665,"cost":26.77,"from":"milspec","to":"restricted","comp":"6x Fracture + 4x 2021 Dust 2","payback":0.2666},{"profit":5.16,"roi":0.2515,"cost":20.51,"from":"milspec","to":"restricted","comp":"7x Clutch + 3x 2021 Dust 2","payback":0.3}],"topRoi":[{"profit":1.89,"roi":0.3488,"cost":5.43,"from":"industrial","to":"milspec","comp":"5x 2021 Dust 2 + 5x Safehouse","payback":0.5},{"profit":2.34,"roi":0.3051,"cost":7.67,"from":"industrial","to":"milspec","comp":"7x 2021 Dust 2 + 3x Ascent","payback":0.35},{"profit":2.32,"roi":0.3019,"cost":7.67,"from":"industrial","to":"milspec","comp":"7x 2021 Dust 2 + 3x Radiant","payback":0.35},{"profit":1.31,"roi":0.2987,"cost":4.39,"from":"industrial","to":"milspec","comp":"3x 2021 Mirage + 7x Radiant","payback":0.15},{"profit":1.03,"roi":0.296,"cost":3.47,"from":"industrial","to":"milspec","comp":"3x 2021 Dust 2 + 7x Overpass 2024","payback":0.3}],"topCheap":[{"profit":1.89,"roi":0.3488,"cost":5.43,"from":"industrial","to":"milspec","comp":"5x 2021 Dust 2 + 5x Safehouse","payback":0.5},{"profit":2.34,"roi":0.3051,"cost":7.67,"from":"industrial","to":"milspec","comp":"7x 2021 Dust 2 + 3x Ascent","payback":0.35},{"profit":2.32,"roi":0.3019,"cost":7.67,"from":"industrial","to":"milspec","comp":"7x 2021 Dust 2 + 3x Radiant","payback":0.35}]}];
+const REPO = "gradinazz/cscraft-reports";
+
+/* ---------- утилиты ---------- */
+const POOLS = {
+  normal:   { name: "Обычные",   color: "var(--s1)" },
+  souvenir: { name: "Сувенирные", color: "var(--s2)" },
+  stattrak: { name: "StatTrak™",  color: "var(--s3)" },
+};
+const RAR = {
+  consumer: "Consumer", industrial: "Industrial", milspec: "Mil-Spec",
+  restricted: "Restricted", classified: "Classified", covert: "Covert",
+};
+const num = (v) => v == null ? "—" : v.toLocaleString("ru-RU");
+/* Цены — как в самих отчётах: $1,234.56, точка десятичная. */
+const usd = (v) => v == null ? "—" : "$" + v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const pct = (v, d) => v == null ? "—" : (v * 100).toFixed(d == null ? 1 : d) + "%";
+const el = (t, cls, html) => {
+  const n = document.createElement(t);
+  if (cls) n.className = cls;
+  if (html != null) n.innerHTML = html;
+  return n;
+};
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* распарсить имя файла: contracts_w10_souvenir_2026-08-10 */
+for (const d of DATA) {
+  const m = /^contracts_w(\d+)_([a-z]+)_(.+)$/.exec(d.file) || [];
+  d.win = +m[1];
+  d.pool = m[2] || "normal";
+  d.date = m[3] || "";
+  d.href = "reports/" + d.file + ".html";
+}
+DATA.sort((a, b) => a.win - b.win || a.pool.localeCompare(b.pool));
+
+const BUCKETS = ["<25%", "25–50%", "50–75%", "75–100%", "100–150%", "150–200%", "200%+"];
+const RCOL = ["--r1", "--r2", "--r3", "--r4", "--r5", "--r6", "--r7"];
+
+/* ---------- всплывающая подсказка ---------- */
+const tip = document.getElementById("tip");
+function showTip(html, x, y) {
+  tip.innerHTML = html;
+  tip.style.opacity = "1";
+  const r = tip.getBoundingClientRect();
+  let lx = x + 14, ly = y + 14;
+  if (lx + r.width > innerWidth - 8) lx = x - r.width - 14;
+  if (ly + r.height > innerHeight - 8) ly = y - r.height - 14;
+  tip.style.left = Math.max(8, lx) + "px";
+  tip.style.top = Math.max(8, ly) + "px";
+}
+const hideTip = () => { tip.style.opacity = "0"; };
+
+/* ---------- плитки ---------- */
+(function tiles() {
+  const t = document.getElementById("tiles");
+  const total = DATA.reduce((a, d) => a + d.total, 0);
+  const best = DATA.reduce((a, d) => (d.bestRoi ?? -1) > (a.bestRoi ?? -1) ? d : a);
+  const rich = DATA.reduce((a, d) => (d.bestProfit ?? -1) > (a.bestProfit ?? -1) ? d : a);
+  const date = DATA.find((d) => d.date)?.date || "";
+  const human = date ? date.split("-").reverse().join(".") : "—";
+  document.getElementById("date").textContent = human;
+  document.getElementById("date2").textContent = human;
+  document.getElementById("setcount").textContent = DATA.length;
+  const add = (v, k, h) => {
+    const n = el("div", "tile");
+    n.append(el("div", "v n", v), el("div", "k", k), el("div", "h", h));
+    t.append(n);
+  };
+  add(num(DATA.length), "наборов расчёта", "8 окон входа × 3 пула предметов");
+  add(num(total), "прибыльных контрактов", "суммарно по всем наборам");
+  add(pct(best.bestRoi), "лучший ROI", POOLS[best.pool].name.toLowerCase() + ", окно " + best.win + "%");
+  add(usd(rich.bestProfit), "макс. прибыль с контракта", POOLS[rich.pool].name.toLowerCase() + ", окно " + rich.win + "%");
+})();
+
+/* ---------- фильтры ---------- */
+const state = { pool: "all", win: "all", sort: "win" };
+
+/* Кнопки строятся один раз: перерисовка стёрла бы фокус с клавиатуры. */
+const chips = [];
+function chipRow(host, items, key) {
+  for (const it of items) {
+    const b = el("button", "chip");
+    b.type = "button";
+    if (it.color) {
+      const sw = el("span", "sw");
+      sw.setAttribute("style", "background:" + it.color);
+      b.append(sw);
+    }
+    b.append(document.createTextNode(it.t));
+    b.onclick = () => { state[key] = it.v; render(); };
+    host.append(b);
+    chips.push({ b, key, v: it.v });
+  }
+}
+const syncChips = () => {
+  for (const c of chips) c.b.setAttribute("aria-pressed", String(state[c.key] === c.v));
+};
+
+const wins = [...new Set(DATA.map((d) => d.win))].sort((a, b) => a - b);
+chipRow(document.getElementById("f-pool"), [
+  { v: "all", t: "Все" },
+  ...Object.entries(POOLS).map(([k, p]) => ({ v: k, t: p.name, color: p.color })),
+], "pool");
+chipRow(document.getElementById("f-win"), [
+  { v: "all", t: "Любое" },
+  ...wins.map((w) => ({ v: w, t: w + "%" })),
+], "win");
+chipRow(document.getElementById("f-sort"), [
+  { v: "win", t: "По окну" },
+  { v: "total", t: "По числу контрактов" },
+  { v: "bestRoi", t: "По лучшему ROI" },
+  { v: "bestProfit", t: "По прибыли" },
+], "sort");
+
+/* ---------- карточка ---------- */
+function distBar(d) {
+  const wrap = el("div", "dist");
+  wrap.append(el("div", "lbl", "Распределение ROI · " + num(d.total) + " контрактов"));
+  const bar = el("div", "bar");
+  const sum = d.buckets.reduce((a, b) => a + b, 0) || 1;
+  d.buckets.forEach((v, i) => {
+    if (!v) return;
+    const seg = el("i");
+    seg.style.width = (v / sum * 100) + "%";
+    seg.style.background = "var(" + RCOL[i] + ")";
+    const html = '<div class="t">ROI ' + BUCKETS[i] + "</div>" +
+      '<div class="row"><span class="nm">контрактов</span><b>' + num(v) +
+      " · " + (v / sum * 100).toFixed(1) + "%</b></div>";
+    seg.addEventListener("pointerenter", (e) => showTip(html, e.clientX, e.clientY));
+    seg.addEventListener("pointermove", (e) => showTip(html, e.clientX, e.clientY));
+    seg.addEventListener("pointerleave", hideTip);
+    bar.append(seg);
+  });
+  wrap.append(bar);
+  return wrap;
+}
+
+function topTable(rows, title) {
+  if (!rows.length) return document.createComment("");
+  const f = document.createDocumentFragment();
+  f.append(el("div", "h4", title));
+  const t = el("table", "mini");
+  t.innerHTML = "<thead><tr><th>Контракт</th><th class='r'>Вложить</th><th class='r'>Прибыль</th>"
+    + "<th class='r'>ROI</th></tr></thead><tbody>"
+    + rows.map((r) => "<tr><td>" + esc(r.comp) + '<div class="sub">' + RAR[r.from] + " → " + RAR[r.to]
+      + " · окупает одним предметом " + pct(r.payback, 0) + "</div></td>"
+      + "<td class='r'>" + usd(r.cost) + "</td><td class='r'>" + usd(r.profit) + "</td>"
+      + "<td class='r'>" + pct(r.roi) + "</td></tr>").join("")
+    + "</tbody>";
+  f.append(t);
+  return f;
+}
+
+function card(d) {
+  const c = el("div", "card" + (d.total ? "" : " empty"));
+  const head = el("div", "chead");
+  const p = POOLS[d.pool];
+  head.append(el("span", "badge", '<span class="sw" style="background:' + p.color + '"></span>' + p.name));
+  head.append(el("span", "badge win", "окно от " + d.win + "%"));
+  c.append(head);
+
+  if (!d.total) {
+    c.append(el("div", "chero", '<span class="v n">0</span><span class="k">прибыльных контрактов</span>'));
+    c.append(el("p", "sdesc", "При таком требовании к окну входа прибыльных десяток не осталось: " +
+      "цена скинов с «любым» флоатом уже не оставляет запаса."));
+    const foot = el("div", "cfoot");
+    const a = el("a", "btn ghost", "Открыть пустой отчёт");
+    a.href = d.href;
+    foot.append(a);
+    c.append(foot);
+    return c;
+  }
+
+  c.append(el("div", "chero",
+    '<span class="v n">' + num(d.total) + '</span><span class="k">прибыльных контрактов</span>'));
+
+  const st = el("div", "stats");
+  st.append(el("div", null, '<div class="k">Лучший ROI</div><div class="v n good">' + pct(d.bestRoi) + "</div>"));
+  st.append(el("div", null, '<div class="k">Макс. прибыль</div><div class="v n">' + usd(d.bestProfit) + "</div>"));
+  st.append(el("div", null, '<div class="k">Вход от</div><div class="v n">' + usd(d.minCost) + "</div>"));
+  c.append(st);
+
+  c.append(distBar(d));
+
+  const more = el("details", "more");
+  more.append(el("summary", null, "Что внутри"));
+  const mini = el("table", "mini");
+  mini.innerHTML = "<thead><tr><th>Переход</th><th class='r'>Шт.</th><th class='r'>Лучший ROI</th>"
+    + "<th class='r'>Вход от</th></tr></thead><tbody>"
+    + d.byRarity.map((r) => "<tr><td>" + RAR[r.from] + " → " + RAR[r.to] + "</td><td class='r'>"
+      + num(r.count) + "</td><td class='r'>" + pct(r.bestRoi) + "</td><td class='r'>"
+      + usd(r.minCost) + "</td></tr>").join("")
+    + "</tbody>";
+  more.append(el("div", "h4", "По переходам редкости"), mini);
+  more.append(topTable(d.topProfit.slice(0, 3), "Топ по прибыли"));
+  more.append(topTable(d.topCheap.slice(0, 3), "Самый дешёвый вход (ROI ≥30%)"));
+  more.append(el("p", "sdesc", "Окупаются одним предметом с шансом ≥50%: <strong>" + num(d.pb50)
+    + "</strong> контрактов, максимум — " + pct(d.maxPayback, 0) + "."));
+  c.append(more);
+
+  const foot = el("div", "cfoot");
+  const a = el("a", "btn", "Открыть отчёт →");
+  a.href = d.href;
+  foot.append(a);
+  c.append(foot);
+  return c;
+}
+
+/* ---------- рендер ---------- */
+function visible() {
+  return DATA.filter((d) => (state.pool === "all" || d.pool === state.pool)
+    && (state.win === "all" || d.win === state.win));
+}
+function render() {
+  syncChips();
+  const g = document.getElementById("grid");
+  const list = visible().sort((a, b) => state.sort === "win"
+    ? a.win - b.win || a.pool.localeCompare(b.pool)
+    : (b[state.sort] ?? -1) - (a[state.sort] ?? -1));
+  g.innerHTML = "";
+  if (!list.length) {
+    g.append(el("div", "empty-note", "Такого сочетания в расчётах нет. Сбросьте один из фильтров."));
+  } else {
+    for (const d of list) g.append(card(d));
+  }
+  document.getElementById("shown").textContent = "показано " + list.length + " из " + DATA.length;
+}
+
+/* ---------- таблица ---------- */
+let sortKey = "win", sortDir = 1;
+function drawTable() {
+  const tb = document.querySelector("#dtable tbody");
+  const rows = DATA.slice().sort((a, b) => {
+    const x = a[sortKey], y = b[sortKey];
+    if (typeof x === "string") return sortDir * x.localeCompare(y);
+    return sortDir * (((y ?? -1) - (x ?? -1)));
+  });
+  tb.innerHTML = rows.map((d) => "<tr>"
+    + '<td><span class="sw-inline" style="background:' + POOLS[d.pool].color + '"></span>' + POOLS[d.pool].name + "</td>"
+    + "<td class='r'>" + d.win + "%</td>"
+    + "<td class='r'>" + num(d.total) + "</td>"
+    + "<td class='r'>" + num(d.roi50) + "</td>"
+    + "<td class='r'>" + num(d.roi100) + "</td>"
+    + "<td class='r'>" + pct(d.bestRoi) + "</td>"
+    + "<td class='r'>" + usd(d.bestProfit) + "</td>"
+    + "<td class='r'>" + pct(d.medRoi) + "</td>"
+    + "<td class='r'>" + usd(d.minCost) + "</td>"
+    + '<td><a href="' + d.href + '">открыть</a></td></tr>').join("");
+}
+document.querySelectorAll("#dtable th[data-k]").forEach((th) => {
+  th.style.cursor = "pointer";
+  th.onclick = () => {
+    const k = th.dataset.k;
+    sortDir = sortKey === k ? -sortDir : 1;
+    sortKey = k;
+    drawTable();
+  };
+});
+
+/* ---------- графики ---------- */
+const NS = "http://www.w3.org/2000/svg";
+const mk = (t, a) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); return n; };
+
+/* Круглый шаг оси: подписи должны читаться, а не быть «262.5%». */
+function niceStep(raw) {
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const f = raw / mag;
+  return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * mag;
+}
+
+function lineChart(host, title, pick, fmt, ticks) {
+  const W = 520, H = 240, L = 52, R = 68, T = 14, B = 34;
+  const series = Object.keys(POOLS).map((k) => ({
+    key: k, name: POOLS[k].name, color: getComputedStyle(document.documentElement)
+      .getPropertyValue(POOLS[k].color.slice(4, -1)).trim(),
+    pts: DATA.filter((d) => d.pool === k).map((d) => ({ x: d.win, y: pick(d), d }))
+      .filter((p) => p.y != null).sort((a, b) => a.x - b.x),
+  })).filter((s) => s.pts.length);
+
+  const xs = wins, maxY = Math.max(...series.flatMap((s) => s.pts.map((p) => p.y))) || 1;
+  const step = niceStep(maxY / ticks);
+  const top = step * ticks;
+  const X = (v) => L + (v - xs[0]) / (xs[xs.length - 1] - xs[0]) * (W - L - R);
+  const Y = (v) => H - B - v / top * (H - B - T);
+
+  const svg = mk("svg", { viewBox: "0 0 " + W + " " + H, role: "img" });
+  const cap = mk("title", {});
+  cap.textContent = title;
+  svg.append(cap);
+
+  for (let i = 0; i <= ticks; i++) {
+    const v = top / ticks * i, y = Y(v);
+    svg.append(mk("line", { class: "gl", x1: L, x2: W - R, y1: y, y2: y }));
+    const t = mk("text", { x: L - 8, y: y + 4, "text-anchor": "end" });
+    t.textContent = fmt(v, true);
+    svg.append(t);
+  }
+  svg.append(mk("line", { class: "ax", x1: L, x2: W - R, y1: Y(0), y2: Y(0) }));
+  /* Подписи оси идут подряд только там, где не слипаются. */
+  let lastX = -Infinity;
+  for (const w of xs) {
+    if (X(w) - lastX < 34) continue;
+    lastX = X(w);
+    const t = mk("text", { x: X(w), y: H - B + 18, "text-anchor": "middle" });
+    t.textContent = w + "%";
+    svg.append(t);
+  }
+  const xl = mk("text", { x: L, y: H - 2, "text-anchor": "start" });
+  xl.textContent = "минимальное окно входа";
+  svg.append(xl);
+
+  for (const s of series) {
+    svg.append(mk("path", {
+      d: s.pts.map((p, i) => (i ? "L" : "M") + X(p.x) + " " + Y(p.y)).join(" "),
+      fill: "none", stroke: s.color, "stroke-width": 2,
+      "stroke-linejoin": "round", "stroke-linecap": "round",
+    }));
+    for (const p of s.pts) {
+      svg.append(mk("circle", { cx: X(p.x), cy: Y(p.y), r: 4.5, fill: s.color,
+        stroke: "var(--surface)", "stroke-width": 2 }));
+    }
+    /* Подпись у конца линии; обводка цветом фона держит её читаемой поверх других линий. */
+    const last = s.pts[s.pts.length - 1];
+    const lb = mk("text", {
+      x: X(last.x) + 10, y: Y(last.y) + 4, "text-anchor": "start", class: "val",
+      fill: s.color, stroke: "var(--surface)", "stroke-width": 3, "paint-order": "stroke fill",
+    });
+    lb.textContent = s.name;
+    svg.append(lb);
+  }
+
+  const cross = mk("line", { class: "cross", y1: T, y2: H - B });
+  svg.append(cross);
+  const hit = mk("rect", { class: "hit", x: 0, y: 0, width: W, height: H });
+  svg.append(hit);
+
+  const move = (e) => {
+    const r = svg.getBoundingClientRect();
+    const vx = (e.clientX - r.left) / r.width * W;
+    let best = xs[0];
+    for (const w of xs) if (Math.abs(X(w) - vx) < Math.abs(X(best) - vx)) best = w;
+    cross.setAttribute("x1", X(best));
+    cross.setAttribute("x2", X(best));
+    cross.style.opacity = "1";
+    let html = '<div class="t">Окно от ' + best + "%</div>";
+    let any = false;
+    for (const s of series) {
+      const p = s.pts.find((q) => q.x === best);
+      if (!p) continue;
+      any = true;
+      html += '<div class="row"><span class="nm"><i style="background:' + s.color + '"></i>'
+        + s.name + "</span><b>" + fmt(p.y) + "</b></div>";
+    }
+    if (!any) html += '<div class="row"><span class="nm">нет расчёта</span></div>';
+    showTip(html, e.clientX, e.clientY);
+  };
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerenter", move);
+  hit.addEventListener("pointerleave", () => { cross.style.opacity = "0"; hideTip(); });
+
+  host.innerHTML = "";
+  host.append(svg);
+}
+
+function drawCharts() {
+  lineChart(document.getElementById("chart-count"), "Прибыльных контрактов по ширине окна входа",
+    (d) => d.total,
+    (v, ax) => (ax && v >= 1000 ? (v / 1000).toLocaleString("ru-RU") + "к" : num(v)), 4);
+  lineChart(document.getElementById("chart-roi"), "Лучший ROI набора по ширине окна входа",
+    (d) => d.bestRoi == null ? null : d.bestRoi * 100, (v) => Math.round(v) + "%", 4);
+}
+
+/* ---------- тема ---------- */
+(function theme() {
+  const btn = document.getElementById("theme");
+  const names = { auto: "Тема: авто", light: "Тема: светлая", dark: "Тема: тёмная" };
+  let cur = localStorage.getItem("cscraft-theme") || "auto";
+  const apply = () => {
+    if (cur === "auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", cur);
+    btn.textContent = names[cur];
+    localStorage.setItem("cscraft-theme", cur);
+    drawCharts();
+  };
+  btn.onclick = () => {
+    cur = cur === "auto" ? "light" : cur === "light" ? "dark" : "auto";
+    apply();
+  };
+  apply();
+})();
+
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change", drawCharts);
+addEventListener("resize", () => { hideTip(); });
+render();
+drawTable();
+drawCharts();
+</script>
+</body>
+</html>
