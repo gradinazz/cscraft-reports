@@ -1,0 +1,374 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Трейд-ап контракты — окно 90%, сувенирные</title><style>.cscraft-back{display:inline-block;margin:0 0 18px;font-size:13px;text-decoration:none;color:var(--muted)}.cscraft-back:hover{color:var(--accent)}:root[data-theme="light"]{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#e3e3e3;--head:#f7f7f8;--pos:#0a7c42;--accent:#2563eb;--card:#fff;--st:#c47b23;--sv:#b0891b}:root[data-theme="dark"]{--bg:#15171a;--fg:#e8e8e8;--muted:#9aa0a6;--line:#2c2f34;--head:#1d2025;--pos:#4ade80;--accent:#60a5fa;--card:#1a1d21;--st:#e0a458;--sv:#d9be5f}</style><script>try{var t=localStorage.getItem("cscraft-theme");if(t&&t!=="auto")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script><style>
+:root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#e3e3e3;--head:#f7f7f8;
+--pos:#0a7c42;--accent:#2563eb;--card:#fff;--st:#c47b23;--sv:#b0891b}
+@media (prefers-color-scheme:dark){:root{--bg:#15171a;--fg:#e8e8e8;--muted:#9aa0a6;
+--line:#2c2f34;--head:#1d2025;--pos:#4ade80;--accent:#60a5fa;--card:#1a1d21;
+--st:#e0a458;--sv:#d9be5f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:28px;margin:0 0 4px}
+h2{font-size:21px;margin:44px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+h4{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:18px 0 8px}
+.sub{color:var(--muted);margin:0 0 22px}
+table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:14px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:var(--head);font-weight:600;font-size:12px;text-transform:uppercase;
+letter-spacing:.04em;color:var(--muted)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.total td{font-weight:700;border-top:2px solid var(--line);border-bottom:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:18px 20px;margin:16px 0}
+.headline{font-size:16px;font-weight:600;margin:0 0 2px}
+.profit{color:var(--pos);font-weight:700}
+.note{color:var(--muted);font-size:13px;margin:6px 0 0}
+.chip{display:inline-block;background:var(--head);border:1px solid var(--line);
+border-radius:20px;padding:2px 10px;font-size:12px;color:var(--muted);margin-right:6px}
+a{color:var(--accent)}
+.scroll{overflow-x:auto}
+.muted{color:var(--muted)}
+
+/* --- интерактивная часть --- */
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;
+border-bottom:1px solid var(--line)}
+.line{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.line+.line{margin-top:8px}
+.line .cap{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.q{flex:1;min-width:220px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;
+background:var(--card);color:var(--fg);font:inherit}
+.tab{cursor:pointer;padding:5px 12px;border:1px solid var(--line);border-radius:20px;
+font-size:13px;background:var(--card);color:var(--fg);font-family:inherit}
+.tab:hover{border-color:var(--accent)}
+.tab[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fchip{display:inline-flex;align-items:center;background:var(--accent);color:#fff;
+border-radius:20px;padding:3px 4px 3px 11px;font-size:12.5px;max-width:100%}
+.fchip .x{background:transparent;border:0;color:inherit;cursor:pointer;font-size:15px;
+line-height:1;padding:0 7px;opacity:.75;font-family:inherit}
+.fchip .x:hover{opacity:1}
+.fchip .w{opacity:.75;margin-right:5px}
+.lnk{cursor:pointer;color:inherit;background:transparent;border:0;padding:0;font:inherit;
+text-align:left;text-decoration:underline;text-decoration-style:dotted;
+text-decoration-color:var(--line);text-underline-offset:3px}
+.lnk:hover{text-decoration-style:solid;text-decoration-color:var(--accent);color:var(--accent)}
+.count{color:var(--muted);font-size:13px;margin:16px 0 0}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;
+border-radius:4px;padding:1px 5px;margin-right:5px;vertical-align:1px;border:1px solid}
+.tag.st{color:var(--st);border-color:var(--st)}
+.tag.sv{color:var(--sv);border-color:var(--sv)}
+.rank{color:var(--muted);font-weight:400}
+.pb{font-variant-numeric:tabular-nums;font-weight:600}
+.pb.hi{color:var(--pos)}
+.empty{padding:56px 20px;text-align:center;color:var(--muted)}
+.more{display:block;width:100%;padding:11px;margin:6px 0 40px;border:1px dashed var(--line);
+border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;font:inherit}
+.more:hover{border-color:var(--accent)}
+.hint{color:var(--muted);font-size:12.5px;margin:10px 0 0}
+.list td .lnk{font-size:13.5px}
+.list .sub2{color:var(--muted);font-size:12.5px}
+@media(max-width:640px){.wrap{padding:20px 12px 60px}table{font-size:13px}}
+</style></head>
+<body><div class="wrap"><a class="cscraft-back" href="../">&larr; Все расчёты</a><h1>Трейд-ап контракты</h1>
+<p class="sub">12.08.2026, 17:22:23 · найдено <b>59</b> прибыльных контрактов</p>
+<p><span class="chip">цены BetterFloat: покупка по avg30, продажа по bid</span><span class="chip">комиссия 0%</span><span class="chip">10 предметов</span><span class="chip">сувенирные участвуют</span><span class="chip">без StatTrak</span><span class="chip">окно входа от 90% полосы износа</span></p>
+<p class="note">Каждый вход — задание на покупку: скин в указанном износе с флоатом внутри окна. Ширина окна указана долей полосы износа — какая часть лотов этого износа подойдёт; заданный процент это минимум, где можно шире — расширено. Прибыль указана за вычетом комиссии и посчитана по <b>худшему</b> сочетанию флоатов внутри окон — это нижняя граница, а не удачный случай. «Вернётся в среднем» — математическое ожидание по исходам контракта. «Окупает» — вероятность, что один выпавший предмет стоит дороже всего контракта. Износы: FN — Factory New, MW — Minimal Wear, FT — Field-Tested, WW — Well-Worn, BS — Battle-Scarred.</p>
+<h2>Сводка</h2>
+<div class="scroll"><table><thead><tr><th>Переход</th><th class="n">Контрактов</th><th class="n">Лучший результат</th><th class="n">Вложить</th></tr></thead><tbody><tr><td>Consumer → Industrial</td><td class="n">9</td><td class="n"><span class="profit">$0.63</span></td><td class="n">$2.40</td></tr><tr><td>Industrial → Mil-Spec</td><td class="n">43</td><td class="n"><span class="profit">$4.27</span></td><td class="n">$11.50</td></tr><tr><td>Mil-Spec → Restricted</td><td class="n">7</td><td class="n"><span class="profit">$6.89</span></td><td class="n">$27.10</td></tr></tbody></table></div>
+<h2>Контракты</h2>
+<div class="bar" id="cs-bar">
+<div class="line"><input class="q" id="cs-q" type="search" placeholder="Поиск по предмету или коллекции…"><button class="tab" data-view="cards" aria-pressed="true">карточки</button><button class="tab" data-view="list" aria-pressed="false">списком</button></div>
+<div class="line"><span class="cap">сортировка</span><button class="tab" data-sort="profit" aria-pressed="true">прибыль</button><button class="tab" data-sort="roi" aria-pressed="false">ROI</button><button class="tab" data-sort="cost" aria-pressed="false">дешевле</button><button class="tab" data-sort="pb" aria-pressed="false">шанс окупить</button></div>
+<div class="line"><span class="cap">окупает от</span><button class="tab" data-pb="0" aria-pressed="true">любой</button><button class="tab" data-pb="200" aria-pressed="false">20%</button><button class="tab" data-pb="400" aria-pressed="false">40%</button><button class="tab" data-pb="600" aria-pressed="false">60%</button><button class="tab" data-pb="800" aria-pressed="false">80%</button><button class="tab" data-pb="1000" aria-pressed="false">100%</button></div>
+<div class="line"><span class="cap">переход</span><button class="tab" data-step="-1" aria-pressed="true">все</button><button class="tab" data-step="0" aria-pressed="false">Consumer → Industrial (9)</button><button class="tab" data-step="1" aria-pressed="false">Industrial → Mil-Spec (43)</button><button class="tab" data-step="2" aria-pressed="false">Mil-Spec → Restricted (7)</button></div>
+<div class="line" id="cs-chips"></div>
+</div>
+<p class="hint">Нажмите на любой предмет или коллекцию — отчёт покажет все контракты с ними. Фильтры складываются.</p>
+<p class="count" id="cs-count"></p>
+<div id="cs-list"></div>
+<noscript><p class="empty">Список контрактов рисует скрипт, а он отключён. Тот же отчёт без скриптов — в одноимённом файле <b>.md</b>.</p></noscript>
+<!--CASCADE--></div>
+<script id="cs-data" type="application/json">{"meta":{"fee":0,"inputs":10,"souvenir":true,"stattrak":false,"minWindow":0.9},"steps":[{"label":"Consumer → Industrial","n":9,"best":63,"cost":240},{"label":"Industrial → Mil-Spec","n":43,"best":427,"cost":1150},{"label":"Mil-Spec → Restricted","n":7,"best":689,"cost":2710}],"skins":["MAC-10 | Sienna Damask","MAG-7 | Navy Sheen","SSG 08 | Prey","FAMAS | CaliCamo","Dual Berettas | Drift Wood","CZ75-Auto | Midnight Palm","P90 | Verdant Growth","PP-Bizon | Anolis","SG 553 | Safari Print","Tec-9 | Banana Leaf","XM1014 | XoooM","SSG 08 | Calligrafaux","MP5-SD | Picnic","MP7 | Coral Paisley","UMP-45 | Green Swirl","FAMAS | Palm","Galil AR | Acid Dart","MAC-10 | Acid Hex","P2000 | Marsh","SSG 08 | Tiger Tear","Dual Berettas | Polished Malachite","AK-47 | VariCamo Grey","P90 | Mustard Gas","Tec-9 | Garter-9","R8 Revolver | Leafhopper","M249 | Sleet","MAC-10 | Snow Splash","MP5-SD | Snow Splash","FAMAS | Vendetta","M4A4 | Aeolian Dark","R8 Revolver | Dark Chamber","Sawed-Off | Runoff","Glock-18 | Ocean Topo","M4A4 | Naval Shred Camo","Galil AR | Robin's Egg","Five-SeveN | Sky Blue","XM1014 | Gum Wall Camo","Negev | Sour Grapes","Dual Berettas | Rose Nacre","Nova | Turquoise Pour","Zeus x27 | Electric Blue","G3SG1 | Desert Storm","Tec-9 | VariCamo","AK-47 | Safari Mesh","Five-SeveN | Orange Peel","MAC-10 | Palm","Sawed-Off | Snake Camo","SCAR-20 | Short Ochre","Tec-9 | Citric Acid","SG 553 | Basket Halftone","Galil AR | O-Ranger","M4A4 | Steel Work","FAMAS | Grey Ghost","P250 | Sedimentary","R8 Revolver | Desert Brush","UMP-45 | Mudder","M249 | Midnight Palm","Five-SeveN | Withered Vine","AUG | Spalted Wood","MP9 | Old Roots","Glock-18 | High Beam","PP-Bizon | Candy Apple","MAC-10 | Calf Skin","R8 Revolver | Nitro","MP7 | Prey","P90 | Desert DDPAT","Galil AR | Amber Fade","P250 | Black & Tan","Nova | Quick Sand","G3SG1 | New Roots","USP-S | Purple DDPAT","MP9 | Music Box","SG 553 | Desert Blossom","M249 | Humidor","Dual Berettas | Mystic Conjunction","Tec-9 | Sultan","MAC-10 | Arabesque Mosaic","FAMAS | Snake Song","Sawed-Off | Lunar Wyrm","M4A4 | Converter","SSG 08 | Hand Brake","USP-S | Check Engine","Sawed-Off | Brake Light","Dual Berettas | Stained","UMP-45 | Gunsmoke","Glock-18 | Candy Apple","MP7 | Anodized Navy","Sawed-Off | Full Stop","Five-SeveN | Fraise Crane","Galil AR | Sky Mandala","Zeus x27 | Earth Mandala","UMP-45 | Warm Blooded","AK-47 | Wintergreen","USP-S | Tropical Breeze","MAC-10 | Poplar Thicket","MP5-SD | Gold Leaf","XM1014 | Copperflage","AWP | Arsenic Spill","M4A1-S | Rose Hex","Glock-18 | Coral Bloom","SSG 08 | Blush Pour","MP9 | Shredded","P250 | Red Tide","Five-SeveN | Midnight Paintover","MAC-10 | Pipsqueak","Glock-18 | Teal Graf","Nova | Wurst Hölle","Galil AR | Metallic Squeezer","FAMAS | Half Sleeve","Tec-9 | Tiger Stencil","SSG 08 | Zeno","USP-S | Alpine Camo","Nova | Yorkshire","P250 | Small Game","USP-S | Forest Leaves","SSG 08 | Acid Fade","Five-SeveN | Silver Quartz","FAMAS | Teardown","Desert Eagle | The Daily Deagle","P90 | Aeolian Light","P2000 | Grip Tape","AUG | Creep","AUG | Steel Sentinel","CZ75-Auto | Copper Fiber","Glock-18 | Green Line","UMP-45 | Late Night Transit","FAMAS | 2A2F","XM1014 | Run Run Run","FAMAS | Yeti Camo","MP9 | Cobalt Paisley","Desert Eagle | Mint Fan","P90 | Reef Grief","P2000 | Royal Baroque","PP-Bizon | Brass","M4A1-S | VariCamo","SG 553 | Damascus Steel","XM1014 | Blue Steel","Desert Eagle | Mudder","SG 553 | Anodized Navy","USP-S | Night Ops","P90 | Teardown","Negev | Bulkhead","MP5-SD | Co-Processor","P90 | Facility Negative","P250 | Exchanger","AWP | Acheron","MP7 | Base-2","M4A4 | Dark Operative","MP9 | Spy Prototype","AUG | Signal Scanner","R8 Revolver | Monarch","Glock-18 | Death Rattle","Galil AR | Tuxedo","Desert Eagle | Meteorite","CZ75-Auto | Tuxedo","P90 | Ash Wood","Desert Eagle | Urban Rubble","Sawed-Off | Amber Fade","MP7 | Astrolabe","P2000 | Coral Halftone","AK-47 | Crossfade","SG 553 | Berry Gel Coat","SCAR-20 | Wild Berry","XM1014 | Halftone Shift","Galil AR | Cold Fusion","Negev | Wall Bang","G3SG1 | VariCamo","MAG-7 | Foresight","M4A4 | Red DDPAT","USP-S | Orange Anolis","MAC-10 | Case Hardened","XM1014 | Zombie Offensive","G3SG1 | Dream Glade","USP-S | Ticket to Hell","M4A1-S | Night Terror","PP-Bizon | Space Cat","SCAR-20 | Fragments","M4A1-S | Emphorosaur-S","R8 Revolver | Banana Cannon","MAC-10 | Sakkaku","Glock-18 | Umbral Rabbit","P90 | Neoqueen","Negev | Ultralight","MAG-7 | Monster Call","MAC-10 | Allure","Tec-9 | Brother","Galil AR | Connexion","MP5-SD | Kitbash","XM1014 | Irezumi","M4A4 | Etch Lord","Glock-18 | Block-18","MP7 | Just Smile","Five-SeveN | Hybrid","Sawed-Off | Analog Input","SG 553 | Ol' Rusty","Dual Berettas | Hideout"],"cols":["The 2021 Mirage Collection","The Harlequin Collection","The Boreal Collection","The Achroma Collection","The Ascent Collection","The Dust 2 Collection","The Radiant Collection","The 2021 Dust 2 Collection","The 2018 Inferno Collection","The Arabesque Collection","The Italy Collection","The Overpass 2024 Collection","The Sport & Field Collection","The Safehouse Collection","The Train 2025 Collection","The Lake Collection","The 2018 Nuke Collection","The Spy Tech Collection","The Bank Collection","The Train Collection","The Graphic Design Collection","The Dreams & Nightmares Collection","The Revolution Collection","The Fracture Collection","The Kilowatt Collection"],"rows":[[0,240,63,303,263,0,63,303,303,[[0,10]],[[0,0,1,26,3,636,905,1],[1,0,8,24,5,638,905,1],[2,0,1,22,1,633,905,1]],[[3,0,250,579,699,0],[4,0,250,277,699,0],[5,0,250,184,583,0],[6,0,250,172,548,0]],500],[0,193,51,244,267,1,57,244,244,[[0,8],[1,2]],[[2,0,3,22,4,633,900,1],[7,0,1,23,0,630,900,1],[1,0,4,24,8,638,900,1],[8,0,2,4,0,630,900,0]],[[3,0,200,579,699,0],[4,0,200,277,699,0],[5,0,200,184,583,0],[6,0,200,172,548,0],[9,0,40,15,699,0],[10,0,40,12,699,0],[11,1,40,11,1166,0],[12,1,40,7,874,0],[13,1,40,7,757,0]],400],[0,193,51,244,267,1,54,244,244,[[2,2],[0,8]],[[14,0,1,4,0,630,900,0],[15,0,1,5,0,630,900,0],[2,0,4,22,4,633,900,1],[1,0,4,24,8,638,900,1]],[[3,0,200,579,699,0],[4,0,200,277,699,0],[5,0,200,184,583,0],[6,0,200,172,548,0],[16,0,22,15,699,0],[17,0,22,15,676,0],[18,0,22,14,699,0],[19,0,22,13,641,0],[20,1,22,12,932,0],[21,1,22,9,783,0],[22,1,22,6,734,0],[23,1,22,6,816,0],[24,1,22,2,759,0]],400],[0,193,51,244,266,1,53,244,244,[[0,8],[3,2]],[[2,0,3,22,4,633,900,1],[7,0,1,23,0,630,900,1],[1,0,4,24,8,638,900,1],[25,0,2,4,0,630,900,0]],[[3,0,200,579,699,0],[4,0,200,277,699,0],[5,0,200,184,583,0],[6,0,200,172,548,0],[26,0,40,15,699,0],[27,0,40,13,699,0],[28,0,40,12,699,0],[29,1,40,5,757,0],[30,1,40,4,936,0]],400],[0,195,51,246,260,1,52,246,246,[[0,8],[4,2]],[[2,0,4,22,4,633,900,1],[7,0,1,23,0,630,900,1],[1,0,3,24,8,638,900,1],[31,0,2,6,11,640,900,0]],[[3,0,200,579,699,0],[4,0,200,277,699,0],[5,0,200,184,583,0],[6,0,200,172,548,0],[32,0,22,39,699,0],[33,0,22,28,699,0],[34,0,22,22,699,0],[35,0,22,18,699,0],[36,0,22,16,699,0],[37,1,22,6,932,0],[38,1,22,5,816,0],[39,1,22,5,791,0],[40,1,22,5,874,0]],400],[0,197,50,247,255,1,124,247,247,[[0,8],[5,2]],[[7,0,1,23,3,640,911,1],[1,0,7,24,1,638,911,1],[41,1,2,3,701,1428,911,0]],[[3,0,200,579,698,0],[4,0,200,277,698,0],[5,0,200,184,582,0],[6,0,200,172,547,0],[42,0,40,56,698,0],[43,1,40,22,1461,0],[44,1,40,15,1461,0],[45,1,40,15,1461,0],[46,1,40,12,1461,0]],400],[0,194,50,244,257,1,52,244,244,[[0,8],[6,2]],[[2,0,4,22,1,633,905,1],[1,0,4,24,5,638,905,1],[47,0,2,5,9,642,905,0]],[[3,0,200,579,698,0],[4,0,200,277,698,0],[5,0,200,184,582,0],[6,0,200,172,547,0],[48,0,33,14,698,0],[49,0,33,13,698,0],[50,1,33,5,873,0],[51,1,33,5,814,0],[52,1,33,4,741,0],[53,1,33,3,791,0]],400],[0,30,9,39,288,1,67,39,39,[[7,3],[4,6],[8,1]],[[54,2,3,7,1503,3576,901,1],[31,1,6,1,701,1421,901,0],[55,1,1,3,708,1428,901,0]],[[56,1,75,124,1496,0],[57,1,75,123,1496,0],[58,1,75,121,1436,0],[59,1,75,118,1496,0],[60,0,25,16,239,0],[32,2,67,4,1795,0],[61,1,25,7,897,0],[62,2,25,7,2992,0],[63,2,25,7,2814,0],[38,2,67,2,2094,0],[35,2,67,2,1795,0],[34,2,67,2,1795,0],[33,2,67,2,1795,0],[37,2,67,2,2393,0],[39,2,67,2,2029,0],[40,2,67,2,2244,0],[36,2,67,1,1795,0]],300],[0,20,5,25,268,1,44,25,25,[[6,8],[7,2]],[[47,1,8,1,710,1433,904,0],[64,2,1,6,1501,3580,904,1],[65,2,1,6,1501,3580,904,1]],[[56,1,50,124,1499,0],[57,1,50,123,1499,0],[58,1,50,121,1439,0],[59,1,50,118,1499,0],[50,2,133,2,2248,0],[51,2,133,2,2098,0],[52,2,133,1,1910,0],[53,2,133,1,2038,0],[49,2,133,1,1798,0],[48,2,133,1,1798,0]],200],[1,1150,427,1577,372,0,427,1577,1577,[[7,10]],[[56,0,10,115,0,630,900,1]],[[66,0,250,3540,504,0],[67,0,250,1037,630,0],[68,0,250,889,630,0],[69,0,250,844,693,0]],250],[1,1241,378,1619,304,0,378,1619,1619,[[7,8],[0,2]],[[56,0,8,115,0,630,900,1],[6,0,1,160,10,639,900,1],[5,0,1,161,0,630,900,1]],[[66,0,200,3540,508,0],[70,0,50,4651,698,0],[67,0,200,1037,635,0],[68,0,200,889,635,0],[69,0,200,844,698,0],[71,0,50,1703,698,0],[72,0,50,409,622,0],[73,0,50,372,635,0]],300],[1,1060,350,1410,330,1,517,1410,1410,[[7,10]],[[56,0,7,115,0,630,900,1],[57,1,3,85,700,1420,900,1]],[[66,0,250,3540,693,0],[68,1,250,815,867,0],[69,1,250,672,953,0],[67,1,250,612,867,0]],250],[1,1043,344,1387,330,1,401,1387,1387,[[7,9],[9,1]],[[56,0,9,115,0,690,986,1],[74,1,1,8,700,1480,975,0]],[[66,0,225,3540,556,0],[67,0,225,1037,695,0],[68,0,225,889,695,0],[69,1,225,672,764,0],[75,1,25,84,1390,0],[76,1,25,58,1390,0],[77,1,25,56,1390,0],[78,1,25,56,1390,0]],225],[1,962,326,1288,339,1,341,1288,1288,[[7,8],[8,2]],[[56,0,8,115,0,630,900,1],[62,1,1,16,700,1420,900,0],[63,1,1,26,709,1428,900,0]],[[66,0,200,3540,504,0],[67,0,200,1037,631,0],[68,0,200,889,631,0],[69,0,200,844,694,0],[79,0,50,193,504,0],[80,1,50,141,1262,0],[81,1,50,98,757,0],[82,0,50,84,100,0]],400],[1,959,326,1285,340,1,331,1285,1285,[[7,8],[10,2]],[[56,0,8,115,0,630,900,1],[83,1,1,18,700,1420,900,0],[84,1,1,21,709,1428,900,0]],[[66,0,200,3540,504,0],[67,0,200,1037,631,0],[68,0,200,889,631,0],[69,0,200,844,694,0],[85,0,67,201,378,0],[86,0,67,126,100,0],[87,1,67,15,757,0]],400],[1,951,323,1274,340,1,339,1274,1274,[[7,8],[1,2]],[[56,0,8,115,0,630,900,1],[11,1,1,14,700,1420,900,0],[10,0,1,17,6,636,900,0]],[[66,0,200,3540,502,0],[67,0,200,1037,628,0],[68,0,200,889,628,0],[69,0,200,844,690,0],[88,1,50,111,816,0],[89,1,50,62,879,0],[90,1,50,39,828,0],[91,1,50,37,879,0]],400],[1,952,323,1275,340,1,339,1275,1275,[[2,2],[7,8]],[[19,0,2,16,10,649,914,0],[56,0,8,115,1,640,914,1]],[[66,0,200,3540,504,0],[67,0,200,1037,630,0],[68,0,200,889,630,0],[69,0,200,844,693,0],[92,1,40,141,945,0],[93,0,40,139,693,0],[94,1,40,22,856,0],[95,1,40,15,756,0],[96,1,40,15,756,0]],400],[1,952,320,1272,336,1,330,1272,1272,[[7,8],[6,2]],[[56,0,8,115,1,650,929,1],[49,0,2,16,11,660,929,0]],[[66,0,200,3540,504,0],[67,0,200,1037,630,0],[68,0,200,889,630,0],[69,0,200,844,693,0],[97,0,33,79,632,0],[98,0,33,59,630,0],[99,1,33,50,948,0],[100,1,33,39,854,0],[101,1,33,37,756,0],[102,1,33,36,945,0]],400],[1,954,320,1274,335,1,340,1274,1274,[[7,8],[11,2]],[[56,0,8,115,0,630,900,1],[103,0,2,17,0,630,900,0]],[[66,0,200,3540,504,0],[67,0,200,1037,630,0],[68,0,200,889,630,0],[69,0,200,844,693,0],[104,1,50,79,1134,0],[105,0,50,77,630,0],[106,1,50,43,1260,0],[107,1,50,31,756,0]],400],[1,951,319,1271,336,1,338,1271,1271,[[12,2],[7,8]],[[108,1,1,11,700,1420,900,0],[109,0,1,20,6,636,900,0],[56,0,8,115,0,630,900,1]],[[66,0,200,3540,502,0],[67,0,200,1037,628,0],[68,0,200,889,628,0],[69,0,200,844,690,0],[110,1,50,50,879,0],[111,1,50,47,854,0],[112,1,50,43,1256,0],[113,1,50,30,879,0]],400],[1,954,319,1273,334,1,325,1273,1273,[[7,8],[13,2]],[[56,0,8,115,1,650,929,1],[114,1,2,17,701,1443,929,0]],[[66,0,200,3540,507,0],[67,0,200,1037,634,0],[68,0,200,889,634,0],[69,0,200,844,697,0],[115,0,67,76,38,0],[116,0,67,68,507,0],[117,1,67,21,760,0]],400],[1,949,319,1268,336,1,328,1268,1268,[[7,8],[3,2]],[[56,0,8,115,0,630,900,1],[30,1,1,5,711,1430,900,0],[30,0,1,24,13,642,900,0]],[[66,0,200,3540,506,0],[67,0,200,1037,633,0],[68,0,200,889,633,0],[69,0,200,844,696,0],[118,1,50,30,734,0],[119,1,50,28,822,0],[120,1,50,27,949,0],[121,1,50,25,1012,0]],400],[1,962,317,1279,330,1,414,1279,1279,[[14,2],[7,8]],[[122,1,1,12,700,1420,900,0],[123,0,1,30,1,630,900,0],[56,0,8,115,0,630,900,1]],[[66,0,200,3540,504,0],[67,0,200,1037,631,0],[68,0,200,889,631,0],[69,0,200,844,694,0],[124,1,50,130,1262,0],[125,1,50,87,1262,0],[126,1,50,79,1085,0],[127,1,50,53,942,0]],400],[1,954,317,1271,333,1,329,1271,1271,[[7,8],[4,2]],[[56,0,8,115,1,650,929,1],[36,0,2,17,11,660,929,0]],[[66,0,200,3540,504,0],[67,0,200,1037,630,0],[68,0,200,889,630,0],[69,0,200,844,693,0],[128,1,40,65,882,0],[129,1,40,46,819,0],[130,1,40,44,756,0],[131,1,40,41,756,0],[132,1,40,40,756,0]],400],[1,956,315,1271,329,1,350,1271,1271,[[5,2],[7,8]],[[44,1,2,18,701,1443,929,0],[56,0,8,115,1,650,929,1]],[[66,0,200,3540,507,0],[67,0,200,1037,634,0],[68,0,200,889,634,0],[69,0,200,844,697,0],[133,1,67,43,1268,0],[134,1,67,43,760,0],[135,1,67,43,1268,0]],400],[1,961,308,1269,321,1,335,1269,1269,[[7,8],[15,2]],[[56,0,8,115,0,630,900,1],[136,1,1,19,700,1420,900,0],[137,1,1,22,709,1428,900,0]],[[66,0,200,3540,504,0],[67,0,200,1037,631,0],[68,0,200,889,631,0],[69,0,200,844,694,0],[138,0,67,52,100,0],[139,1,67,33,757,0],[140,1,67,21,757,0]],400],[1,996,305,1301,306,1,380,1301,1301,[[7,8],[16,2]],[[56,0,8,115,0,630,900,1],[141,0,2,38,0,630,900,0]],[[66,0,200,3540,504,0],[67,0,200,1037,630,0],[68,0,200,889,630,0],[69,0,200,844,693,0],[142,0,50,200,630,0],[143,0,50,200,630,0],[144,0,50,198,630,0],[145,1,50,185,1045,0]],400],[1,936,304,1240,325,1,375,1240,1240,[[7,8],[9,2]],[[56,0,8,115,1,680,971,1],[74,1,2,8,703,1480,971,0]],[[66,0,200,3540,553,0],[67,0,200,1037,692,0],[68,0,200,889,692,0],[69,1,200,672,761,0],[75,1,50,84,1384,0],[76,1,50,58,1384,0],[77,1,50,56,1384,0],[78,1,50,56,1384,0]],400],[1,938,304,1242,324,1,382,1242,1242,[[7,8],[17,2]],[[56,0,8,115,1,680,971,1],[146,1,2,9,703,1480,971,0]],[[66,0,200,3540,553,0],[67,0,200,1037,692,0],[68,0,200,889,692,0],[69,1,200,672,761,0],[147,1,50,104,1384,0],[148,1,50,62,1384,0],[149,1,50,61,1384,0],[150,1,50,61,1384,0]],400],[1,968,286,1254,296,1,338,1254,1254,[[7,8],[18,2]],[[56,0,8,115,1,660,943,1],[151,1,2,24,800,1497,996,0]],[[66,0,200,3540,555,0],[67,0,200,1037,694,0],[68,0,200,889,694,0],[69,1,200,672,763,0],[152,1,67,190,1110,0],[153,0,67,138,249,0],[154,1,67,73,1110,0]],400],[1,962,284,1246,295,1,318,1246,1246,[[7,8],[19,2]],[[56,0,8,115,1,680,971,1],[155,0,2,21,5,684,971,0]],[[66,0,200,3540,556,0],[67,0,200,1037,696,0],[68,0,200,889,696,0],[69,1,200,672,765,0],[156,0,100,93,696,0],[157,0,100,90,556,0]],400],[1,1034,278,1312,268,1,294,1312,1312,[[7,8],[20,2]],[[56,0,8,115,0,630,900,1],[158,1,1,45,700,1420,900,0],[159,0,1,69,5,634,900,0]],[[66,0,200,3540,508,0],[67,0,200,1037,636,0],[68,0,200,889,636,0],[69,0,200,844,699,0],[160,0,50,542,636,0],[161,1,50,181,1017,0],[162,1,50,142,826,0],[163,1,50,132,763,0]],400],[1,841,259,1100,308,1,434,1100,1100,[[14,3],[7,7]],[[122,1,3,12,703,1480,971,0],[56,0,7,115,1,680,971,1]],[[66,0,175,3540,558,0],[67,0,175,1037,698,0],[68,0,175,889,698,0],[69,1,175,672,767,0],[124,1,75,130,1396,0],[125,1,75,87,1396,0],[126,1,75,79,1200,0],[127,1,75,53,1042,0]],525],[1,874,259,1133,296,1,401,1133,1133,[[7,7],[16,3]],[[56,0,7,115,0,630,900,1],[164,1,3,23,708,1427,900,0]],[[66,0,175,3540,559,0],[67,0,175,1037,699,0],[68,0,175,889,699,0],[69,1,175,672,768,0],[142,0,75,200,699,0],[143,0,75,200,699,0],[144,0,75,198,699,0],[145,1,75,185,1160,0]],525],[1,901,255,1156,283,1,271,1156,1156,[[0,2],[4,1],[3,2],[7,5]],[[5,1,1,89,700,1420,900,1],[38,0,1,23,0,630,900,0],[30,0,2,24,13,642,900,0],[4,0,1,166,6,636,900,1],[56,0,5,115,0,630,900,1]],[[66,0,125,3540,508,0],[70,0,50,4651,698,0],[67,0,125,1037,635,0],[68,0,125,889,635,0],[69,0,125,844,698,0],[71,0,50,1703,698,0],[72,0,50,409,622,0],[73,0,50,372,635,0],[118,1,50,30,736,0],[119,1,50,28,825,0],[120,1,50,27,952,0],[128,1,20,65,889,0],[121,1,50,25,1016,0],[129,1,20,46,825,0],[130,1,20,44,762,0],[131,1,20,41,762,0],[132,1,20,40,762,0]],350],[1,741,225,966,304,1,261,966,966,[[7,6],[10,4]],[[57,1,1,85,700,1420,900,1],[56,0,5,115,0,630,900,1],[84,1,3,21,709,1428,900,0],[83,1,1,18,700,1420,900,0]],[[66,0,150,3540,556,0],[67,0,150,1037,696,0],[68,0,150,889,696,0],[69,1,150,672,765,0],[85,0,133,201,417,0],[86,0,133,126,111,0],[87,1,133,15,835,0]],450],[1,722,218,940,301,1,267,940,940,[[7,6],[4,4]],[[57,1,1,85,700,1420,900,1],[56,0,5,115,0,630,900,1],[37,1,1,9,704,1424,900,0],[36,0,2,17,6,636,900,0],[39,0,1,19,8,637,900,0]],[[66,0,150,3540,559,0],[67,0,150,1037,699,0],[68,0,150,889,699,0],[69,1,150,672,768,0],[128,1,80,65,978,0],[129,1,80,46,908,0],[130,1,80,44,838,0],[131,1,80,41,838,0],[132,1,80,40,838,0]],450],[1,728,215,943,295,1,252,943,943,[[7,6],[13,4]],[[57,1,1,85,708,1450,929,1],[56,0,5,115,1,650,929,1],[114,1,4,17,701,1443,929,0]],[[66,0,150,3540,558,0],[67,0,150,1037,698,0],[68,0,150,889,698,0],[69,1,150,672,767,0],[115,0,133,76,41,0],[116,0,133,68,558,0],[117,1,133,21,837,0]],450],[1,730,214,944,293,1,281,944,944,[[7,6],[11,4]],[[56,0,6,115,1,670,957,1],[165,1,4,10,715,1480,957,0]],[[66,0,150,3540,558,0],[67,0,150,1037,698,0],[68,0,150,889,698,0],[69,1,150,672,767,0],[104,1,100,79,1256,0],[105,0,100,77,698,0],[106,1,100,43,1396,0],[107,1,100,31,837,0]],450],[1,732,206,938,281,1,302,938,938,[[5,4],[7,6]],[[44,1,4,18,701,1443,929,0],[57,1,1,85,708,1450,929,1],[56,0,5,115,1,650,929,1]],[[66,0,150,3540,558,0],[67,0,150,1037,698,0],[68,0,150,889,698,0],[69,1,150,672,767,0],[133,1,133,43,1396,0],[134,1,133,43,837,0],[135,1,133,43,1396,0]],450],[1,745,190,935,255,1,270,935,935,[[7,6],[15,4]],[[57,1,1,85,700,1420,900,1],[56,0,5,115,0,630,900,1],[137,1,3,22,709,1428,900,0],[136,1,1,19,700,1420,900,0]],[[66,0,150,3540,556,0],[67,0,150,1037,696,0],[68,0,150,889,696,0],[69,1,150,672,765,0],[138,0,133,52,111,0],[139,1,133,33,835,0],[140,1,133,21,835,0]],450],[1,548,180,728,329,1,294,728,728,[[7,5],[4,5]],[[57,1,4,85,700,1420,900,1],[56,0,1,115,0,630,900,1],[39,0,4,19,8,637,900,0],[36,0,1,17,6,636,900,0]],[[66,0,125,3540,697,0],[68,1,125,815,872,0],[69,1,125,672,959,0],[67,1,125,612,872,0],[128,1,100,65,1220,0],[129,1,100,46,1133,0],[130,1,100,44,1046,0],[131,1,100,41,1046,0],[132,1,100,40,1046,0]],500],[1,556,180,736,324,1,304,736,736,[[7,5],[1,5]],[[57,1,4,85,700,1420,900,1],[56,0,1,115,0,630,900,1],[10,0,3,17,6,636,900,0],[12,0,2,25,0,630,900,0]],[[66,0,125,3540,699,0],[68,1,125,815,874,0],[69,1,125,672,961,0],[67,1,125,612,874,0],[88,1,125,111,1136,0],[89,1,125,62,1223,0],[90,1,125,39,1153,0],[91,1,125,37,1223,0]],500],[1,584,178,762,305,1,274,762,762,[[7,5],[10,5]],[[57,1,3,85,701,1430,913,1],[56,0,2,115,2,640,913,1],[84,1,3,21,714,1443,913,0],[83,1,2,18,711,1440,913,0]],[[66,0,125,3540,697,0],[68,1,125,815,872,0],[69,1,125,672,959,0],[67,1,125,612,872,0],[85,0,167,201,523,0],[86,0,167,126,139,0],[87,1,167,15,1046,0]],500],[1,547,177,724,324,1,293,724,724,[[7,5],[6,5]],[[57,1,4,85,700,1420,900,1],[56,0,1,115,0,630,900,1],[53,0,4,19,10,639,900,0],[49,0,1,16,6,636,900,0]],[[66,0,125,3540,697,0],[68,1,125,815,872,0],[69,1,125,672,959,0],[67,1,125,612,872,0],[99,1,83,50,1313,0],[97,1,83,41,875,0],[100,1,83,39,1183,0],[101,1,83,37,1046,0],[102,1,83,36,1308,0],[98,1,83,31,872,0]],500],[1,655,177,832,270,1,236,832,832,[[7,5],[8,5]],[[56,0,5,115,1,660,943,1],[62,1,5,16,706,1460,943,0]],[[66,0,125,3540,556,0],[67,0,125,1037,695,0],[68,0,125,889,695,0],[69,1,125,672,764,0],[79,0,125,193,556,0],[80,1,125,141,1390,0],[81,1,125,98,834,0],[82,0,125,84,111,0]],500],[1,557,173,730,311,1,305,730,730,[[2,5],[7,5]],[[22,0,2,18,0,630,900,0],[24,0,2,20,8,637,900,0],[23,0,1,26,0,630,900,0],[57,1,4,85,700,1420,900,1],[56,0,1,115,0,630,900,1]],[[66,0,125,3540,699,0],[68,1,125,815,874,0],[69,1,125,672,961,0],[67,1,125,612,874,0],[92,1,100,141,1311,0],[93,1,100,62,961,0],[94,1,100,22,1188,0],[95,1,100,15,1048,0],[96,1,100,15,1048,0]],500],[1,551,168,719,304,1,276,719,719,[[7,5],[3,5]],[[57,1,4,85,700,1420,900,1],[56,0,1,115,0,630,900,1],[30,0,2,24,13,642,900,0],[28,0,3,16,6,636,900,0]],[[66,0,125,3540,696,0],[68,1,125,815,870,0],[69,1,125,672,957,0],[67,1,125,612,870,0],[118,1,125,30,1009,0],[119,1,125,28,1131,0],[120,1,125,27,1305,0],[121,1,125,25,1392,0]],500],[1,558,166,724,297,1,298,724,724,[[12,5],[7,5]],[[108,1,3,11,700,1420,900,0],[109,0,2,20,6,636,900,0],[57,1,3,85,700,1420,900,1],[56,0,2,115,0,630,900,1]],[[66,0,125,3540,696,0],[68,1,125,815,871,0],[69,1,125,672,958,0],[67,1,125,612,871,0],[110,1,125,50,1219,0],[111,1,125,47,1184,0],[113,1,125,30,1219,0],[112,2,125,25,1742,0]],500],[1,496,136,632,274,1,227,632,632,[[7,4],[8,6]],[[56,0,2,115,7,680,963,1],[57,1,2,85,701,1470,963,1],[62,1,6,16,711,1480,963,0]],[[66,0,100,3540,699,0],[68,1,100,815,874,0],[69,1,100,672,961,0],[67,1,100,612,874,0],[79,0,150,193,699,0],[81,1,150,98,1048,0],[82,0,150,84,139,0],[80,2,150,79,1748,0]],400],[1,471,126,597,267,1,211,597,597,[[7,4],[13,6]],[[57,1,3,85,700,1420,900,1],[56,0,1,115,0,630,900,1],[166,1,1,6,708,1428,900,0],[166,0,5,19,6,636,900,0]],[[66,0,100,3540,698,0],[68,1,100,815,873,0],[69,1,100,672,960,0],[67,1,100,612,873,0],[115,0,200,76,52,0],[116,0,200,68,698,0],[117,1,200,21,1047,0]],400],[1,234,67,301,284,1,132,301,301,[[7,2],[9,8]],[[57,1,2,85,701,1450,938,1],[74,1,8,8,711,1460,938,0]],[[66,0,50,3540,699,0],[68,1,50,815,874,0],[69,1,50,672,961,0],[67,1,50,612,874,0],[75,2,200,30,1748,0],[77,2,200,21,1748,0],[76,2,200,21,1748,0],[78,2,200,21,1748,0]],200],[2,2710,689,3399,254,1,1049,3399,3399,[[21,6],[7,4]],[[167,0,6,34,0,630,900,0],[68,0,1,679,0,630,900,1],[66,1,1,537,704,1424,900,1],[69,1,1,603,710,1430,900,1],[69,0,1,687,8,638,900,1]],[[168,0,133,12590,699,0],[169,0,133,9953,517,0],[170,1,133,2548,1398,0],[171,0,120,118,699,0],[172,1,120,92,1398,0],[173,1,120,86,1062,0],[174,1,120,76,978,0],[175,1,120,70,936,0]],267],[2,2712,683,3395,252,1,1044,3395,3395,[[7,4],[21,4],[22,2]],[[66,1,1,537,704,1424,900,1],[68,0,2,679,0,630,900,1],[69,1,1,603,710,1430,900,1],[167,0,4,34,0,630,900,0],[176,0,2,39,10,639,900,0]],[[168,0,133,12590,696,0],[169,0,133,9953,515,0],[170,1,133,2548,1392,0],[171,0,80,118,696,0],[172,1,80,92,1392,0],[173,1,80,86,1057,0],[174,1,80,76,974,0],[175,1,80,70,932,0],[177,1,40,81,1113,0],[178,1,40,74,1392,0],[179,2,40,70,2907,0],[180,1,40,67,1044,0],[181,1,40,50,835,0]],267],[2,2033,528,2561,260,1,1008,2561,2561,[[23,7],[7,3]],[[182,0,7,40,2,632,900,0],[66,1,2,537,704,1424,900,1],[68,0,1,679,0,630,900,1]],[[168,0,100,12590,699,0],[169,0,100,9953,517,0],[170,1,100,2548,1398,0],[183,1,140,89,1398,0],[184,1,140,77,1398,0],[185,1,140,74,1398,0],[186,1,140,70,1118,0],[187,1,140,64,1118,0]],300],[2,2040,522,2562,256,1,902,2562,2562,[[24,7],[7,3]],[[188,0,7,41,10,639,900,0],[66,1,2,537,704,1424,900,1],[68,0,1,679,0,630,900,1]],[[168,0,100,12590,699,0],[169,0,100,9953,517,0],[170,1,100,2548,1398,0],[189,1,140,84,1398,0],[190,1,140,83,939,0],[191,1,140,81,1398,0],[192,1,140,77,1398,0],[193,1,140,52,865,0]],300],[2,718,186,904,259,1,604,904,904,[[23,9],[7,1]],[[194,0,2,37,13,644,903,0],[182,0,7,40,1,632,903,0],[69,2,1,364,1510,3586,903,1]],[[168,0,33,12590,698,0],[169,0,33,9953,516,0],[170,1,33,2548,1396,0],[183,1,180,89,1396,0],[184,1,180,77,1396,0],[185,1,180,74,1396,0],[186,1,180,70,1116,0],[187,1,180,64,1116,0]],100],[2,721,183,904,254,1,473,904,904,[[24,9],[7,1]],[[195,0,2,35,5,642,912,0],[188,0,7,41,2,639,912,0],[69,2,1,364,1501,3597,912,1]],[[168,0,33,12590,699,0],[169,0,33,9953,517,0],[170,1,33,2548,1398,0],[189,1,180,84,1398,0],[190,1,180,83,939,0],[191,1,180,81,1398,0],[192,1,180,77,1398,0],[193,1,180,52,865,0]],100],[2,715,183,898,256,1,380,898,898,[[7,1],[22,9]],[[69,2,1,364,1507,3608,914,1],[176,0,9,39,1,639,914,0]],[[168,0,33,12590,697,0],[169,0,33,9953,515,0],[170,1,33,2548,1394,0],[177,1,180,81,1115,0],[178,1,180,74,1394,0],[179,2,180,70,2908,0],[180,1,180,67,1045,0],[181,1,180,50,836,0]],100]]}</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('cs-data').textContent);
+  var WEAR = ['FN', 'MW', 'FT', 'WW', 'BS'];
+  var PAGE = 15;
+  var PB = [0, 200, 400, 600, 800, 1000];
+
+  var st = { step: -1, filters: [], sort: 'profit', q: '', pb: 0, view: 'cards', limit: PAGE };
+
+  var esc = function (s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
+  var usd = function (c) { return '$' + (c / 100).toFixed(2); };
+  var pct = function (p) { return (p / 10).toFixed(1) + '%'; };
+  var f4 = function (e) { return (e / 10000).toFixed(4); };
+  var qual = function (bits) {
+    return (bits & 1 ? '<span class="tag sv">SOUVENIR</span>' : '')
+      + (bits & 2 ? '<span class="tag st">ST\u2122</span>' : '');
+  };
+  var pbCell = function (p) {
+    return '<span class="pb' + (p >= 800 ? ' hi' : '') + '">' + pct(p) + '</span>';
+  };
+
+  // Текст для поиска — считается один раз, при первом запросе.
+  var hay = null;
+  function haystack(i) {
+    if (!hay) {
+      hay = D.rows.map(function (r) {
+        var parts = [];
+        r[9].forEach(function (c) { parts.push(D.cols[c[0]]); });
+        r[10].forEach(function (x) { parts.push(D.skins[x[0]]); });
+        r[11].forEach(function (x) { parts.push(D.skins[x[0]]); });
+        return parts.join(' ').toLowerCase();
+      });
+    }
+    return hay[i];
+  }
+
+  function has(list, idx) {
+    for (var i = 0; i < list.length; i++) if (list[i][0] === idx) return true;
+    return false;
+  }
+
+  function matches(r, i) {
+    if (st.step >= 0 && r[0] !== st.step) return false;
+    if (r[12] < st.pb) return false;
+    for (var k = 0; k < st.filters.length; k++) {
+      var f = st.filters[k];
+      if (f.t === 'in' && !has(r[10], f.i)) return false;
+      if (f.t === 'out' && !has(r[11], f.i)) return false;
+      if (f.t === 'col' && !has(r[9], f.i)) return false;
+    }
+    if (st.q && haystack(i).indexOf(st.q) < 0) return false;
+    return true;
+  }
+
+  function sortRows(list) {
+    return list.sort(function (a, b) {
+      if (st.sort === 'roi') return b[4] - a[4];
+      if (st.sort === 'cost') return a[1] - b[1];
+      if (st.sort === 'pb') return b[12] - a[12] || b[2] - a[2];
+      return b[2] - a[2];
+    });
+  }
+
+  function itemBtn(kind, idx, bits) {
+    return qual(bits) + '<button class="lnk" data-t="' + kind + '" data-i="' + idx + '">'
+      + esc(D.skins[idx]) + '</button>';
+  }
+
+  function compLine(row) {
+    return row[9].map(function (c) {
+      return c[1] + 'x <button class="lnk" data-t="col" data-i="' + c[0] + '">'
+        + esc(D.cols[c[0]]) + '</button>';
+    }).join(' + ');
+  }
+
+  function payback(row) {
+    var names = [];
+    row[11].forEach(function (o) { if (o[3] > row[1]) names.push(D.skins[o[0]]); });
+    return names;
+  }
+
+  function card(row, rank) {
+    var H = [];
+    H.push('<div class="card">');
+    H.push('<div class="headline"><span class="rank">' + rank + '.</span> ' + compLine(row) + '</div>');
+    H.push('<p class="note">' + esc(D.steps[row[0]].label) + ' \u00b7 вложить <b>' + usd(row[1])
+      + '</b> \u2192 вернётся в среднем <b>' + usd(row[3])
+      + '</b> \u2192 <span class="profit">' + usd(row[2]) + ' (' + pct(row[4]) + ')</span></p>');
+
+    H.push('<h4>Что купить</h4><div class="scroll"><table><thead><tr>'
+      + '<th class="n">Кол-во</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
+      + '<th class="n">Цена шт.</th><th class="n">Сумма</th></tr></thead><tbody>');
+    row[10].forEach(function (i) {
+      H.push('<tr><td class="n">' + i[2] + 'x</td><td>' + itemBtn('in', i[0], i[7])
+        + '</td><td>' + WEAR[i[1]] + '</td><td>' + f4(i[4]) + ' \u2013 ' + f4(i[5])
+        + ' <span class="muted">(' + Math.round(i[6] / 10) + '% ' + WEAR[i[1]] + ')</span></td>'
+        + '<td class="n">' + usd(i[3]) + '</td><td class="n">' + usd(i[3] * i[2]) + '</td></tr>');
+    });
+    H.push('<tr class="total"><td class="n">10</td><td></td><td></td><td></td><td></td>'
+      + '<td class="n"><b>' + usd(row[1]) + '</b></td></tr></tbody></table></div>');
+
+    if (row[5] & 2) {
+      H.push('<p class="note">Внутри окна есть сочетание флоатов хуже верхней границы:'
+        + ' там вернётся ' + usd(row[7]) + ' вместо ' + usd(row[8])
+        + '. Прибыль в шапке посчитана по нему.</p>');
+    }
+    if (row[5] & 1) {
+      H.push('<p class="note">Прибыль посчитана по худшему сочетанию флоатов внутри окон;'
+        + ' при удачном сочетании выйдет до ' + usd(row[6]) + '.</p>');
+    }
+
+    H.push('<h4>Что выпадет</h4><div class="scroll"><table><thead><tr>'
+      + '<th class="n">Шанс</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
+      + '<th class="n">Цена</th></tr></thead><tbody>');
+    row[11].forEach(function (o) {
+      H.push('<tr><td class="n">' + pct(o[2]) + '</td><td>' + itemBtn('out', o[0], o[5])
+        + '</td><td>' + WEAR[o[1]] + '</td><td>' + f4(o[4]) + '</td>'
+        + '<td class="n">' + usd(o[3]) + '</td></tr>');
+    });
+    H.push('</tbody></table></div>');
+
+    var names = payback(row);
+    if (names.length) {
+      H.push('<p class="note">Шанс окупить контракт одним предметом: '
+        + pbCell(row[12]) + ' \u2014 ' + esc(names.join(', ')) + '</p>');
+    }
+    H.push('</div>');
+    return H.join('');
+  }
+
+  function listRows(rows, from) {
+    var H = ['<div class="scroll"><table class="list"><thead><tr>'
+      + '<th class="n">№</th><th class="n">Прибыль</th><th class="n">ROI</th>'
+      + '<th class="n">Вложить</th><th class="n">Окупает</th><th>Коллекции</th>'
+      + '<th>Что покупать</th></tr></thead><tbody>'];
+    rows.forEach(function (row, k) {
+      var buy = row[10].map(function (i) {
+        return i[2] + 'x ' + itemBtn('in', i[0], i[7]) + ' <span class="sub2">[' + WEAR[i[1]]
+          + '] ' + f4(i[4]) + '\u2013' + f4(i[5]) + '</span>';
+      }).join('<br>');
+      H.push('<tr><td class="n">' + (from + k + 1) + '</td>'
+        + '<td class="n"><span class="profit">' + usd(row[2]) + '</span></td>'
+        + '<td class="n">' + pct(row[4]) + '</td>'
+        + '<td class="n">' + usd(row[1]) + '</td>'
+        + '<td class="n">' + pbCell(row[12]) + '</td>'
+        + '<td>' + compLine(row) + '</td>'
+        + '<td>' + buy + '</td></tr>');
+    });
+    H.push('</tbody></table></div>');
+    return H.join('');
+  }
+
+  function label(f) {
+    var what = f.t === 'col' ? 'коллекция' : f.t === 'in' ? 'вход' : 'исход';
+    var name = f.t === 'col' ? D.cols[f.i] : D.skins[f.i];
+    return '<span class="w">' + what + ':</span> <b>' + esc(name) + '</b>';
+  }
+
+  function draw() {
+    var picked = [];
+    for (var i = 0; i < D.rows.length; i++) {
+      if (matches(D.rows[i], i)) picked.push(D.rows[i]);
+    }
+    sortRows(picked);
+
+    var chips = st.filters.map(function (f, k) {
+      return '<span class="fchip">' + label(f)
+        + '<button class="x" data-drop="' + k + '" title="Убрать">\u00d7</button></span>';
+    }).join('');
+    if (st.filters.length) {
+      chips += '<button class="tab" data-drop="all">сбросить</button>';
+    }
+    document.getElementById('cs-chips').innerHTML = chips;
+
+    var n = Math.min(st.limit, picked.length);
+    var head = 'Найдено <b>' + picked.length + '</b>';
+    if (picked.length > n) head += ', показаны первые ' + n;
+    document.getElementById('cs-count').innerHTML = head;
+
+    var out = document.getElementById('cs-list');
+    if (!picked.length) {
+      out.innerHTML = '<div class="empty">Ничего не нашлось.<br>'
+        + 'Снимите часть фильтров или опустите порог окупаемости.</div>';
+      return;
+    }
+
+    var html = [];
+    if (st.view === 'list') {
+      html.push(listRows(picked.slice(0, n), 0));
+    } else {
+      for (var j = 0; j < n; j++) html.push(card(picked[j], j + 1));
+    }
+    if (picked.length > n) {
+      html.push('<button class="more" data-more="1">Показать ещё '
+        + Math.min(PAGE, picked.length - n) + ' \u00b7 осталось ' + (picked.length - n) + '</button>');
+    }
+    out.innerHTML = html.join('');
+  }
+
+  function press(sel, on) {
+    [].forEach.call(document.querySelectorAll(sel), function (b) {
+      b.setAttribute('aria-pressed', on(b) ? 'true' : 'false');
+    });
+  }
+
+  function addFilter(t, i) {
+    for (var k = 0; k < st.filters.length; k++) {
+      if (st.filters[k].t === t && st.filters[k].i === i) return;
+    }
+    st.filters.push({ t: t, i: i });
+    st.limit = PAGE;
+    draw();
+    document.getElementById('cs-bar').scrollIntoView({ block: 'start' });
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest
+      ? e.target.closest('[data-t],[data-drop],[data-more],[data-step],[data-sort],[data-pb],[data-view]')
+      : null;
+    if (!el) return;
+    var d = el.dataset;
+    if (d.t) { addFilter(d.t, +d.i); return; }
+    if (d.drop) {
+      st.filters = d.drop === 'all' ? [] : st.filters.filter(function (_, k) { return k !== +d.drop; });
+      st.limit = PAGE;
+      draw();
+      return;
+    }
+    if (d.more) { st.limit += PAGE; draw(); return; }
+    if (d.step !== undefined) {
+      st.step = +d.step;
+      st.limit = PAGE;
+      press('[data-step]', function (b) { return +b.dataset.step === st.step; });
+      draw();
+      return;
+    }
+    if (d.sort) {
+      st.sort = d.sort;
+      st.limit = PAGE;
+      press('[data-sort]', function (b) { return b.dataset.sort === st.sort; });
+      draw();
+      return;
+    }
+    if (d.pb !== undefined) {
+      st.pb = +d.pb;
+      st.limit = PAGE;
+      press('[data-pb]', function (b) { return +b.dataset.pb === st.pb; });
+      draw();
+      return;
+    }
+    if (d.view) {
+      st.view = d.view;
+      st.limit = PAGE;
+      press('[data-view]', function (b) { return b.dataset.view === st.view; });
+      draw();
+    }
+  });
+
+  var q = document.getElementById('cs-q');
+  var timer = null;
+  q.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      st.q = q.value.trim().toLowerCase();
+      st.limit = PAGE;
+      draw();
+    }, 120);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.activeElement === q) {
+      q.value = '';
+      st.q = '';
+      draw();
+    }
+  });
+
+  draw();
+}());
+</script></body></html>
