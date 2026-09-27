@@ -71,8 +71,8 @@ border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;fon
 @media(max-width:640px){.wrap{padding:20px 12px 60px}table{font-size:13px}}
 </style></head>
 <body><div class="wrap"><a class="cscraft-back" href="../?src=buff">&larr; Все расчёты</a><h1>Трейд-ап контракты</h1>
-<p class="sub">27.09.2026, 22:45:18 · найдено <b>2</b> прибыльных контрактов</p>
-<p><span class="chip">цены Buff163: покупка по avg30, продажа по bid</span><span class="chip">комиссия 0%</span><span class="chip">10 предметов</span><span class="chip">сувенирные нет</span><span class="chip">StatTrak: весь контракт</span><span class="chip">окно входа от 60% полосы износа</span></p>
+<p class="sub">28.09.2026, 00:02:36 · найдено <b>2</b> прибыльных контрактов</p>
+<p><span class="chip">цены Buff163: покупка по avg30, продажа по bid</span><span class="chip">комиссия 0%</span><span class="chip">выход от 5 продаж за 30 дней (Skinport)</span><span class="chip">10 предметов</span><span class="chip">сувенирные нет</span><span class="chip">StatTrak: весь контракт</span><span class="chip">окно входа от 60% полосы износа</span></p>
 <p class="note">Каждый вход — задание на покупку: скин в указанном износе с флоатом внутри окна. Ширина окна указана долей полосы износа — какая часть лотов этого износа подойдёт; заданный процент это минимум, где можно шире — расширено. Прибыль указана за вычетом комиссии и посчитана по <b>худшему</b> сочетанию флоатов внутри окон — это нижняя граница, а не удачный случай. «Вернётся в среднем» — математическое ожидание по исходам контракта. «Окупает» — вероятность, что один выпавший предмет стоит дороже всего контракта. Износы: FN — Factory New, MW — Minimal Wear, FT — Field-Tested, WW — Well-Worn, BS — Battle-Scarred.</p>
 <h2>Сводка</h2>
 <div class="scroll"><table><thead><tr><th>Переход</th><th class="n">Контрактов</th><th class="n">Лучший результат</th><th class="n">Вложить</th></tr></thead><tbody><tr><td>Mil-Spec → Restricted</td><td class="n">2</td><td class="n"><span class="profit">$1.12</span></td><td class="n">$3.89</td></tr></tbody></table></div>
@@ -89,7 +89,7 @@ border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;fon
 <div id="cs-list"></div>
 <noscript><p class="empty">Список контрактов рисует скрипт, а он отключён. Тот же отчёт без скриптов — в одноимённом файле <b>.md</b>.</p></noscript>
 <!--CASCADE--></div>
-<script id="cs-data" type="application/json">{"meta":{"fee":0,"inputs":10,"souvenir":false,"stattrak":true,"minWindow":0.6,"source":"buff"},"steps":[{"label":"Mil-Spec → Restricted","n":2,"best":112,"cost":389}],"skins":["Sawed-Off | Fusion","SG 553 | Ol' Rusty","M4A1-S | Electrum","MAG-7 | Monster Call","Desert Eagle | Firebreathing","MAC-10 | Allure","Tec-9 | Brother","Galil AR | Connexion","MP5-SD | Kitbash","MP7 | Amberline","Galil AR | Galigator","MP9 | Urban Sovereign","P90 | Off World","AWP | Atheris","Desert Eagle | Light Rail","Tec-9 | Bamboozle","MP5-SD | Gauss","UMP-45 | Moonrise"],"cols":["The Dead Hand Collection","The Fracture Collection","The Prisma Collection"],"rows":[[0,389,112,501,287,0,112,501,501,[[0,3],[1,7]],[[0,1,2,35,700,1180,600,2],[0,0,1,95,0,420,600,2],[1,0,7,32,0,420,600,2]],[[2,0,60,1591,698,2],[3,0,140,503,698,2],[4,0,60,1041,698,2],[5,0,140,375,698,2],[6,0,140,346,698,2],[7,0,140,288,558,2],[8,0,140,269,558,2],[9,0,60,578,698,2],[10,0,60,547,698,2],[11,0,60,433,698,2]],440],[0,346,87,433,251,0,87,433,433,[[2,1],[1,9]],[[12,1,1,58,705,1185,600,2],[1,0,9,32,0,420,600,2]],[[3,0,180,503,698,2],[5,0,180,375,698,2],[13,0,20,3122,698,2],[6,0,180,346,698,2],[7,0,180,288,558,2],[8,0,180,269,558,2],[14,0,20,1398,628,2],[15,0,20,543,558,2],[16,0,20,332,698,2],[17,0,20,214,279,2]],420]]}</script>
+<script id="cs-data" type="application/json">{"meta":{"fee":0,"inputs":10,"souvenir":false,"stattrak":true,"minWindow":0.6,"source":"buff","minSold":5},"steps":[{"label":"Mil-Spec → Restricted","n":2,"best":112,"cost":389}],"skins":["SG 553 | Ol' Rusty","Sawed-Off | Fusion","M4A1-S | Electrum","MAG-7 | Monster Call","Desert Eagle | Firebreathing","MAC-10 | Allure","Tec-9 | Brother","Galil AR | Connexion","MP5-SD | Kitbash","MP7 | Amberline","Galil AR | Galigator","MP9 | Urban Sovereign"],"cols":["The Fracture Collection","The Dead Hand Collection"],"rows":[[0,389,112,501,287,0,112,501,501,[[0,7],[1,3]],[[0,0,7,32,0,420,600,2],[1,1,2,35,700,1180,600,2],[1,0,1,95,0,420,600,2]],[[2,0,60,1591,698,2,40],[3,0,140,503,698,2,10],[4,0,60,1041,698,2,29],[5,0,140,375,698,2,12],[6,0,140,346,698,2,8],[7,0,140,288,558,2,14],[8,0,140,269,558,2,12],[9,0,60,578,698,2,14],[10,0,60,547,698,2,22],[11,0,60,433,698,2,7]],440],[0,323,81,404,252,0,81,404,404,[[1,1],[0,9]],[[1,1,1,35,709,1220,640,2],[0,0,9,32,1,448,640,2]],[[3,0,180,503,698,2,10],[5,0,180,375,698,2,12],[6,0,180,346,698,2,8],[7,0,180,288,558,2,14],[8,0,180,269,558,2,12],[2,0,20,1591,698,2,40],[4,0,20,1041,698,2,29],[9,0,20,578,698,2,14],[10,0,20,547,698,2,22],[11,0,20,433,698,2,7]],640]]}</script>
 <script>
 (function () {
   var D = JSON.parse(document.getElementById('cs-data').textContent);
@@ -206,11 +206,11 @@ border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;fon
 
     H.push('<h4>Что выпадет</h4><div class="scroll"><table><thead><tr>'
       + '<th class="n">Шанс</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
-      + '<th class="n">Цена</th></tr></thead><tbody>');
+      + '<th class="n">Цена</th><th class="n" title="Продаж за 30 дней на Skinport">Продаж/30д</th></tr></thead><tbody>');
     row[11].forEach(function (o) {
       H.push('<tr><td class="n">' + pct(o[2]) + '</td><td>' + itemBtn('out', o[0], o[5])
         + '</td><td>' + WEAR[o[1]] + '</td><td>' + f4(o[4]) + '</td>'
-        + '<td class="n">' + usd(o[3]) + '</td></tr>');
+        + '<td class="n">' + usd(o[3]) + '</td><td class="n">' + (o[6] == null ? '—' : o[6]) + '</td></tr>');
     });
     H.push('</tbody></table></div>');
 

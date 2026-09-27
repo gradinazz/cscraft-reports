@@ -71,8 +71,8 @@ border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;fon
 @media(max-width:640px){.wrap{padding:20px 12px 60px}table{font-size:13px}}
 </style></head>
 <body><div class="wrap"><a class="cscraft-back" href="../?src=buff">&larr; Все расчёты</a><h1>Трейд-ап контракты</h1>
-<p class="sub">27.09.2026, 22:49:01 · найдено <b>0</b> прибыльных контрактов</p>
-<p><span class="chip">цены Buff163: покупка по avg30, продажа по bid</span><span class="chip">комиссия 0%</span><span class="chip">10 предметов</span><span class="chip">сувенирные участвуют</span><span class="chip">без StatTrak</span><span class="chip">окно входа от 90% полосы износа</span></p>
+<p class="sub">28.09.2026, 00:04:57 · найдено <b>0</b> прибыльных контрактов</p>
+<p><span class="chip">цены Buff163: покупка по avg30, продажа по bid</span><span class="chip">комиссия 0%</span><span class="chip">выход от 5 продаж за 30 дней (Skinport)</span><span class="chip">10 предметов</span><span class="chip">сувенирные участвуют</span><span class="chip">без StatTrak</span><span class="chip">окно входа от 90% полосы износа</span></p>
 <p class="note">Каждый вход — задание на покупку: скин в указанном износе с флоатом внутри окна. Ширина окна указана долей полосы износа — какая часть лотов этого износа подойдёт; заданный процент это минимум, где можно шире — расширено. Прибыль указана за вычетом комиссии и посчитана по <b>худшему</b> сочетанию флоатов внутри окон — это нижняя граница, а не удачный случай. «Вернётся в среднем» — математическое ожидание по исходам контракта. «Окупает» — вероятность, что один выпавший предмет стоит дороже всего контракта. Износы: FN — Factory New, MW — Minimal Wear, FT — Field-Tested, WW — Well-Worn, BS — Battle-Scarred.</p>
 <h2>Сводка</h2>
 <div class="scroll"><table><thead><tr><th>Переход</th><th class="n">Контрактов</th><th class="n">Лучший результат</th><th class="n">Вложить</th></tr></thead><tbody></tbody></table></div>
@@ -89,7 +89,7 @@ border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;fon
 <div id="cs-list"></div>
 <noscript><p class="empty">Список контрактов рисует скрипт, а он отключён. Тот же отчёт без скриптов — в одноимённом файле <b>.md</b>.</p></noscript>
 <!--CASCADE--></div>
-<script id="cs-data" type="application/json">{"meta":{"fee":0,"inputs":10,"souvenir":true,"stattrak":false,"minWindow":0.9,"source":"buff"},"steps":[],"skins":[],"cols":[],"rows":[]}</script>
+<script id="cs-data" type="application/json">{"meta":{"fee":0,"inputs":10,"souvenir":true,"stattrak":false,"minWindow":0.9,"source":"buff","minSold":5},"steps":[],"skins":[],"cols":[],"rows":[]}</script>
 <script>
 (function () {
   var D = JSON.parse(document.getElementById('cs-data').textContent);
@@ -206,11 +206,11 @@ border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;fon
 
     H.push('<h4>Что выпадет</h4><div class="scroll"><table><thead><tr>'
       + '<th class="n">Шанс</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
-      + '<th class="n">Цена</th></tr></thead><tbody>');
+      + '<th class="n">Цена</th><th class="n" title="Продаж за 30 дней на Skinport">Продаж/30д</th></tr></thead><tbody>');
     row[11].forEach(function (o) {
       H.push('<tr><td class="n">' + pct(o[2]) + '</td><td>' + itemBtn('out', o[0], o[5])
         + '</td><td>' + WEAR[o[1]] + '</td><td>' + f4(o[4]) + '</td>'
-        + '<td class="n">' + usd(o[3]) + '</td></tr>');
+        + '<td class="n">' + usd(o[3]) + '</td><td class="n">' + (o[6] == null ? '—' : o[6]) + '</td></tr>');
     });
     H.push('</tbody></table></div>');
 
