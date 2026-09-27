@@ -1,0 +1,374 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Трейд-ап контракты — Buff163, окно 70%, обычные</title><style>.cscraft-back{display:inline-block;margin:0 0 18px;font-size:13px;text-decoration:none;color:var(--muted)}.cscraft-back:hover{color:var(--accent)}:root[data-theme="light"]{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#e3e3e3;--head:#f7f7f8;--pos:#0a7c42;--accent:#2563eb;--card:#fff;--st:#c47b23;--sv:#b0891b}:root[data-theme="dark"]{--bg:#15171a;--fg:#e8e8e8;--muted:#9aa0a6;--line:#2c2f34;--head:#1d2025;--pos:#4ade80;--accent:#60a5fa;--card:#1a1d21;--st:#e0a458;--sv:#d9be5f}</style><script>try{var t=localStorage.getItem("cscraft-theme");if(t&&t!=="auto")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script><style>
+:root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#e3e3e3;--head:#f7f7f8;
+--pos:#0a7c42;--accent:#2563eb;--card:#fff;--st:#c47b23;--sv:#b0891b}
+@media (prefers-color-scheme:dark){:root{--bg:#15171a;--fg:#e8e8e8;--muted:#9aa0a6;
+--line:#2c2f34;--head:#1d2025;--pos:#4ade80;--accent:#60a5fa;--card:#1a1d21;
+--st:#e0a458;--sv:#d9be5f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:28px;margin:0 0 4px}
+h2{font-size:21px;margin:44px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+h4{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:18px 0 8px}
+.sub{color:var(--muted);margin:0 0 22px}
+table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:14px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:var(--head);font-weight:600;font-size:12px;text-transform:uppercase;
+letter-spacing:.04em;color:var(--muted)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.total td{font-weight:700;border-top:2px solid var(--line);border-bottom:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:18px 20px;margin:16px 0}
+.headline{font-size:16px;font-weight:600;margin:0 0 2px}
+.profit{color:var(--pos);font-weight:700}
+.note{color:var(--muted);font-size:13px;margin:6px 0 0}
+.chip{display:inline-block;background:var(--head);border:1px solid var(--line);
+border-radius:20px;padding:2px 10px;font-size:12px;color:var(--muted);margin-right:6px}
+a{color:var(--accent)}
+.scroll{overflow-x:auto}
+.muted{color:var(--muted)}
+
+/* --- интерактивная часть --- */
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;
+border-bottom:1px solid var(--line)}
+.line{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.line+.line{margin-top:8px}
+.line .cap{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.q{flex:1;min-width:220px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;
+background:var(--card);color:var(--fg);font:inherit}
+.tab{cursor:pointer;padding:5px 12px;border:1px solid var(--line);border-radius:20px;
+font-size:13px;background:var(--card);color:var(--fg);font-family:inherit}
+.tab:hover{border-color:var(--accent)}
+.tab[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fchip{display:inline-flex;align-items:center;background:var(--accent);color:#fff;
+border-radius:20px;padding:3px 4px 3px 11px;font-size:12.5px;max-width:100%}
+.fchip .x{background:transparent;border:0;color:inherit;cursor:pointer;font-size:15px;
+line-height:1;padding:0 7px;opacity:.75;font-family:inherit}
+.fchip .x:hover{opacity:1}
+.fchip .w{opacity:.75;margin-right:5px}
+.lnk{cursor:pointer;color:inherit;background:transparent;border:0;padding:0;font:inherit;
+text-align:left;text-decoration:underline;text-decoration-style:dotted;
+text-decoration-color:var(--line);text-underline-offset:3px}
+.lnk:hover{text-decoration-style:solid;text-decoration-color:var(--accent);color:var(--accent)}
+.count{color:var(--muted);font-size:13px;margin:16px 0 0}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;
+border-radius:4px;padding:1px 5px;margin-right:5px;vertical-align:1px;border:1px solid}
+.tag.st{color:var(--st);border-color:var(--st)}
+.tag.sv{color:var(--sv);border-color:var(--sv)}
+.rank{color:var(--muted);font-weight:400}
+.pb{font-variant-numeric:tabular-nums;font-weight:600}
+.pb.hi{color:var(--pos)}
+.empty{padding:56px 20px;text-align:center;color:var(--muted)}
+.more{display:block;width:100%;padding:11px;margin:6px 0 40px;border:1px dashed var(--line);
+border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;font:inherit}
+.more:hover{border-color:var(--accent)}
+.hint{color:var(--muted);font-size:12.5px;margin:10px 0 0}
+.list td .lnk{font-size:13.5px}
+.list .sub2{color:var(--muted);font-size:12.5px}
+@media(max-width:640px){.wrap{padding:20px 12px 60px}table{font-size:13px}}
+</style></head>
+<body><div class="wrap"><a class="cscraft-back" href="../?src=buff">&larr; Все расчёты</a><h1>Трейд-ап контракты</h1>
+<p class="sub">27.09.2026, 22:46:41 · найдено <b>4</b> прибыльных контрактов</p>
+<p><span class="chip">цены Buff163: покупка по avg30, продажа по bid</span><span class="chip">комиссия 0%</span><span class="chip">10 предметов</span><span class="chip">сувенирные нет</span><span class="chip">без StatTrak</span><span class="chip">окно входа от 70% полосы износа</span></p>
+<p class="note">Каждый вход — задание на покупку: скин в указанном износе с флоатом внутри окна. Ширина окна указана долей полосы износа — какая часть лотов этого износа подойдёт; заданный процент это минимум, где можно шире — расширено. Прибыль указана за вычетом комиссии и посчитана по <b>худшему</b> сочетанию флоатов внутри окон — это нижняя граница, а не удачный случай. «Вернётся в среднем» — математическое ожидание по исходам контракта. «Окупает» — вероятность, что один выпавший предмет стоит дороже всего контракта. Износы: FN — Factory New, MW — Minimal Wear, FT — Field-Tested, WW — Well-Worn, BS — Battle-Scarred.</p>
+<h2>Сводка</h2>
+<div class="scroll"><table><thead><tr><th>Переход</th><th class="n">Контрактов</th><th class="n">Лучший результат</th><th class="n">Вложить</th></tr></thead><tbody><tr><td>Industrial → Mil-Spec</td><td class="n">4</td><td class="n"><span class="profit">$0.08</span></td><td class="n">$0.25</td></tr></tbody></table></div>
+<h2>Контракты</h2>
+<div class="bar" id="cs-bar">
+<div class="line"><input class="q" id="cs-q" type="search" placeholder="Поиск по предмету или коллекции…"><button class="tab" data-view="cards" aria-pressed="true">карточки</button><button class="tab" data-view="list" aria-pressed="false">списком</button></div>
+<div class="line"><span class="cap">сортировка</span><button class="tab" data-sort="profit" aria-pressed="true">прибыль</button><button class="tab" data-sort="roi" aria-pressed="false">ROI</button><button class="tab" data-sort="cost" aria-pressed="false">дешевле</button><button class="tab" data-sort="pb" aria-pressed="false">шанс окупить</button></div>
+<div class="line"><span class="cap">окупает от</span><button class="tab" data-pb="0" aria-pressed="true">любой</button><button class="tab" data-pb="200" aria-pressed="false">20%</button><button class="tab" data-pb="400" aria-pressed="false">40%</button><button class="tab" data-pb="600" aria-pressed="false">60%</button><button class="tab" data-pb="800" aria-pressed="false">80%</button><button class="tab" data-pb="1000" aria-pressed="false">100%</button></div>
+<div class="line"><span class="cap">переход</span><button class="tab" data-step="-1" aria-pressed="true">все</button><button class="tab" data-step="0" aria-pressed="false">Industrial → Mil-Spec (4)</button></div>
+<div class="line" id="cs-chips"></div>
+</div>
+<p class="hint">Нажмите на любой предмет или коллекцию — отчёт покажет все контракты с ними. Фильтры складываются.</p>
+<p class="count" id="cs-count"></p>
+<div id="cs-list"></div>
+<noscript><p class="empty">Список контрактов рисует скрипт, а он отключён. Тот же отчёт без скриптов — в одноимённом файле <b>.md</b>.</p></noscript>
+<!--CASCADE--></div>
+<script id="cs-data" type="application/json">{"meta":{"fee":0,"inputs":10,"souvenir":false,"stattrak":false,"minWindow":0.7,"source":"buff"},"steps":[{"label":"Industrial → Mil-Spec","n":4,"best":8,"cost":25}],"skins":["FAMAS | Corp Defense","Five-SeveN | Desert Seal","Tec-9 | Sultan","M4A4 | Dark Operative","MP9 | Spy Prototype","R8 Revolver | Monarch","FAMAS | Snake Song","MAC-10 | Arabesque Mosaic","Sawed-Off | Lunar Wyrm","AUG | Signal Scanner","M249 | Gator Mesh","SSG 08 | Acid Fade","Five-SeveN | Silver Quartz","FAMAS | Teardown","PP-Bizon | Traitor","R8 Revolver | Dark Chamber","AUG | Creep","Desert Eagle | The Daily Deagle","P2000 | Grip Tape","P90 | Aeolian Light","CZ75-Auto | Copper Fiber","Glock-18 | Green Line","UMP-45 | Late Night Transit","FAMAS | 2A2F","XM1014 | Run Run Run"],"cols":["The Spy Tech Collection","The Arabesque Collection","The Safehouse Collection","The Achroma Collection","The Train 2025 Collection"],"rows":[[0,25,8,33,320,0,8,33,33,[[0,5],[1,5]],[[0,2,5,3,1501,3240,757,0],[1,3,5,2,3811,4340,757,0]],[[2,2,125,55,3790,0],[3,2,125,31,3790,0],[4,2,125,30,3790,0],[5,2,125,30,3790,0],[6,2,125,30,3790,0],[7,2,125,30,3790,0],[8,2,125,30,3790,0],[9,2,125,28,3790,0]],1000],[0,27,7,34,267,0,7,34,34,[[1,7],[0,1],[2,2]],[[1,3,7,2,3801,4300,713,0],[0,2,1,3,1501,3140,713,0],[10,1,2,5,702,1272,713,0]],[[2,2,175,55,3748,0],[6,2,175,30,3748,0],[7,2,175,30,3748,0],[8,2,175,30,3748,0],[11,0,67,62,112,0],[12,1,67,16,1499,0],[3,2,25,31,3748,0],[4,2,25,30,3748,0],[5,2,25,30,3748,0],[9,2,25,28,3748,0],[13,2,67,10,2248,0]],867],[0,27,7,34,264,0,7,34,34,[[1,9],[3,1]],[[1,3,7,2,3801,4300,713,0],[14,2,2,4,1501,3140,713,0],[15,1,1,5,715,1285,713,0]],[[2,2,225,55,3798,0],[6,2,225,30,3798,0],[7,2,225,30,3798,0],[8,2,225,30,3798,0],[16,2,25,15,3038,0],[17,2,25,15,2202,0],[18,2,25,15,2848,0],[19,2,25,15,2468,0]],900],[0,26,7,33,269,0,7,33,33,[[4,2],[1,8]],[[20,1,2,4,701,1284,730,0],[1,3,7,2,3809,4320,730,0],[14,2,1,4,1501,3180,730,0]],[[2,2,200,55,3798,0],[6,2,200,30,3798,0],[7,2,200,30,3798,0],[8,2,200,30,3798,0],[21,2,50,25,3798,0],[22,2,50,22,3798,0],[23,2,50,18,3266,0],[24,2,50,15,2835,0]],800]]}</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('cs-data').textContent);
+  var WEAR = ['FN', 'MW', 'FT', 'WW', 'BS'];
+  var PAGE = 15;
+  var PB = [0, 200, 400, 600, 800, 1000];
+
+  var st = { step: -1, filters: [], sort: 'profit', q: '', pb: 0, view: 'cards', limit: PAGE };
+
+  var esc = function (s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
+  var usd = function (c) { return '$' + (c / 100).toFixed(2); };
+  var pct = function (p) { return (p / 10).toFixed(1) + '%'; };
+  var f4 = function (e) { return (e / 10000).toFixed(4); };
+  var qual = function (bits) {
+    return (bits & 1 ? '<span class="tag sv">SOUVENIR</span>' : '')
+      + (bits & 2 ? '<span class="tag st">ST\u2122</span>' : '');
+  };
+  var pbCell = function (p) {
+    return '<span class="pb' + (p >= 800 ? ' hi' : '') + '">' + pct(p) + '</span>';
+  };
+
+  // Текст для поиска — считается один раз, при первом запросе.
+  var hay = null;
+  function haystack(i) {
+    if (!hay) {
+      hay = D.rows.map(function (r) {
+        var parts = [];
+        r[9].forEach(function (c) { parts.push(D.cols[c[0]]); });
+        r[10].forEach(function (x) { parts.push(D.skins[x[0]]); });
+        r[11].forEach(function (x) { parts.push(D.skins[x[0]]); });
+        return parts.join(' ').toLowerCase();
+      });
+    }
+    return hay[i];
+  }
+
+  function has(list, idx) {
+    for (var i = 0; i < list.length; i++) if (list[i][0] === idx) return true;
+    return false;
+  }
+
+  function matches(r, i) {
+    if (st.step >= 0 && r[0] !== st.step) return false;
+    if (r[12] < st.pb) return false;
+    for (var k = 0; k < st.filters.length; k++) {
+      var f = st.filters[k];
+      if (f.t === 'in' && !has(r[10], f.i)) return false;
+      if (f.t === 'out' && !has(r[11], f.i)) return false;
+      if (f.t === 'col' && !has(r[9], f.i)) return false;
+    }
+    if (st.q && haystack(i).indexOf(st.q) < 0) return false;
+    return true;
+  }
+
+  function sortRows(list) {
+    return list.sort(function (a, b) {
+      if (st.sort === 'roi') return b[4] - a[4];
+      if (st.sort === 'cost') return a[1] - b[1];
+      if (st.sort === 'pb') return b[12] - a[12] || b[2] - a[2];
+      return b[2] - a[2];
+    });
+  }
+
+  function itemBtn(kind, idx, bits) {
+    return qual(bits) + '<button class="lnk" data-t="' + kind + '" data-i="' + idx + '">'
+      + esc(D.skins[idx]) + '</button>';
+  }
+
+  function compLine(row) {
+    return row[9].map(function (c) {
+      return c[1] + 'x <button class="lnk" data-t="col" data-i="' + c[0] + '">'
+        + esc(D.cols[c[0]]) + '</button>';
+    }).join(' + ');
+  }
+
+  function payback(row) {
+    var names = [];
+    row[11].forEach(function (o) { if (o[3] > row[1]) names.push(D.skins[o[0]]); });
+    return names;
+  }
+
+  function card(row, rank) {
+    var H = [];
+    H.push('<div class="card">');
+    H.push('<div class="headline"><span class="rank">' + rank + '.</span> ' + compLine(row) + '</div>');
+    H.push('<p class="note">' + esc(D.steps[row[0]].label) + ' \u00b7 вложить <b>' + usd(row[1])
+      + '</b> \u2192 вернётся в среднем <b>' + usd(row[3])
+      + '</b> \u2192 <span class="profit">' + usd(row[2]) + ' (' + pct(row[4]) + ')</span></p>');
+
+    H.push('<h4>Что купить</h4><div class="scroll"><table><thead><tr>'
+      + '<th class="n">Кол-во</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
+      + '<th class="n">Цена шт.</th><th class="n">Сумма</th></tr></thead><tbody>');
+    row[10].forEach(function (i) {
+      H.push('<tr><td class="n">' + i[2] + 'x</td><td>' + itemBtn('in', i[0], i[7])
+        + '</td><td>' + WEAR[i[1]] + '</td><td>' + f4(i[4]) + ' \u2013 ' + f4(i[5])
+        + ' <span class="muted">(' + Math.round(i[6] / 10) + '% ' + WEAR[i[1]] + ')</span></td>'
+        + '<td class="n">' + usd(i[3]) + '</td><td class="n">' + usd(i[3] * i[2]) + '</td></tr>');
+    });
+    H.push('<tr class="total"><td class="n">10</td><td></td><td></td><td></td><td></td>'
+      + '<td class="n"><b>' + usd(row[1]) + '</b></td></tr></tbody></table></div>');
+
+    if (row[5] & 2) {
+      H.push('<p class="note">Внутри окна есть сочетание флоатов хуже верхней границы:'
+        + ' там вернётся ' + usd(row[7]) + ' вместо ' + usd(row[8])
+        + '. Прибыль в шапке посчитана по нему.</p>');
+    }
+    if (row[5] & 1) {
+      H.push('<p class="note">Прибыль посчитана по худшему сочетанию флоатов внутри окон;'
+        + ' при удачном сочетании выйдет до ' + usd(row[6]) + '.</p>');
+    }
+
+    H.push('<h4>Что выпадет</h4><div class="scroll"><table><thead><tr>'
+      + '<th class="n">Шанс</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
+      + '<th class="n">Цена</th></tr></thead><tbody>');
+    row[11].forEach(function (o) {
+      H.push('<tr><td class="n">' + pct(o[2]) + '</td><td>' + itemBtn('out', o[0], o[5])
+        + '</td><td>' + WEAR[o[1]] + '</td><td>' + f4(o[4]) + '</td>'
+        + '<td class="n">' + usd(o[3]) + '</td></tr>');
+    });
+    H.push('</tbody></table></div>');
+
+    var names = payback(row);
+    if (names.length) {
+      H.push('<p class="note">Шанс окупить контракт одним предметом: '
+        + pbCell(row[12]) + ' \u2014 ' + esc(names.join(', ')) + '</p>');
+    }
+    H.push('</div>');
+    return H.join('');
+  }
+
+  function listRows(rows, from) {
+    var H = ['<div class="scroll"><table class="list"><thead><tr>'
+      + '<th class="n">№</th><th class="n">Прибыль</th><th class="n">ROI</th>'
+      + '<th class="n">Вложить</th><th class="n">Окупает</th><th>Коллекции</th>'
+      + '<th>Что покупать</th></tr></thead><tbody>'];
+    rows.forEach(function (row, k) {
+      var buy = row[10].map(function (i) {
+        return i[2] + 'x ' + itemBtn('in', i[0], i[7]) + ' <span class="sub2">[' + WEAR[i[1]]
+          + '] ' + f4(i[4]) + '\u2013' + f4(i[5]) + '</span>';
+      }).join('<br>');
+      H.push('<tr><td class="n">' + (from + k + 1) + '</td>'
+        + '<td class="n"><span class="profit">' + usd(row[2]) + '</span></td>'
+        + '<td class="n">' + pct(row[4]) + '</td>'
+        + '<td class="n">' + usd(row[1]) + '</td>'
+        + '<td class="n">' + pbCell(row[12]) + '</td>'
+        + '<td>' + compLine(row) + '</td>'
+        + '<td>' + buy + '</td></tr>');
+    });
+    H.push('</tbody></table></div>');
+    return H.join('');
+  }
+
+  function label(f) {
+    var what = f.t === 'col' ? 'коллекция' : f.t === 'in' ? 'вход' : 'исход';
+    var name = f.t === 'col' ? D.cols[f.i] : D.skins[f.i];
+    return '<span class="w">' + what + ':</span> <b>' + esc(name) + '</b>';
+  }
+
+  function draw() {
+    var picked = [];
+    for (var i = 0; i < D.rows.length; i++) {
+      if (matches(D.rows[i], i)) picked.push(D.rows[i]);
+    }
+    sortRows(picked);
+
+    var chips = st.filters.map(function (f, k) {
+      return '<span class="fchip">' + label(f)
+        + '<button class="x" data-drop="' + k + '" title="Убрать">\u00d7</button></span>';
+    }).join('');
+    if (st.filters.length) {
+      chips += '<button class="tab" data-drop="all">сбросить</button>';
+    }
+    document.getElementById('cs-chips').innerHTML = chips;
+
+    var n = Math.min(st.limit, picked.length);
+    var head = 'Найдено <b>' + picked.length + '</b>';
+    if (picked.length > n) head += ', показаны первые ' + n;
+    document.getElementById('cs-count').innerHTML = head;
+
+    var out = document.getElementById('cs-list');
+    if (!picked.length) {
+      out.innerHTML = '<div class="empty">Ничего не нашлось.<br>'
+        + 'Снимите часть фильтров или опустите порог окупаемости.</div>';
+      return;
+    }
+
+    var html = [];
+    if (st.view === 'list') {
+      html.push(listRows(picked.slice(0, n), 0));
+    } else {
+      for (var j = 0; j < n; j++) html.push(card(picked[j], j + 1));
+    }
+    if (picked.length > n) {
+      html.push('<button class="more" data-more="1">Показать ещё '
+        + Math.min(PAGE, picked.length - n) + ' \u00b7 осталось ' + (picked.length - n) + '</button>');
+    }
+    out.innerHTML = html.join('');
+  }
+
+  function press(sel, on) {
+    [].forEach.call(document.querySelectorAll(sel), function (b) {
+      b.setAttribute('aria-pressed', on(b) ? 'true' : 'false');
+    });
+  }
+
+  function addFilter(t, i) {
+    for (var k = 0; k < st.filters.length; k++) {
+      if (st.filters[k].t === t && st.filters[k].i === i) return;
+    }
+    st.filters.push({ t: t, i: i });
+    st.limit = PAGE;
+    draw();
+    document.getElementById('cs-bar').scrollIntoView({ block: 'start' });
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest
+      ? e.target.closest('[data-t],[data-drop],[data-more],[data-step],[data-sort],[data-pb],[data-view]')
+      : null;
+    if (!el) return;
+    var d = el.dataset;
+    if (d.t) { addFilter(d.t, +d.i); return; }
+    if (d.drop) {
+      st.filters = d.drop === 'all' ? [] : st.filters.filter(function (_, k) { return k !== +d.drop; });
+      st.limit = PAGE;
+      draw();
+      return;
+    }
+    if (d.more) { st.limit += PAGE; draw(); return; }
+    if (d.step !== undefined) {
+      st.step = +d.step;
+      st.limit = PAGE;
+      press('[data-step]', function (b) { return +b.dataset.step === st.step; });
+      draw();
+      return;
+    }
+    if (d.sort) {
+      st.sort = d.sort;
+      st.limit = PAGE;
+      press('[data-sort]', function (b) { return b.dataset.sort === st.sort; });
+      draw();
+      return;
+    }
+    if (d.pb !== undefined) {
+      st.pb = +d.pb;
+      st.limit = PAGE;
+      press('[data-pb]', function (b) { return +b.dataset.pb === st.pb; });
+      draw();
+      return;
+    }
+    if (d.view) {
+      st.view = d.view;
+      st.limit = PAGE;
+      press('[data-view]', function (b) { return b.dataset.view === st.view; });
+      draw();
+    }
+  });
+
+  var q = document.getElementById('cs-q');
+  var timer = null;
+  q.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      st.q = q.value.trim().toLowerCase();
+      st.limit = PAGE;
+      draw();
+    }, 120);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.activeElement === q) {
+      q.value = '';
+      st.q = '';
+      draw();
+    }
+  });
+
+  draw();
+}());
+</script></body></html>
