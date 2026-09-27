@@ -4,42 +4,42 @@
 
 Полный перебор десяток по коллекциям на ценах BetterFloat (вход — средняя за 30 дней,
 выход — лучший бид). Прибыль считается по худшему сочетанию флоатов внутри окон покупки,
-то есть это нижняя граница, а не удачный случай. Данные зафиксированы на 2026-08-12.
+то есть это нижняя граница, а не удачный случай. Данные зафиксированы на 2026-09-27.
 
 ## Что здесь есть
 
 | Пул | Окно входа | Контрактов | ROI ≥100% | Лучший ROI | Макс. прибыль | |
 |---|---:|---:|---:|---:|---:|---|
-| обычные | 10% | 5483 | 801 | 327.6% | $166.93 | [отчёт](reports/contracts_w10_normal_2026-08-12.html) |
-| сувенирные | 10% | 5741 | 976 | 327.6% | $402.04 | [отчёт](reports/contracts_w10_souvenir_2026-08-12.html) |
-| StatTrak™ | 10% | 1847 | 100 | 212.5% | $160.50 | [отчёт](reports/contracts_w10_stattrak_2026-08-12.html) |
-| обычные | 20% | 4285 | 278 | 246.0% | $129.36 | [отчёт](reports/contracts_w20_normal_2026-08-12.html) |
-| сувенирные | 20% | 4466 | 347 | 246.0% | $128.88 | [отчёт](reports/contracts_w20_souvenir_2026-08-12.html) |
-| StatTrak™ | 20% | 1432 | 25 | 155.7% | $125.61 | [отчёт](reports/contracts_w20_stattrak_2026-08-12.html) |
-| обычные | 30% | 2904 | 73 | 180.0% | $94.74 | [отчёт](reports/contracts_w30_normal_2026-08-12.html) |
-| сувенирные | 30% | 3079 | 112 | 180.0% | $99.39 | [отчёт](reports/contracts_w30_souvenir_2026-08-12.html) |
-| StatTrak™ | 30% | 883 | 0 | 86.8% | $96.92 | [отчёт](reports/contracts_w30_stattrak_2026-08-12.html) |
-| обычные | 40% | 1716 | 27 | 148.2% | $74.16 | [отчёт](reports/contracts_w40_normal_2026-08-12.html) |
-| сувенирные | 40% | 1912 | 29 | 148.2% | $74.16 | [отчёт](reports/contracts_w40_souvenir_2026-08-12.html) |
-| StatTrak™ | 40% | 428 | 0 | 69.9% | $73.04 | [отчёт](reports/contracts_w40_stattrak_2026-08-12.html) |
-| обычные | 50% | 843 | 1 | 100.2% | $61.11 | [отчёт](reports/contracts_w50_normal_2026-08-12.html) |
-| сувенирные | 50% | 1040 | 0 | 94.5% | $61.11 | [отчёт](reports/contracts_w50_souvenir_2026-08-12.html) |
-| StatTrak™ | 50% | 143 | 0 | 53.1% | $51.98 | [отчёт](reports/contracts_w50_stattrak_2026-08-12.html) |
-| обычные | 60% | 286 | 0 | 75.5% | $48.84 | [отчёт](reports/contracts_w60_normal_2026-08-12.html) |
-| сувенирные | 60% | 456 | 0 | 75.5% | $48.84 | [отчёт](reports/contracts_w60_souvenir_2026-08-12.html) |
-| StatTrak™ | 60% | 9 | 0 | 30.5% | $7.39 | [отчёт](reports/contracts_w60_stattrak_2026-08-12.html) |
-| обычные | 70% | 74 | 0 | 35.0% | $11.87 | [отчёт](reports/contracts_w70_normal_2026-08-12.html) |
-| сувенирные | 70% | 197 | 0 | 56.6% | $18.34 | [отчёт](reports/contracts_w70_souvenir_2026-08-12.html) |
-| StatTrak™ | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_stattrak_2026-08-12.html) |
-| обычные | 80% | 20 | 0 | 29.0% | $5.37 | [отчёт](reports/contracts_w80_normal_2026-08-12.html) |
-| сувенирные | 80% | 142 | 0 | 45.6% | $17.29 | [отчёт](reports/contracts_w80_souvenir_2026-08-12.html) |
-| StatTrak™ | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_stattrak_2026-08-12.html) |
-| обычные | 90% | 5 | 0 | 27.6% | $1.29 | [отчёт](reports/contracts_w90_normal_2026-08-12.html) |
-| сувенирные | 90% | 59 | 0 | 37.2% | $6.89 | [отчёт](reports/contracts_w90_souvenir_2026-08-12.html) |
-| StatTrak™ | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_stattrak_2026-08-12.html) |
-| обычные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_normal_2026-08-12.html) |
-| сувенирные | 100% | 35 | 0 | 33.4% | $3.84 | [отчёт](reports/contracts_w100_souvenir_2026-08-12.html) |
-| StatTrak™ | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_stattrak_2026-08-12.html) |
+| обычные | 10% | 4415 | 481 | 270.1% | $141.51 | [отчёт](reports/contracts_w10_normal_2026-09-27.html) |
+| сувенирные | 10% | 4565 | 486 | 270.1% | $141.51 | [отчёт](reports/contracts_w10_souvenir_2026-09-27.html) |
+| StatTrak™ | 10% | 1579 | 84 | 197.1% | $141.58 | [отчёт](reports/contracts_w10_stattrak_2026-09-27.html) |
+| обычные | 20% | 3486 | 180 | 224.8% | $114.89 | [отчёт](reports/contracts_w20_normal_2026-09-27.html) |
+| сувенирные | 20% | 3564 | 179 | 224.8% | $114.89 | [отчёт](reports/contracts_w20_souvenir_2026-09-27.html) |
+| StatTrak™ | 20% | 1216 | 18 | 122.2% | $109.61 | [отчёт](reports/contracts_w20_stattrak_2026-09-27.html) |
+| обычные | 30% | 2275 | 53 | 176.6% | $101.34 | [отчёт](reports/contracts_w30_normal_2026-09-27.html) |
+| сувенирные | 30% | 2315 | 48 | 176.6% | $101.34 | [отчёт](reports/contracts_w30_souvenir_2026-09-27.html) |
+| StatTrak™ | 30% | 716 | 1 | 102.5% | $84.53 | [отчёт](reports/contracts_w30_stattrak_2026-09-27.html) |
+| обычные | 40% | 1139 | 3 | 128.6% | $85.77 | [отчёт](reports/contracts_w40_normal_2026-09-27.html) |
+| сувенирные | 40% | 1145 | 3 | 128.6% | $85.77 | [отчёт](reports/contracts_w40_souvenir_2026-09-27.html) |
+| StatTrak™ | 40% | 327 | 0 | 70.9% | $67.09 | [отчёт](reports/contracts_w40_stattrak_2026-09-27.html) |
+| обычные | 50% | 454 | 0 | 87.9% | $67.68 | [отчёт](reports/contracts_w50_normal_2026-09-27.html) |
+| сувенирные | 50% | 453 | 0 | 87.9% | $67.68 | [отчёт](reports/contracts_w50_souvenir_2026-09-27.html) |
+| StatTrak™ | 50% | 93 | 0 | 46.6% | $48.01 | [отчёт](reports/contracts_w50_stattrak_2026-09-27.html) |
+| обычные | 60% | 59 | 0 | 60.8% | $47.94 | [отчёт](reports/contracts_w60_normal_2026-09-27.html) |
+| сувенирные | 60% | 59 | 0 | 60.8% | $47.94 | [отчёт](reports/contracts_w60_souvenir_2026-09-27.html) |
+| StatTrak™ | 60% | 2 | 0 | 28.7% | $1.12 | [отчёт](reports/contracts_w60_stattrak_2026-09-27.html) |
+| обычные | 70% | 4 | 0 | 32.0% | $0.08 | [отчёт](reports/contracts_w70_normal_2026-09-27.html) |
+| сувенирные | 70% | 4 | 0 | 32.0% | $0.08 | [отчёт](reports/contracts_w70_souvenir_2026-09-27.html) |
+| StatTrak™ | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_stattrak_2026-09-27.html) |
+| обычные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_normal_2026-09-27.html) |
+| сувенирные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_souvenir_2026-09-27.html) |
+| StatTrak™ | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_stattrak_2026-09-27.html) |
+| обычные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_normal_2026-09-27.html) |
+| сувенирные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_souvenir_2026-09-27.html) |
+| StatTrak™ | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_stattrak_2026-09-27.html) |
+| обычные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_normal_2026-09-27.html) |
+| сувенирные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_souvenir_2026-09-27.html) |
+| StatTrak™ | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_stattrak_2026-09-27.html) |
 
 «Окно входа» — минимальная доля полосы износа, внутри которой должен лежать флоат
 покупаемого предмета. Чем шире окно, тем легче найти лот на рынке и тем меньше
