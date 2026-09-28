@@ -1,0 +1,374 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Трейд-ап контракты — CSFloat, окно 60%, обычные</title><style>.cscraft-back{display:inline-block;margin:0 0 18px;font-size:13px;text-decoration:none;color:var(--muted)}.cscraft-back:hover{color:var(--accent)}:root[data-theme="light"]{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#e3e3e3;--head:#f7f7f8;--pos:#0a7c42;--accent:#2563eb;--card:#fff;--st:#c47b23;--sv:#b0891b}:root[data-theme="dark"]{--bg:#15171a;--fg:#e8e8e8;--muted:#9aa0a6;--line:#2c2f34;--head:#1d2025;--pos:#4ade80;--accent:#60a5fa;--card:#1a1d21;--st:#e0a458;--sv:#d9be5f}</style><script>try{var t=localStorage.getItem("cscraft-theme");if(t&&t!=="auto")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script><style>
+:root{--bg:#fff;--fg:#1a1a1a;--muted:#666;--line:#e3e3e3;--head:#f7f7f8;
+--pos:#0a7c42;--accent:#2563eb;--card:#fff;--st:#c47b23;--sv:#b0891b}
+@media (prefers-color-scheme:dark){:root{--bg:#15171a;--fg:#e8e8e8;--muted:#9aa0a6;
+--line:#2c2f34;--head:#1d2025;--pos:#4ade80;--accent:#60a5fa;--card:#1a1d21;
+--st:#e0a458;--sv:#d9be5f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:32px 20px 80px}
+h1{font-size:28px;margin:0 0 4px}
+h2{font-size:21px;margin:44px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+h4{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:18px 0 8px}
+.sub{color:var(--muted);margin:0 0 22px}
+table{border-collapse:collapse;width:100%;margin:10px 0 16px;font-size:14px}
+th,td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:var(--head);font-weight:600;font-size:12px;text-transform:uppercase;
+letter-spacing:.04em;color:var(--muted)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.total td{font-weight:700;border-top:2px solid var(--line);border-bottom:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+padding:18px 20px;margin:16px 0}
+.headline{font-size:16px;font-weight:600;margin:0 0 2px}
+.profit{color:var(--pos);font-weight:700}
+.note{color:var(--muted);font-size:13px;margin:6px 0 0}
+.chip{display:inline-block;background:var(--head);border:1px solid var(--line);
+border-radius:20px;padding:2px 10px;font-size:12px;color:var(--muted);margin-right:6px}
+a{color:var(--accent)}
+.scroll{overflow-x:auto}
+.muted{color:var(--muted)}
+
+/* --- интерактивная часть --- */
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;
+border-bottom:1px solid var(--line)}
+.line{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.line+.line{margin-top:8px}
+.line .cap{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.q{flex:1;min-width:220px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;
+background:var(--card);color:var(--fg);font:inherit}
+.tab{cursor:pointer;padding:5px 12px;border:1px solid var(--line);border-radius:20px;
+font-size:13px;background:var(--card);color:var(--fg);font-family:inherit}
+.tab:hover{border-color:var(--accent)}
+.tab[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fchip{display:inline-flex;align-items:center;background:var(--accent);color:#fff;
+border-radius:20px;padding:3px 4px 3px 11px;font-size:12.5px;max-width:100%}
+.fchip .x{background:transparent;border:0;color:inherit;cursor:pointer;font-size:15px;
+line-height:1;padding:0 7px;opacity:.75;font-family:inherit}
+.fchip .x:hover{opacity:1}
+.fchip .w{opacity:.75;margin-right:5px}
+.lnk{cursor:pointer;color:inherit;background:transparent;border:0;padding:0;font:inherit;
+text-align:left;text-decoration:underline;text-decoration-style:dotted;
+text-decoration-color:var(--line);text-underline-offset:3px}
+.lnk:hover{text-decoration-style:solid;text-decoration-color:var(--accent);color:var(--accent)}
+.count{color:var(--muted);font-size:13px;margin:16px 0 0}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;
+border-radius:4px;padding:1px 5px;margin-right:5px;vertical-align:1px;border:1px solid}
+.tag.st{color:var(--st);border-color:var(--st)}
+.tag.sv{color:var(--sv);border-color:var(--sv)}
+.rank{color:var(--muted);font-weight:400}
+.pb{font-variant-numeric:tabular-nums;font-weight:600}
+.pb.hi{color:var(--pos)}
+.empty{padding:56px 20px;text-align:center;color:var(--muted)}
+.more{display:block;width:100%;padding:11px;margin:6px 0 40px;border:1px dashed var(--line);
+border-radius:10px;background:transparent;color:var(--accent);cursor:pointer;font:inherit}
+.more:hover{border-color:var(--accent)}
+.hint{color:var(--muted);font-size:12.5px;margin:10px 0 0}
+.list td .lnk{font-size:13.5px}
+.list .sub2{color:var(--muted);font-size:12.5px}
+@media(max-width:640px){.wrap{padding:20px 12px 60px}table{font-size:13px}}
+</style></head>
+<body><div class="wrap"><a class="cscraft-back" href="../?src=csfloat">&larr; Все расчёты</a><h1>Трейд-ап контракты</h1>
+<p class="sub">28.09.2026, 07:16:10 · найдено <b>22</b> прибыльных контрактов</p>
+<p><span class="chip">цены CSFloat: покупка по avg30, продажа по bid</span><span class="chip">комиссия 0%</span><span class="chip">выход: объём CSFloat от 75</span><span class="chip">10 предметов</span><span class="chip">сувенирные нет</span><span class="chip">без StatTrak</span><span class="chip">окно входа от 60% полосы износа</span></p>
+<p class="note">Каждый вход — задание на покупку: скин в указанном износе с флоатом внутри окна. Ширина окна указана долей полосы износа — какая часть лотов этого износа подойдёт; заданный процент это минимум, где можно шире — расширено. Прибыль указана за вычетом комиссии и посчитана по <b>худшему</b> сочетанию флоатов внутри окон — это нижняя граница, а не удачный случай. «Вернётся в среднем» — математическое ожидание по исходам контракта. «Окупает» — вероятность, что один выпавший предмет стоит дороже всего контракта. Износы: FN — Factory New, MW — Minimal Wear, FT — Field-Tested, WW — Well-Worn, BS — Battle-Scarred.</p>
+<h2>Сводка</h2>
+<div class="scroll"><table><thead><tr><th>Переход</th><th class="n">Контрактов</th><th class="n">Лучший результат</th><th class="n">Вложить</th></tr></thead><tbody><tr><td>Mil-Spec → Restricted</td><td class="n">2</td><td class="n"><span class="profit">$1.37</span></td><td class="n">$2.89</td></tr><tr><td>Restricted → Classified</td><td class="n">14</td><td class="n"><span class="profit">$15.48</span></td><td class="n">$58.03</td></tr><tr><td>Classified → Covert</td><td class="n">6</td><td class="n"><span class="profit">$39.76</span></td><td class="n">$144.96</td></tr></tbody></table></div>
+<h2>Контракты</h2>
+<div class="bar" id="cs-bar">
+<div class="line"><input class="q" id="cs-q" type="search" placeholder="Поиск по предмету или коллекции…"><button class="tab" data-view="cards" aria-pressed="true">карточки</button><button class="tab" data-view="list" aria-pressed="false">списком</button></div>
+<div class="line"><span class="cap">сортировка</span><button class="tab" data-sort="profit" aria-pressed="true">прибыль</button><button class="tab" data-sort="roi" aria-pressed="false">ROI</button><button class="tab" data-sort="cost" aria-pressed="false">дешевле</button><button class="tab" data-sort="pb" aria-pressed="false">шанс окупить</button></div>
+<div class="line"><span class="cap">окупает от</span><button class="tab" data-pb="0" aria-pressed="true">любой</button><button class="tab" data-pb="200" aria-pressed="false">20%</button><button class="tab" data-pb="400" aria-pressed="false">40%</button><button class="tab" data-pb="600" aria-pressed="false">60%</button><button class="tab" data-pb="800" aria-pressed="false">80%</button><button class="tab" data-pb="1000" aria-pressed="false">100%</button></div>
+<div class="line"><span class="cap">переход</span><button class="tab" data-step="-1" aria-pressed="true">все</button><button class="tab" data-step="0" aria-pressed="false">Mil-Spec → Restricted (2)</button><button class="tab" data-step="1" aria-pressed="false">Restricted → Classified (14)</button><button class="tab" data-step="2" aria-pressed="false">Classified → Covert (6)</button></div>
+<div class="line" id="cs-chips"></div>
+</div>
+<p class="hint">Нажмите на любой предмет или коллекцию — отчёт покажет все контракты с ними. Фильтры складываются.</p>
+<p class="count" id="cs-count"></p>
+<div id="cs-list"></div>
+<noscript><p class="empty">Список контрактов рисует скрипт, а он отключён. Тот же отчёт без скриптов — в одноимённом файле <b>.md</b>.</p></noscript>
+<!--CASCADE--></div>
+<script id="cs-data" type="application/json">{"meta":{"fee":0,"inputs":10,"souvenir":false,"stattrak":false,"minWindow":0.6,"source":"csfloat","minSold":75},"steps":[{"label":"Mil-Spec → Restricted","n":2,"best":137,"cost":289},{"label":"Restricted → Classified","n":14,"best":1548,"cost":5803},{"label":"Classified → Covert","n":6,"best":3976,"cost":14496}],"skins":["P90 | Facility Negative","SCAR-20 | Poultrygeist","MAG-7 | Foresight","Glock-18 | Nuclear Garden","AUG | Random Access","MAG-7 | Core Breach","M4A1-S | Night Terror","PP-Bizon | Space Cat","XM1014 | Zombie Offensive","G3SG1 | Dream Glade","USP-S | Ticket to Hell","Dual Berettas | Hideout","SSG 08 | Dezastre","UMP-45 | Motorized","Glock-18 | Block-18","Sawed-Off | Analog Input","M4A4 | Etch Lord","Five-SeveN | Hybrid","MP7 | Just Smile","AWP | PAW","G3SG1 | High Seas","Nova | Ocular","M4A1-S | Nightmare","FAMAS | Eye of Athena","Sawed-Off | Devourer","AWP | Ice Coaled","MP7 | Smoking Kills","Glock-18 | Mirror Mosaic","MP9 | Urban Sovereign","AK-47 | Crane Flight","P250 | Kintsugi","P90 | Deathgaze","Zeus x27 | Tosai","Glock-18 | Shinobu","AK-47 | Searing Rage","UMP-45 | K.O. Factory","MP7 | Abyssal Apparition","Dual Berettas | Melondrama","FAMAS | Rapid Eye Movement","P90 | Vent Rush","Sawed-Off | Kiss♥Love","AK-47 | Ice Coaled","P250 | Visions","Nova | Rising Sun","M4A1-S | Control Panel","Tec-9 | Remote Control","MP7 | Powercore","CZ75-Auto | Hydraulics","M4A1-S | Fatal Glitch","USP-S | Spiral Glitch","PP-Bizon | Osiris","Five-SeveN | Fowl Play","Glock-18 | Water Elemental","Desert Eagle | Conspiracy","CZ75-Auto | Eco","Glock-18 | Ifrit Lattice","UMP-45 | Continuum","M4A4 | Falak","Desert Eagle | Eastern Enigma","M4A1-S | Black Lotus","USP-S | Jawbreaker","Zeus x27 | Olympus","M249 | Downtown","AUG | Momentum","Zeus x27 | Dragon Snore","M4A4 | The Emperor","AK-47 | B the Monster","Five-SeveN | Angry Mob","G3SG1 | Flux","UMP-45 | Primal Saber","M4A1-S | Chantico's Fire","PP-Bizon | Judgement of Anubis","AK-47 | The Oligarch","USP-S | Kill Confirmed","M4A1-S | Golden Coil","M4A4 | Full Throttle","SG 553 | Cyrex","AK-47 | Aquamarine Revenge","AWP | Hyper Beast","AK-47 | Neon Rider","Desert Eagle | Code Red","AK-47 | Inheritance","AWP | Chrome Cannon"],"cols":["The 2018 Nuke Collection","The Dreams & Nightmares Collection","The Kilowatt Collection","The Horizon Collection","The Genesis Collection","The Dead Hand Collection","The Fever Collection","The Recoil Collection","The Spy Tech Collection","The Breakout Collection","The Arabesque Collection","The Prisma Collection","The Overpass 2024 Collection","The Shadow Collection","The Chroma 3 Collection","The Falchion Collection"],"rows":[[0,289,137,426,476,1,223,426,426,[[0,2],[1,8]],[[0,1,2,38,700,1180,600,0],[1,0,3,26,2,421,600,0],[2,0,5,27,0,420,600,0]],[[3,0,67,3760,695,0,627],[4,0,67,855,497,0,281],[5,1,67,484,994,0,132],[6,0,160,160,695,0,2075],[7,0,160,124,665,0,1030],[8,0,160,95,497,0,1517],[9,1,160,82,994,0,902],[10,1,160,80,755,0,1941]],200],[0,311,98,409,314,1,219,409,409,[[0,2],[2,8]],[[0,1,2,38,701,1190,613,0],[11,0,3,30,5,433,613,0],[12,1,1,13,711,1200,613,0],[13,0,4,33,5,432,613,0]],[[3,0,67,3760,698,0,627],[4,0,67,855,499,0,281],[5,1,67,484,998,0,132],[14,0,160,134,670,0,1562],[15,0,160,99,617,0,1076],[16,1,160,71,998,0,875],[17,1,160,65,998,0,566],[18,1,160,60,998,0,735]],200],[1,5803,1548,7351,267,0,1548,7351,7351,[[3,7],[4,3]],[[19,0,6,672,0,420,600,0],[20,0,1,865,0,420,600,0],[21,0,3,302,0,420,600,0]],[[22,0,233,23900,690,0,144],[23,0,233,2920,483,0,198],[24,0,233,1670,552,0,84],[25,0,100,2540,690,0,355],[26,0,100,2460,690,0,248],[27,0,100,2030,690,0,336]],233],[1,5890,1544,7434,262,0,1544,7434,7434,[[3,7],[5,3]],[[19,0,6,672,0,420,600,0],[20,0,1,865,0,420,600,0],[28,0,3,331,0,420,600,0]],[[22,0,233,23900,690,0,144],[23,0,233,2920,483,0,198],[29,0,100,4510,690,0,393],[24,0,233,1670,552,0,84],[30,0,100,1680,690,0,232],[31,0,100,1670,690,0,230]],233],[1,4994,1327,6321,266,0,1327,6321,6321,[[3,6],[6,4]],[[19,0,4,672,0,420,600,0],[20,0,2,865,0,420,600,0],[32,0,4,144,0,420,600,0]],[[22,0,200,23900,696,0,144],[23,0,200,2920,487,0,198],[24,0,200,1670,556,0,84],[33,0,133,1700,696,0,732],[34,0,133,1670,696,0,651],[35,0,133,1300,696,0,306]],200],[1,4367,1111,5478,255,0,1111,5478,5478,[[3,5],[1,5]],[[19,0,5,672,0,420,600,0],[7,0,3,133,9,428,600,0],[9,0,2,304,0,420,600,0]],[[22,0,167,23900,696,0,144],[23,0,167,2920,487,0,198],[24,0,167,1670,556,0,84],[36,0,167,1480,696,0,392],[37,0,167,1450,696,0,400],[38,0,167,1450,696,0,397]],167],[1,3522,908,4430,258,0,908,4430,4430,[[3,4],[7,6]],[[19,0,4,672,0,420,600,0],[39,0,6,139,0,420,600,0]],[[22,0,133,23900,696,0,144],[23,0,133,2920,487,0,198],[40,0,200,1220,696,0,339],[41,0,200,1210,535,0,1997],[24,0,133,1670,556,0,84],[42,0,200,725,487,0,662]],133],[1,2314,721,3035,312,0,721,3035,3035,[[0,2],[6,8]],[[5,1,2,485,700,1180,600,0],[32,0,7,144,0,420,600,0],[43,0,1,336,0,420,600,0]],[[44,0,100,15400,698,0,138],[33,0,267,1700,698,0,732],[34,0,267,1670,698,0,651],[35,0,267,1300,698,0,306],[45,0,100,2500,698,0,174]],200],[1,1713,638,2351,372,0,638,2351,2351,[[3,1],[6,9]],[[46,1,1,417,704,1184,600,0],[32,0,9,144,0,420,600,0]],[[22,0,33,23900,688,0,144],[33,0,300,1700,688,0,732],[34,0,300,1670,688,0,651],[35,0,300,1300,688,0,306],[23,0,33,2920,481,0,198],[24,0,33,1670,550,0,84]],67],[1,2232,577,2809,259,0,577,2809,2809,[[8,2],[6,8]],[[47,1,2,444,700,1180,600,0],[32,0,7,144,0,420,600,0],[43,0,1,336,0,420,600,0]],[[48,0,100,8500,698,0,86],[49,0,100,7140,698,0,103],[33,0,267,1700,698,0,732],[34,0,267,1670,698,0,651],[35,0,267,1300,698,0,306]],200],[1,2004,571,2575,285,0,571,2575,2575,[[9,4],[6,6]],[[50,0,4,285,0,420,600,0],[32,0,6,144,0,420,600,0]],[[51,0,133,6010,696,0,101],[52,0,133,4290,487,0,641],[33,0,200,1700,696,0,732],[34,0,200,1670,696,0,651],[53,0,133,2010,208,0,1521],[35,0,200,1300,696,0,306]],400],[1,1720,544,2264,316,0,544,2264,2264,[[3,1],[1,9]],[[54,1,1,523,710,1200,613,0],[7,0,9,133,1,428,613,0]],[[22,0,33,23900,696,0,144],[36,0,300,1480,696,0,392],[37,0,300,1450,696,0,400],[38,0,300,1450,696,0,397],[23,0,33,2920,487,0,198],[24,0,33,1670,556,0,84]],67],[1,1432,432,1864,302,1,2338,1864,1864,[[10,3],[4,1],[1,6]],[[55,2,3,233,1500,2880,600,0],[56,1,1,115,700,1180,600,0],[8,0,6,103,0,420,600,0]],[[57,1,150,6130,1486,0,204],[58,1,150,2990,1486,0,151],[36,1,200,665,1486,0,674],[38,1,200,655,1486,0,813],[37,1,200,635,1486,0,801],[25,1,33,1200,1486,0,926],[26,1,33,985,1486,0,484],[27,1,33,965,1486,0,610]],300],[1,1458,410,1868,281,1,2326,1868,1868,[[10,3],[4,2],[1,3],[2,2]],[[55,2,3,233,1500,2880,600,0],[56,1,2,115,700,1180,600,0],[8,0,3,103,0,420,600,0],[15,0,2,110,1,420,600,0]],[[57,1,150,6130,1488,0,204],[58,1,150,2990,1488,0,151],[25,1,67,1200,1488,0,926],[36,1,100,665,1488,0,674],[26,1,67,985,1488,0,484],[38,1,100,655,1488,0,813],[27,1,67,965,1488,0,610],[37,1,100,635,1488,0,801],[59,1,67,550,1041,0,2939],[60,1,67,520,1488,0,952],[61,1,67,347,996,0,1253]],300],[1,1414,361,1775,255,1,2153,1775,1775,[[7,1],[1,4],[2,2],[10,3]],[[62,1,1,53,703,1183,600,0],[8,0,3,103,0,420,600,0],[15,0,2,110,1,420,600,0],[55,2,3,233,1500,2880,600,0],[7,0,1,133,9,428,600,0]],[[57,1,150,6130,1498,0,204],[58,1,150,2990,1498,0,151],[36,1,133,665,1498,0,674],[38,1,133,655,1498,0,813],[37,1,133,635,1498,0,801],[59,1,67,550,1048,0,2939],[60,1,67,520,1498,0,952],[61,1,67,347,1003,0,1253],[41,1,33,670,1153,0,3934],[40,1,33,492,1498,0,585],[42,1,33,390,1048,0,815]],300],[1,1330,344,1674,259,1,2038,1674,1674,[[8,3],[1,7]],[[47,2,3,208,1500,2880,600,0],[9,1,1,88,700,1180,600,0],[8,0,6,103,0,420,600,0]],[[48,1,150,4070,1486,0,102],[49,1,150,4050,1486,0,103],[36,1,233,665,1486,0,674],[38,1,233,655,1486,0,813],[37,1,233,635,1486,0,801]],300],[2,14496,3976,18472,274,0,3976,18472,18472,[[11,8],[12,2]],[[63,1,8,1281,701,1184,605,0],[64,1,2,2124,701,1184,605,0]],[[65,0,400,23200,697,0,232],[66,0,200,32800,697,0,457],[67,0,400,6580,610,0,165]],600],[2,14714,3881,18595,264,0,3881,18595,18595,[[13,1],[4,1],[14,8]],[[68,1,1,1151,708,1188,600,0],[27,1,1,1035,700,1180,600,0],[69,0,8,1566,12,431,600,0]],[[70,0,400,24800,691,0,138],[71,0,400,11100,349,0,148],[72,0,50,24200,698,0,248],[73,0,50,22100,698,0,220],[74,0,50,21900,698,0,191],[75,0,50,16500,698,0,212]],600],[2,14598,3832,18430,263,0,3832,18430,18430,[[14,8],[4,2]],[[69,0,8,1566,1,431,616,0],[27,1,2,1035,708,1200,616,0]],[[70,0,400,24800,681,0,138],[71,0,400,11100,344,0,148],[72,0,100,24200,688,0,248],[75,0,100,16500,688,0,212]],600],[2,13906,3714,17620,267,0,3714,17620,17620,[[14,8],[15,2]],[[69,0,8,1566,1,431,616,0],[76,1,2,689,708,1200,616,0]],[[70,0,400,24800,681,0,138],[71,0,400,11100,344,0,148],[77,0,100,18000,688,0,283],[78,0,100,14600,688,0,219]],600],[2,11598,3009,14607,259,1,4104,14607,14607,[[11,8],[3,2]],[[63,1,8,1281,701,1184,605,0],[24,1,2,675,701,1184,605,0]],[[65,0,400,23200,697,0,232],[67,0,400,6580,610,0,165],[79,0,100,22100,697,0,320],[80,1,100,4850,872,0,381]],500],[2,7223,1828,9051,253,0,1828,9051,9051,[[15,1],[2,9]],[[76,1,1,689,710,1200,613,0],[61,0,9,726,1,428,613,0]],[[81,0,450,10200,554,0,1047],[82,0,450,6290,696,0,475],[77,0,50,18000,696,0,283],[78,0,50,14600,696,0,219]],550]]}</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('cs-data').textContent);
+  var WEAR = ['FN', 'MW', 'FT', 'WW', 'BS'];
+  var PAGE = 15;
+  var PB = [0, 200, 400, 600, 800, 1000];
+
+  var st = { step: -1, filters: [], sort: 'profit', q: '', pb: 0, view: 'cards', limit: PAGE };
+
+  var esc = function (s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
+  var usd = function (c) { return '$' + (c / 100).toFixed(2); };
+  var pct = function (p) { return (p / 10).toFixed(1) + '%'; };
+  var f4 = function (e) { return (e / 10000).toFixed(4); };
+  var qual = function (bits) {
+    return (bits & 1 ? '<span class="tag sv">SOUVENIR</span>' : '')
+      + (bits & 2 ? '<span class="tag st">ST\u2122</span>' : '');
+  };
+  var pbCell = function (p) {
+    return '<span class="pb' + (p >= 800 ? ' hi' : '') + '">' + pct(p) + '</span>';
+  };
+
+  // Текст для поиска — считается один раз, при первом запросе.
+  var hay = null;
+  function haystack(i) {
+    if (!hay) {
+      hay = D.rows.map(function (r) {
+        var parts = [];
+        r[9].forEach(function (c) { parts.push(D.cols[c[0]]); });
+        r[10].forEach(function (x) { parts.push(D.skins[x[0]]); });
+        r[11].forEach(function (x) { parts.push(D.skins[x[0]]); });
+        return parts.join(' ').toLowerCase();
+      });
+    }
+    return hay[i];
+  }
+
+  function has(list, idx) {
+    for (var i = 0; i < list.length; i++) if (list[i][0] === idx) return true;
+    return false;
+  }
+
+  function matches(r, i) {
+    if (st.step >= 0 && r[0] !== st.step) return false;
+    if (r[12] < st.pb) return false;
+    for (var k = 0; k < st.filters.length; k++) {
+      var f = st.filters[k];
+      if (f.t === 'in' && !has(r[10], f.i)) return false;
+      if (f.t === 'out' && !has(r[11], f.i)) return false;
+      if (f.t === 'col' && !has(r[9], f.i)) return false;
+    }
+    if (st.q && haystack(i).indexOf(st.q) < 0) return false;
+    return true;
+  }
+
+  function sortRows(list) {
+    return list.sort(function (a, b) {
+      if (st.sort === 'roi') return b[4] - a[4];
+      if (st.sort === 'cost') return a[1] - b[1];
+      if (st.sort === 'pb') return b[12] - a[12] || b[2] - a[2];
+      return b[2] - a[2];
+    });
+  }
+
+  function itemBtn(kind, idx, bits) {
+    return qual(bits) + '<button class="lnk" data-t="' + kind + '" data-i="' + idx + '">'
+      + esc(D.skins[idx]) + '</button>';
+  }
+
+  function compLine(row) {
+    return row[9].map(function (c) {
+      return c[1] + 'x <button class="lnk" data-t="col" data-i="' + c[0] + '">'
+        + esc(D.cols[c[0]]) + '</button>';
+    }).join(' + ');
+  }
+
+  function payback(row) {
+    var names = [];
+    row[11].forEach(function (o) { if (o[3] > row[1]) names.push(D.skins[o[0]]); });
+    return names;
+  }
+
+  function card(row, rank) {
+    var H = [];
+    H.push('<div class="card">');
+    H.push('<div class="headline"><span class="rank">' + rank + '.</span> ' + compLine(row) + '</div>');
+    H.push('<p class="note">' + esc(D.steps[row[0]].label) + ' \u00b7 вложить <b>' + usd(row[1])
+      + '</b> \u2192 вернётся в среднем <b>' + usd(row[3])
+      + '</b> \u2192 <span class="profit">' + usd(row[2]) + ' (' + pct(row[4]) + ')</span></p>');
+
+    H.push('<h4>Что купить</h4><div class="scroll"><table><thead><tr>'
+      + '<th class="n">Кол-во</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
+      + '<th class="n">Цена шт.</th><th class="n">Сумма</th></tr></thead><tbody>');
+    row[10].forEach(function (i) {
+      H.push('<tr><td class="n">' + i[2] + 'x</td><td>' + itemBtn('in', i[0], i[7])
+        + '</td><td>' + WEAR[i[1]] + '</td><td>' + f4(i[4]) + ' \u2013 ' + f4(i[5])
+        + ' <span class="muted">(' + Math.round(i[6] / 10) + '% ' + WEAR[i[1]] + ')</span></td>'
+        + '<td class="n">' + usd(i[3]) + '</td><td class="n">' + usd(i[3] * i[2]) + '</td></tr>');
+    });
+    H.push('<tr class="total"><td class="n">10</td><td></td><td></td><td></td><td></td>'
+      + '<td class="n"><b>' + usd(row[1]) + '</b></td></tr></tbody></table></div>');
+
+    if (row[5] & 2) {
+      H.push('<p class="note">Внутри окна есть сочетание флоатов хуже верхней границы:'
+        + ' там вернётся ' + usd(row[7]) + ' вместо ' + usd(row[8])
+        + '. Прибыль в шапке посчитана по нему.</p>');
+    }
+    if (row[5] & 1) {
+      H.push('<p class="note">Прибыль посчитана по худшему сочетанию флоатов внутри окон;'
+        + ' при удачном сочетании выйдет до ' + usd(row[6]) + '.</p>');
+    }
+
+    H.push('<h4>Что выпадет</h4><div class="scroll"><table><thead><tr>'
+      + '<th class="n">Шанс</th><th>Предмет</th><th>Износ</th><th>Флоат</th>'
+      + '<th class="n">Цена</th><th class="n" title="Объём по схеме CSFloat — примерно продажи за месяц">Объём CSFloat</th></tr></thead><tbody>');
+    row[11].forEach(function (o) {
+      H.push('<tr><td class="n">' + pct(o[2]) + '</td><td>' + itemBtn('out', o[0], o[5])
+        + '</td><td>' + WEAR[o[1]] + '</td><td>' + f4(o[4]) + '</td>'
+        + '<td class="n">' + usd(o[3]) + '</td><td class="n">' + (o[6] == null ? '—' : o[6]) + '</td></tr>');
+    });
+    H.push('</tbody></table></div>');
+
+    var names = payback(row);
+    if (names.length) {
+      H.push('<p class="note">Шанс окупить контракт одним предметом: '
+        + pbCell(row[12]) + ' \u2014 ' + esc(names.join(', ')) + '</p>');
+    }
+    H.push('</div>');
+    return H.join('');
+  }
+
+  function listRows(rows, from) {
+    var H = ['<div class="scroll"><table class="list"><thead><tr>'
+      + '<th class="n">№</th><th class="n">Прибыль</th><th class="n">ROI</th>'
+      + '<th class="n">Вложить</th><th class="n">Окупает</th><th>Коллекции</th>'
+      + '<th>Что покупать</th></tr></thead><tbody>'];
+    rows.forEach(function (row, k) {
+      var buy = row[10].map(function (i) {
+        return i[2] + 'x ' + itemBtn('in', i[0], i[7]) + ' <span class="sub2">[' + WEAR[i[1]]
+          + '] ' + f4(i[4]) + '\u2013' + f4(i[5]) + '</span>';
+      }).join('<br>');
+      H.push('<tr><td class="n">' + (from + k + 1) + '</td>'
+        + '<td class="n"><span class="profit">' + usd(row[2]) + '</span></td>'
+        + '<td class="n">' + pct(row[4]) + '</td>'
+        + '<td class="n">' + usd(row[1]) + '</td>'
+        + '<td class="n">' + pbCell(row[12]) + '</td>'
+        + '<td>' + compLine(row) + '</td>'
+        + '<td>' + buy + '</td></tr>');
+    });
+    H.push('</tbody></table></div>');
+    return H.join('');
+  }
+
+  function label(f) {
+    var what = f.t === 'col' ? 'коллекция' : f.t === 'in' ? 'вход' : 'исход';
+    var name = f.t === 'col' ? D.cols[f.i] : D.skins[f.i];
+    return '<span class="w">' + what + ':</span> <b>' + esc(name) + '</b>';
+  }
+
+  function draw() {
+    var picked = [];
+    for (var i = 0; i < D.rows.length; i++) {
+      if (matches(D.rows[i], i)) picked.push(D.rows[i]);
+    }
+    sortRows(picked);
+
+    var chips = st.filters.map(function (f, k) {
+      return '<span class="fchip">' + label(f)
+        + '<button class="x" data-drop="' + k + '" title="Убрать">\u00d7</button></span>';
+    }).join('');
+    if (st.filters.length) {
+      chips += '<button class="tab" data-drop="all">сбросить</button>';
+    }
+    document.getElementById('cs-chips').innerHTML = chips;
+
+    var n = Math.min(st.limit, picked.length);
+    var head = 'Найдено <b>' + picked.length + '</b>';
+    if (picked.length > n) head += ', показаны первые ' + n;
+    document.getElementById('cs-count').innerHTML = head;
+
+    var out = document.getElementById('cs-list');
+    if (!picked.length) {
+      out.innerHTML = '<div class="empty">Ничего не нашлось.<br>'
+        + 'Снимите часть фильтров или опустите порог окупаемости.</div>';
+      return;
+    }
+
+    var html = [];
+    if (st.view === 'list') {
+      html.push(listRows(picked.slice(0, n), 0));
+    } else {
+      for (var j = 0; j < n; j++) html.push(card(picked[j], j + 1));
+    }
+    if (picked.length > n) {
+      html.push('<button class="more" data-more="1">Показать ещё '
+        + Math.min(PAGE, picked.length - n) + ' \u00b7 осталось ' + (picked.length - n) + '</button>');
+    }
+    out.innerHTML = html.join('');
+  }
+
+  function press(sel, on) {
+    [].forEach.call(document.querySelectorAll(sel), function (b) {
+      b.setAttribute('aria-pressed', on(b) ? 'true' : 'false');
+    });
+  }
+
+  function addFilter(t, i) {
+    for (var k = 0; k < st.filters.length; k++) {
+      if (st.filters[k].t === t && st.filters[k].i === i) return;
+    }
+    st.filters.push({ t: t, i: i });
+    st.limit = PAGE;
+    draw();
+    document.getElementById('cs-bar').scrollIntoView({ block: 'start' });
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest
+      ? e.target.closest('[data-t],[data-drop],[data-more],[data-step],[data-sort],[data-pb],[data-view]')
+      : null;
+    if (!el) return;
+    var d = el.dataset;
+    if (d.t) { addFilter(d.t, +d.i); return; }
+    if (d.drop) {
+      st.filters = d.drop === 'all' ? [] : st.filters.filter(function (_, k) { return k !== +d.drop; });
+      st.limit = PAGE;
+      draw();
+      return;
+    }
+    if (d.more) { st.limit += PAGE; draw(); return; }
+    if (d.step !== undefined) {
+      st.step = +d.step;
+      st.limit = PAGE;
+      press('[data-step]', function (b) { return +b.dataset.step === st.step; });
+      draw();
+      return;
+    }
+    if (d.sort) {
+      st.sort = d.sort;
+      st.limit = PAGE;
+      press('[data-sort]', function (b) { return b.dataset.sort === st.sort; });
+      draw();
+      return;
+    }
+    if (d.pb !== undefined) {
+      st.pb = +d.pb;
+      st.limit = PAGE;
+      press('[data-pb]', function (b) { return +b.dataset.pb === st.pb; });
+      draw();
+      return;
+    }
+    if (d.view) {
+      st.view = d.view;
+      st.limit = PAGE;
+      press('[data-view]', function (b) { return b.dataset.view === st.view; });
+      draw();
+    }
+  });
+
+  var q = document.getElementById('cs-q');
+  var timer = null;
+  q.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      st.q = q.value.trim().toLowerCase();
+      st.limit = PAGE;
+      draw();
+    }, 120);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.activeElement === q) {
+      q.value = '';
+      st.q = '';
+      draw();
+    }
+  });
+
+  draw();
+}());
+</script></body></html>
