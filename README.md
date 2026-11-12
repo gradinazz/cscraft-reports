@@ -2,11 +2,19 @@
 
 Витрина расчётов прибыльных трейд-ап контрактов: **https://gradinazz.github.io/cscraft-reports/**
 
-Полный перебор десяток по коллекциям на ценах площадок Buff163, Steam, CSFloat
-(данные через BetterFloat): вход — средняя за 30 дней, выход — лучший бид той же площадки.
-Площадка выбирается переключателем вверху витрины. Прибыль считается по худшему
-сочетанию флоатов внутри окон покупки, то есть это нижняя граница, а не удачный случай.
-Комиссии площадок не вычтены — у Steam это около 15% с продажи. Данные зафиксированы на 2026-09-28.
+Перебор десяток по коллекциям (до четырёх коллекций в контракте) на ценах площадок
+Buff163, Steam, CSFloat (данные через BetterFloat): вход — средняя за 30 дней,
+выход — лучший бид той же площадки. Прибыль считается по худшему сочетанию флоатов
+внутри окон покупки, то есть это нижняя граница, а не удачный случай. Комиссии площадок
+не вычтены — у Steam это около 15% с продажи. Данные зафиксированы на 2026-11-12.
+
+## Как пользоваться
+
+Витрина — одна страница. Вверху выбираются площадка цен, пул предметов и окно
+входа, ниже — все контракты этого набора с фильтрами: поиск по коллекции или
+предмету (на входе или на выходе), переход редкости, число коллекций в контракте,
+бюджет, минимальные ROI и прибыль, шанс окупить контракт одним предметом. Фильтры
+складываются и сохраняются в адресе страницы — ссылкой можно поделиться.
 
 ## Что здесь есть
 
@@ -14,123 +22,123 @@
 
 Витрина с этими ценами: https://gradinazz.github.io/cscraft-reports/?src=buff
 
-| Пул | Окно входа | Контрактов | ROI ≥100% | Лучший ROI | Макс. прибыль | |
-|---|---:|---:|---:|---:|---:|---|
-| обычные | 10% | 4143 | 467 | 270.1% | $135.65 | [отчёт](reports/contracts_w10_normal_buff_2026-09-28.html) |
-| сувенирные | 10% | 4228 | 466 | 270.1% | $135.27 | [отчёт](reports/contracts_w10_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 10% | 914 | 41 | 152.4% | $121.38 | [отчёт](reports/contracts_w10_stattrak_buff_2026-09-28.html) |
-| обычные | 20% | 3206 | 178 | 224.8% | $100.82 | [отчёт](reports/contracts_w20_normal_buff_2026-09-28.html) |
-| сувенирные | 20% | 3247 | 176 | 224.8% | $100.82 | [отчёт](reports/contracts_w20_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 20% | 559 | 2 | 102.8% | $109.61 | [отчёт](reports/contracts_w20_stattrak_buff_2026-09-28.html) |
-| обычные | 30% | 2099 | 53 | 176.6% | $81.73 | [отчёт](reports/contracts_w30_normal_buff_2026-09-28.html) |
-| сувенирные | 30% | 2128 | 48 | 176.6% | $81.73 | [отчёт](reports/contracts_w30_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 30% | 256 | 0 | 89.7% | $64.87 | [отчёт](reports/contracts_w30_stattrak_buff_2026-09-28.html) |
-| обычные | 40% | 1060 | 3 | 128.6% | $63.83 | [отчёт](reports/contracts_w40_normal_buff_2026-09-28.html) |
-| сувенирные | 40% | 1068 | 3 | 128.6% | $63.83 | [отчёт](reports/contracts_w40_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 40% | 116 | 0 | 64.7% | $49.75 | [отчёт](reports/contracts_w40_stattrak_buff_2026-09-28.html) |
-| обычные | 50% | 413 | 0 | 87.9% | $53.57 | [отчёт](reports/contracts_w50_normal_buff_2026-09-28.html) |
-| сувенирные | 50% | 412 | 0 | 87.9% | $53.57 | [отчёт](reports/contracts_w50_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 50% | 36 | 0 | 44.3% | $32.02 | [отчёт](reports/contracts_w50_stattrak_buff_2026-09-28.html) |
-| обычные | 60% | 57 | 0 | 60.8% | $41.92 | [отчёт](reports/contracts_w60_normal_buff_2026-09-28.html) |
-| сувенирные | 60% | 57 | 0 | 60.8% | $41.92 | [отчёт](reports/contracts_w60_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 60% | 1 | 0 | 25.1% | $0.87 | [отчёт](reports/contracts_w60_stattrak_buff_2026-09-28.html) |
-| обычные | 70% | 4 | 0 | 32.0% | $0.08 | [отчёт](reports/contracts_w70_normal_buff_2026-09-28.html) |
-| сувенирные | 70% | 4 | 0 | 32.0% | $0.08 | [отчёт](reports/contracts_w70_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_stattrak_buff_2026-09-28.html) |
-| обычные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_normal_buff_2026-09-28.html) |
-| сувенирные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_stattrak_buff_2026-09-28.html) |
-| обычные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_normal_buff_2026-09-28.html) |
-| сувенирные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_stattrak_buff_2026-09-28.html) |
-| обычные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_normal_buff_2026-09-28.html) |
-| сувенирные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_souvenir_buff_2026-09-28.html) |
-| StatTrak™ | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_stattrak_buff_2026-09-28.html) |
+| Пул | Окно входа | Контрактов | Из 3+ коллекций | ROI ≥100% | Лучший ROI | Макс. прибыль | |
+|---|---:|---:|---:|---:|---:|---:|---|
+| обычные | 10% | 5838 | 2637 | 892 | 424.8% | $97.10 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=10) |
+| сувенирные | 10% | 6059 | 2788 | 862 | 424.8% | $97.10 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=10) |
+| StatTrak™ | 10% | 966 | 187 | 23 | 152.0% | $102.75 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=10) |
+| обычные | 20% | 4988 | 2586 | 484 | 251.5% | $78.29 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=20) |
+| сувенирные | 20% | 5324 | 2716 | 486 | 251.5% | $78.29 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=20) |
+| StatTrak™ | 20% | 607 | 159 | 1 | 101.5% | $91.29 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=20) |
+| обычные | 30% | 3787 | 2001 | 165 | 196.4% | $61.49 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=30) |
+| сувенирные | 30% | 4099 | 2257 | 166 | 196.4% | $61.49 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=30) |
+| StatTrak™ | 30% | 286 | 61 | 0 | 87.0% | $68.38 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=30) |
+| обычные | 40% | 2621 | 1419 | 54 | 129.4% | $46.25 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=40) |
+| сувенирные | 40% | 2850 | 1651 | 44 | 127.3% | $46.25 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=40) |
+| StatTrak™ | 40% | 133 | 27 | 0 | 57.4% | $51.28 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=40) |
+| обычные | 50% | 1420 | 652 | 0 | 98.3% | $35.53 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=50) |
+| сувенирные | 50% | 1502 | 745 | 0 | 98.3% | $35.53 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=50) |
+| StatTrak™ | 50% | 25 | 7 | 0 | 43.0% | $6.49 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=50) |
+| обычные | 60% | 613 | 214 | 0 | 82.3% | $20.01 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=60) |
+| сувенирные | 60% | 640 | 235 | 0 | 82.3% | $20.01 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=60) |
+| StatTrak™ | 60% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=60) |
+| обычные | 70% | 153 | 29 | 0 | 57.1% | $12.07 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=70) |
+| сувенирные | 70% | 154 | 29 | 0 | 57.1% | $12.07 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=70) |
+| StatTrak™ | 70% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=70) |
+| обычные | 80% | 23 | 12 | 0 | 38.5% | $7.80 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=80) |
+| сувенирные | 80% | 23 | 12 | 0 | 38.5% | $7.80 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=80) |
+| StatTrak™ | 80% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=80) |
+| обычные | 90% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=90) |
+| сувенирные | 90% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=90) |
+| StatTrak™ | 90% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=90) |
+| обычные | 100% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=normal&win=100) |
+| сувенирные | 100% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=souvenir&win=100) |
+| StatTrak™ | 100% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=buff#pool=stattrak&win=100) |
 
 ### Цены Steam
 
 Витрина с этими ценами: https://gradinazz.github.io/cscraft-reports/?src=steam
 
-| Пул | Окно входа | Контрактов | ROI ≥100% | Лучший ROI | Макс. прибыль | |
-|---|---:|---:|---:|---:|---:|---|
-| обычные | 10% | 3038 | 239 | 212.6% | $174.30 | [отчёт](reports/contracts_w10_normal_steam_2026-09-28.html) |
-| сувенирные | 10% | 3106 | 243 | 212.6% | $174.30 | [отчёт](reports/contracts_w10_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 10% | 609 | 1 | 100.8% | $81.14 | [отчёт](reports/contracts_w10_stattrak_steam_2026-09-28.html) |
-| обычные | 20% | 2231 | 54 | 176.3% | $120.23 | [отчёт](reports/contracts_w20_normal_steam_2026-09-28.html) |
-| сувенирные | 20% | 2275 | 54 | 176.3% | $120.23 | [отчёт](reports/contracts_w20_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 20% | 333 | 0 | 85.3% | $67.73 | [отчёт](reports/contracts_w20_stattrak_steam_2026-09-28.html) |
-| обычные | 30% | 1343 | 19 | 137.1% | $94.58 | [отчёт](reports/contracts_w30_normal_steam_2026-09-28.html) |
-| сувенирные | 30% | 1366 | 19 | 137.1% | $94.58 | [отчёт](reports/contracts_w30_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 30% | 143 | 0 | 72.6% | $63.44 | [отчёт](reports/contracts_w30_stattrak_steam_2026-09-28.html) |
-| обычные | 40% | 560 | 0 | 93.6% | $74.83 | [отчёт](reports/contracts_w40_normal_steam_2026-09-28.html) |
-| сувенирные | 40% | 568 | 0 | 93.6% | $74.83 | [отчёт](reports/contracts_w40_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 40% | 62 | 0 | 49.3% | $40.76 | [отчёт](reports/contracts_w40_stattrak_steam_2026-09-28.html) |
-| обычные | 50% | 146 | 0 | 60.9% | $57.30 | [отчёт](reports/contracts_w50_normal_steam_2026-09-28.html) |
-| сувенирные | 50% | 147 | 0 | 59.1% | $57.30 | [отчёт](reports/contracts_w50_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 50% | 13 | 0 | 34.4% | $10.81 | [отчёт](reports/contracts_w50_stattrak_steam_2026-09-28.html) |
-| обычные | 60% | 12 | 0 | 38.1% | $20.55 | [отчёт](reports/contracts_w60_normal_steam_2026-09-28.html) |
-| сувенирные | 60% | 13 | 0 | 38.1% | $20.55 | [отчёт](reports/contracts_w60_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 60% | 0 | 0 | — | — | [отчёт](reports/contracts_w60_stattrak_steam_2026-09-28.html) |
-| обычные | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_normal_steam_2026-09-28.html) |
-| сувенирные | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_stattrak_steam_2026-09-28.html) |
-| обычные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_normal_steam_2026-09-28.html) |
-| сувенирные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_stattrak_steam_2026-09-28.html) |
-| обычные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_normal_steam_2026-09-28.html) |
-| сувенирные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_stattrak_steam_2026-09-28.html) |
-| обычные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_normal_steam_2026-09-28.html) |
-| сувенирные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_souvenir_steam_2026-09-28.html) |
-| StatTrak™ | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_stattrak_steam_2026-09-28.html) |
+| Пул | Окно входа | Контрактов | Из 3+ коллекций | ROI ≥100% | Лучший ROI | Макс. прибыль | |
+|---|---:|---:|---:|---:|---:|---:|---|
+| обычные | 10% | 4484 | 2096 | 431 | 295.5% | $112.56 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=10) |
+| сувенирные | 10% | 4599 | 2123 | 435 | 295.5% | $112.56 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=10) |
+| StatTrak™ | 10% | 639 | 141 | 7 | 121.0% | $97.65 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=10) |
+| обычные | 20% | 4101 | 2575 | 157 | 167.3% | $83.18 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=20) |
+| сувенирные | 20% | 4147 | 2450 | 155 | 167.3% | $83.18 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=20) |
+| StatTrak™ | 20% | 430 | 137 | 0 | 86.2% | $76.28 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=20) |
+| обычные | 30% | 2547 | 1588 | 32 | 135.8% | $65.38 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=30) |
+| сувенирные | 30% | 2755 | 1762 | 30 | 135.8% | $65.38 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=30) |
+| StatTrak™ | 30% | 187 | 56 | 0 | 63.6% | $50.69 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=30) |
+| обычные | 40% | 1381 | 882 | 0 | 89.8% | $51.34 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=40) |
+| сувенирные | 40% | 1500 | 988 | 0 | 89.8% | $51.34 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=40) |
+| StatTrak™ | 40% | 81 | 28 | 0 | 46.4% | $35.03 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=40) |
+| обычные | 50% | 500 | 258 | 0 | 64.7% | $37.10 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=50) |
+| сувенирные | 50% | 509 | 266 | 0 | 64.7% | $37.10 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=50) |
+| StatTrak™ | 50% | 6 | 2 | 0 | 28.6% | $4.90 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=50) |
+| обычные | 60% | 110 | 33 | 0 | 44.3% | $11.68 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=60) |
+| сувенирные | 60% | 110 | 33 | 0 | 44.3% | $11.68 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=60) |
+| StatTrak™ | 60% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=60) |
+| обычные | 70% | 7 | 0 | 0 | 29.3% | $10.01 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=70) |
+| сувенирные | 70% | 7 | 0 | 0 | 29.3% | $10.01 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=70) |
+| StatTrak™ | 70% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=70) |
+| обычные | 80% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=80) |
+| сувенирные | 80% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=80) |
+| StatTrak™ | 80% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=80) |
+| обычные | 90% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=90) |
+| сувенирные | 90% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=90) |
+| StatTrak™ | 90% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=90) |
+| обычные | 100% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=normal&win=100) |
+| сувенирные | 100% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=souvenir&win=100) |
+| StatTrak™ | 100% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=steam#pool=stattrak&win=100) |
 
 ### Цены CSFloat
 
 Витрина с этими ценами: https://gradinazz.github.io/cscraft-reports/?src=csfloat
 
-| Пул | Окно входа | Контрактов | ROI ≥100% | Лучший ROI | Макс. прибыль | |
-|---|---:|---:|---:|---:|---:|---|
-| обычные | 10% | 3870 | 306 | 220.2% | $129.00 | [отчёт](reports/contracts_w10_normal_csfloat_2026-09-28.html) |
-| сувенирные | 10% | 3927 | 310 | 220.2% | $129.00 | [отчёт](reports/contracts_w10_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 10% | 842 | 32 | 149.1% | $119.83 | [отчёт](reports/contracts_w10_stattrak_csfloat_2026-09-28.html) |
-| обычные | 20% | 2861 | 92 | 182.5% | $96.11 | [отчёт](reports/contracts_w20_normal_csfloat_2026-09-28.html) |
-| сувенирные | 20% | 2900 | 92 | 182.5% | $96.11 | [отчёт](reports/contracts_w20_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 20% | 519 | 0 | 94.8% | $97.86 | [отчёт](reports/contracts_w20_stattrak_csfloat_2026-09-28.html) |
-| обычные | 30% | 1782 | 21 | 148.3% | $80.20 | [отчёт](reports/contracts_w30_normal_csfloat_2026-09-28.html) |
-| сувенирные | 30% | 1818 | 21 | 148.3% | $80.20 | [отчёт](reports/contracts_w30_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 30% | 232 | 0 | 79.7% | $61.76 | [отчёт](reports/contracts_w30_stattrak_csfloat_2026-09-28.html) |
-| обычные | 40% | 864 | 0 | 97.2% | $61.46 | [отчёт](reports/contracts_w40_normal_csfloat_2026-09-28.html) |
-| сувенирные | 40% | 875 | 0 | 97.2% | $61.46 | [отчёт](reports/contracts_w40_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 40% | 99 | 0 | 54.9% | $48.22 | [отчёт](reports/contracts_w40_stattrak_csfloat_2026-09-28.html) |
-| обычные | 50% | 239 | 0 | 74.3% | $51.55 | [отчёт](reports/contracts_w50_normal_csfloat_2026-09-28.html) |
-| сувенирные | 50% | 241 | 0 | 74.3% | $51.55 | [отчёт](reports/contracts_w50_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 50% | 29 | 0 | 41.6% | $35.40 | [отчёт](reports/contracts_w50_stattrak_csfloat_2026-09-28.html) |
-| обычные | 60% | 22 | 0 | 47.6% | $39.76 | [отчёт](reports/contracts_w60_normal_csfloat_2026-09-28.html) |
-| сувенирные | 60% | 22 | 0 | 47.6% | $39.76 | [отчёт](reports/contracts_w60_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 60% | 2 | 0 | 25.8% | $5.55 | [отчёт](reports/contracts_w60_stattrak_csfloat_2026-09-28.html) |
-| обычные | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_normal_csfloat_2026-09-28.html) |
-| сувенирные | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 70% | 0 | 0 | — | — | [отчёт](reports/contracts_w70_stattrak_csfloat_2026-09-28.html) |
-| обычные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_normal_csfloat_2026-09-28.html) |
-| сувенирные | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 80% | 0 | 0 | — | — | [отчёт](reports/contracts_w80_stattrak_csfloat_2026-09-28.html) |
-| обычные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_normal_csfloat_2026-09-28.html) |
-| сувенирные | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 90% | 0 | 0 | — | — | [отчёт](reports/contracts_w90_stattrak_csfloat_2026-09-28.html) |
-| обычные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_normal_csfloat_2026-09-28.html) |
-| сувенирные | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_souvenir_csfloat_2026-09-28.html) |
-| StatTrak™ | 100% | 0 | 0 | — | — | [отчёт](reports/contracts_w100_stattrak_csfloat_2026-09-28.html) |
+| Пул | Окно входа | Контрактов | Из 3+ коллекций | ROI ≥100% | Лучший ROI | Макс. прибыль | |
+|---|---:|---:|---:|---:|---:|---:|---|
+| обычные | 10% | 5961 | 3191 | 776 | 403.6% | $98.03 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=10) |
+| сувенирные | 10% | 6407 | 3466 | 778 | 403.6% | $98.03 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=10) |
+| StatTrak™ | 10% | 1117 | 437 | 29 | 159.9% | $104.60 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=10) |
+| обычные | 20% | 5234 | 3156 | 354 | 197.8% | $85.16 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=20) |
+| сувенирные | 20% | 5615 | 3438 | 351 | 197.8% | $85.16 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=20) |
+| StatTrak™ | 20% | 711 | 328 | 1 | 114.2% | $89.46 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=20) |
+| обычные | 30% | 3587 | 2029 | 79 | 156.2% | $68.63 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=30) |
+| сувенирные | 30% | 3904 | 2305 | 78 | 156.2% | $68.63 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=30) |
+| StatTrak™ | 30% | 345 | 150 | 0 | 95.2% | $78.68 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=30) |
+| обычные | 40% | 2325 | 1318 | 13 | 111.7% | $52.22 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=40) |
+| сувенирные | 40% | 2563 | 1578 | 12 | 111.7% | $52.22 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=40) |
+| StatTrak™ | 40% | 150 | 47 | 0 | 61.1% | $57.12 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=40) |
+| обычные | 50% | 1159 | 544 | 0 | 93.9% | $45.17 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=50) |
+| сувенирные | 50% | 1178 | 559 | 0 | 93.9% | $45.17 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=50) |
+| StatTrak™ | 50% | 28 | 9 | 0 | 31.7% | $41.50 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=50) |
+| обычные | 60% | 412 | 122 | 0 | 73.6% | $38.12 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=60) |
+| сувенирные | 60% | 416 | 126 | 0 | 73.6% | $38.12 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=60) |
+| StatTrak™ | 60% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=60) |
+| обычные | 70% | 119 | 22 | 0 | 48.8% | $27.15 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=70) |
+| сувенирные | 70% | 119 | 22 | 0 | 48.8% | $27.15 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=70) |
+| StatTrak™ | 70% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=70) |
+| обычные | 80% | 20 | 5 | 0 | 31.8% | $7.68 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=80) |
+| сувенирные | 80% | 20 | 5 | 0 | 31.8% | $7.68 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=80) |
+| StatTrak™ | 80% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=80) |
+| обычные | 90% | 1 | 0 | 0 | 25.1% | $1.48 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=90) |
+| сувенирные | 90% | 1 | 0 | 0 | 25.1% | $1.48 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=90) |
+| StatTrak™ | 90% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=90) |
+| обычные | 100% | 1 | 0 | 0 | 25.1% | $1.48 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=normal&win=100) |
+| сувенирные | 100% | 1 | 0 | 0 | 25.1% | $1.48 | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=souvenir&win=100) |
+| StatTrak™ | 100% | 0 | 0 | 0 | — | — | [открыть](https://gradinazz.github.io/cscraft-reports/?src=csfloat#pool=stattrak&win=100) |
 
 
 «Окно входа» — минимальная доля полосы износа, внутри которой должен лежать флоат
 покупаемого предмета. Чем шире окно, тем легче найти лот на рынке и тем меньше
 контрактов остаются прибыльными.
 
-## Как читать отчёт
+Контракт из трёх и более коллекций попадает в расчёт, только если он лучше любого
+контракта из части своих коллекций — по прибыли или по ROI, хотя бы на 2%. Простые
+смеси двух готовых контрактов в базу не идут.
 
-Каждый отчёт — самостоятельная HTML-страница с поиском, фильтрами по переходу
-редкости и по шансу окупить контракт одним предметом. Открывать лучше через витрину,
-но файлы работают и сами по себе.
+Данные наборов лежат в `data/`, по файлу на набор.
 
 **Это не финансовый совет.** Расчёт не учитывает время на выкуп нужных флоатов,
 проскальзывание цены и комиссии конкретной площадки. Проверяйте цены перед покупкой.
